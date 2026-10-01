@@ -1,0 +1,18 @@
+services:
+  portfolio:
+    build: .
+    restart: unless-stopped
+    networks:
+      ingress:
+        aliases:
+          - portfolio-prod
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1/']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+
+networks:
+  ingress:
+    external: true
+    name: hurricane-chat-ingress
