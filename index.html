@@ -57,7 +57,7 @@
 
   /* background mesh */
   .mesh{
-    position:fixed; inset:0; z-index:-2; overflow:hidden; background:var(--bg);
+    position:fixed; inset:0; z-index:-3; overflow:hidden; background:var(--bg);
   }
   .mesh::before, .mesh::after{
     content:''; position:absolute; width:60vw; height:60vw; border-radius:50%;
@@ -76,6 +76,16 @@
   .grain{
     position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.025;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* 3D particle canvas */
+  #webgl-bg{ position:fixed; inset:0; z-index:-2; }
+
+  /* cursor spotlight */
+  .spotlight{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(139,92,246,0.10), transparent 70%);
+    transition:background .1s ease;
   }
 
   /* nav */
@@ -121,6 +131,29 @@
   .gradient-text{
     background:linear-gradient(135deg,#fff 20%,var(--accent) 60%,var(--accent-2) 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% auto; animation:shine 5s linear infinite;
+  }
+  @keyframes shine{ to{ background-position:200% center; } }
+  .word{ display:inline-block; opacity:0; transform:translateY(100%) rotateX(-40deg); animation:word-in .8s cubic-bezier(.22,1,.36,1) forwards; }
+  @keyframes word-in{ to{ opacity:1; transform:translateY(0) rotateX(0); } }
+
+  /* floating 3D badge orb in hero */
+  .orb{
+    position:absolute; top:10px; right:6%; width:120px; height:120px; perspective:800px; display:none;
+  }
+  @media (min-width:900px){ .orb{ display:block; } }
+  .orb-inner{
+    width:100%; height:100%; position:relative; transform-style:preserve-3d;
+    animation:orb-spin 10s ease-in-out infinite;
+    border-radius:20px; background:linear-gradient(135deg,rgba(139,92,246,0.25),rgba(59,130,246,0.15));
+    border:1px solid rgba(139,92,246,0.4); backdrop-filter:blur(6px);
+    box-shadow:0 0 50px -10px rgba(139,92,246,0.6), inset 0 0 30px rgba(255,255,255,0.05);
+    display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:#c4b5fd;
+  }
+  @keyframes orb-spin{
+    0%{ transform:rotateY(0deg) rotateX(12deg) translateY(0); }
+    50%{ transform:rotateY(180deg) rotateX(12deg) translateY(-14px); }
+    100%{ transform:rotateY(360deg) rotateX(12deg) translateY(0); }
   }
   .sub{
     max-width:640px; margin:0 auto 38px; color:var(--muted); font-size:1.15rem; font-weight:400;
@@ -164,13 +197,26 @@
   @media (max-width:760px){ .bento{grid-template-columns:1fr;} }
   .card{
     background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:28px;
-    position:relative; overflow:hidden;
+    position:relative; overflow:hidden; transform-style:preserve-3d; will-change:transform;
+    transition:transform .4s cubic-bezier(.22,1,.36,1), border-color .25s;
   }
   .card:hover{ border-color:rgba(139,92,246,0.4); }
   .card-glow{
     position:absolute; top:-40%; right:-20%; width:200px; height:200px; border-radius:50%;
     background:var(--accent); filter:blur(80px); opacity:0.15; pointer-events:none;
   }
+
+  /* animated gradient border-beam, shared by tilt cards */
+  .tilt::before{
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
+    background:conic-gradient(from var(--beam-angle,0deg), transparent 0%, var(--accent) 15%, transparent 30%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .3s; pointer-events:none;
+  }
+  .tilt:hover::before{ opacity:1; animation:spin-beam 3s linear infinite; }
+  @keyframes spin-beam{ to{ --beam-angle:360deg; } }
+  @property --beam-angle{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
   .skill-groups{ display:flex; flex-direction:column; gap:18px; }
   .skill-group-label{ font-size:0.78rem; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
   .pills{ display:flex; flex-wrap:wrap; gap:8px; }
@@ -232,6 +278,8 @@
 <body>
 
 <div class="mesh"><div class="mesh-dot"></div></div>
+<canvas id="webgl-bg"></canvas>
+<div class="spotlight"></div>
 <div class="grain"></div>
 
 <nav>
@@ -248,20 +296,21 @@
 </nav>
 
 <section class="hero">
+  <div class="orb"><div class="orb-inner">AI / ML</div></div>
   <div class="eyebrow"><span class="pulse"></span> Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
-  <h1 class="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
+  <h1 class="headline" id="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
   <p class="sub">I'm <b>Sudheer</b> — a Business Analyst &amp; MSBA candidate at DePaul University who ships real software: dashboards that move KPIs, NLP pipelines that classify at scale, and full-stack AI products built end-to-end, from database to Docker deploy.</p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="#projects">View Projects</a>
-    <a class="btn btn-ghost" href="mailto:gsudheer56@gmail.com">Get in Touch</a>
-    <a class="btn btn-ghost" href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn btn-primary magnetic" href="#projects">View Projects</a>
+    <a class="btn btn-ghost magnetic" href="mailto:gsudheer56@gmail.com">Get in Touch</a>
+    <a class="btn btn-ghost magnetic" href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub</a>
   </div>
 
   <div class="stats reveal">
-    <div class="stat"><div class="num"><span>2+</span></div><div class="label">Years in Analytics</div></div>
-    <div class="stat"><div class="num"><span>3.93</span></div><div class="label">MSBA GPA</div></div>
-    <div class="stat"><div class="num"><span>6</span></div><div class="label">Shipped Projects</div></div>
-    <div class="stat"><div class="num"><span>1M+</span></div><div class="label">Records Processed</div></div>
+    <div class="stat"><div class="num"><span class="count" data-target="2" data-suffix="+">0</span></div><div class="label">Years in Analytics</div></div>
+    <div class="stat"><div class="num"><span class="count" data-target="3.93" data-decimals="2">0</span></div><div class="label">MSBA GPA</div></div>
+    <div class="stat"><div class="num"><span class="count" data-target="6">0</span></div><div class="label">Shipped Projects</div></div>
+    <div class="stat"><div class="num"><span class="count" data-target="1" data-suffix="M+">0</span></div><div class="label">Records Processed</div></div>
   </div>
 </section>
 
@@ -272,7 +321,7 @@
     <p class="section-desc">A unique path: process engineering discipline, now applied to data, machine learning, and product engineering.</p>
   </div>
   <div class="bento">
-    <div class="card reveal">
+    <div class="card reveal tilt">
       <div class="card-glow"></div>
       <p style="color:var(--muted); font-size:1.02rem;">
         I started as a chemical process engineer, where I learned to find root causes in noisy, high-stakes production data — then moved into analytics because I wanted to build the tools, not just read the reports. Today I work across the full stack: SQL and Python for the data layer, Power BI/Tableau for the story, and Node.js/Flask/Docker when the answer is "build the product."
@@ -281,7 +330,7 @@
         Outside coursework, I ship independent projects end-to-end — including a published PyPI package and a production chat app serving real users — because the fastest way to prove I can do the job is to already be doing it.
       </p>
     </div>
-    <div class="card reveal">
+    <div class="card reveal tilt">
       <div class="skill-groups">
         <div>
           <div class="skill-group-label">Data &amp; Analytics</div>
@@ -360,7 +409,7 @@
   </div>
   <div class="projects-grid">
 
-    <div class="proj-card featured reveal">
+    <div class="proj-card featured reveal tilt">
       <div>
         <div class="proj-top">
           <div class="proj-name">HAI Messenger</div>
@@ -377,7 +426,7 @@
       </div>
     </div>
 
-    <div class="proj-card reveal">
+    <div class="proj-card reveal tilt">
       <div class="proj-top">
         <div class="proj-name">bizpack</div>
         <span class="proj-badge badge-pub">PyPI Package</span>
@@ -390,7 +439,7 @@
       </div>
     </div>
 
-    <div class="proj-card reveal">
+    <div class="proj-card reveal tilt">
       <div class="proj-top">
         <div class="proj-name">Hagent</div>
         <span class="proj-badge badge-pub">Open Source</span>
@@ -402,7 +451,7 @@
       </div>
     </div>
 
-    <div class="proj-card reveal">
+    <div class="proj-card reveal tilt">
       <div class="proj-top">
         <div class="proj-name">MorningStar NLP</div>
         <span class="proj-badge badge-pub">ML / NLP</span>
@@ -414,7 +463,7 @@
       </div>
     </div>
 
-    <div class="proj-card reveal">
+    <div class="proj-card reveal tilt">
       <div class="proj-top">
         <div class="proj-name">H-AI Assistant</div>
         <span class="proj-badge badge-pub">Open Source</span>
@@ -435,12 +484,12 @@
     <h2 class="section-title">Foundations</h2>
   </div>
   <div class="edu-grid">
-    <div class="card reveal">
+    <div class="card reveal tilt">
       <div class="tl-role">Master of Science, Business Analytics</div>
       <div class="tl-org">DePaul University, Kellstadt Graduate School of Business</div>
       <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Chicago, IL &middot; Sep 2024 – Aug 2026 &middot; GPA: 3.925</p>
     </div>
-    <div class="card reveal">
+    <div class="card reveal tilt">
       <div class="tl-role">B.Tech, Chemical Engineering</div>
       <div class="tl-org">Rajiv Gandhi University of Knowledge Technologies</div>
       <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Nuzvid, India &middot; Aug 2016 – Oct 2020</p>
@@ -474,6 +523,156 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   reveals.forEach(el => io.observe(el));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // staggered word reveal for the headline
+  (function splitHeadline(){
+    const h = document.getElementById('headline');
+    if (!h || reduceMotion) return;
+    const walk = (node) => {
+      node.childNodes.forEach(child => {
+        if (child.nodeType === 3 && child.textContent.trim()) {
+          const frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach(tok => {
+            if (tok.trim() === '') { frag.appendChild(document.createTextNode(tok)); }
+            else {
+              const span = document.createElement('span');
+              span.className = 'word';
+              span.textContent = tok;
+              frag.appendChild(span);
+            }
+          });
+          child.replaceWith(frag);
+        } else if (child.nodeType === 1) { walk(child); }
+      });
+    };
+    walk(h);
+    h.querySelectorAll('.word').forEach((w, i) => { w.style.animationDelay = (i * 0.055) + 's'; });
+  })();
+
+  // cursor spotlight
+  if (!reduceMotion) {
+    window.addEventListener('pointermove', (e) => {
+      document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+      document.documentElement.style.setProperty('--my', e.clientY + 'px');
+    }, { passive: true });
+  }
+
+  // 3D tilt on cards
+  if (!reduceMotion && matchMedia('(hover:hover)').matches) {
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(900px) rotateX(${(-py * 10).toFixed(2)}deg) rotateY(${(px * 12).toFixed(2)}deg) translateY(-4px)`;
+      });
+      card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+    });
+  }
+
+  // magnetic buttons
+  if (!reduceMotion && matchMedia('(hover:hover)').matches) {
+    document.querySelectorAll('.magnetic').forEach(btn => {
+      btn.addEventListener('pointermove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const mx = (e.clientX - r.left - r.width / 2) * 0.3;
+        const my = (e.clientY - r.top - r.height / 2) * 0.3;
+        btn.style.transform = `translate(${mx.toFixed(1)}px, ${my.toFixed(1)}px)`;
+      });
+      btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+    });
+  }
+
+  // count-up stats
+  (function countUp(){
+    const counters = document.querySelectorAll('.count');
+    if (!counters.length) return;
+    const animate = (el) => {
+      const target = parseFloat(el.dataset.target);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1400;
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (target * eased).toFixed(decimals) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { animate(e.target); cio.unobserve(e.target); } });
+    }, { threshold: 0.4 });
+    counters.forEach(el => cio.observe(el));
+  })();
+
+  // lightweight particle network background
+  (function particles(){
+    const canvas = document.getElementById('webgl-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, dpr, particles;
+    const COUNT = reduceMotion ? 0 : (window.innerWidth < 760 ? 35 : 70);
+
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.width = window.innerWidth * dpr;
+      h = canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+    }
+    function init(){
+      resize();
+      particles = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.35 * dpr,
+        vy: (Math.random() - 0.5) * 0.35 * dpr,
+      }));
+    }
+    function tick(){
+      ctx.clearRect(0, 0, w, h);
+      const linkDist = 140 * dpr;
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      }
+      for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, 1.4 * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(139,92,246,0.55)';
+        ctx.fill();
+        for (let j = i + 1; j < particles.length; j++) {
+          const b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < linkDist) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(139,92,246,${0.18 * (1 - dist / linkDist)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    if (COUNT > 0) {
+      init();
+      requestAnimationFrame(tick);
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(init, 200);
+      });
+    }
+  })();
 </script>
 
 </body>
