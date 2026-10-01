@@ -31,30 +31,35 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
   :root{
-    --bg:#0a0a0a;
-    --bg-soft:#0f0f0f;
-    --card:#161616;
-    --card-border:#2a2a2a;
+    --bg:#08090b;
+    --bg-soft:#0d0f12;
+    --card:#14171a;
+    --card-border:#262b30;
     --text:#f3f3ef;
-    --muted:#9a9a9a;
-    --muted-2:#656565;
+    --muted:#9aa0a6;
+    --muted-2:#656b70;
     --accent:#ff4d23;
     --accent-2:#ff7a4d;
     --accent-3:#ffb199;
+    --teal:#0f3d3e;
+    --teal-2:#18a39d;
+    --teal-3:#6fe3d9;
     --green:#22c55e;
     --radius:16px;
     --maxw:1200px;
+    --letterbox:26px;
   }
   .display{ font-family:'Anton',sans-serif; text-transform:uppercase; }
   .orange-text{ color:var(--accent); }
   *{box-sizing:border-box; margin:0; padding:0;}
-  section[id]{scroll-margin-top:100px;}
+  section[id]{scroll-margin-top:calc(100px + var(--letterbox));}
   body{
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     background:var(--bg);
     color:var(--text);
     line-height:1.6;
     overflow-x:hidden;
+    padding-bottom:var(--letterbox);
   }
   ::selection{background:var(--accent); color:#fff;}
   a{color:inherit;}
@@ -69,10 +74,18 @@
     filter:blur(120px); opacity:0.25; animation:float 18s ease-in-out infinite alternate;
   }
   .mesh::before{ background:var(--accent); top:-20%; left:-10%; }
-  .mesh::after{ background:var(--accent-2); bottom:-20%; right:-10%; animation-delay:-9s; }
+  .mesh::after{ background:var(--teal-2); bottom:-20%; right:-10%; animation-delay:-9s; opacity:0.22; }
   .mesh-dot{
     position:absolute; width:45vw; height:45vw; border-radius:50%; top:30%; left:55%;
-    background:var(--accent-3); filter:blur(130px); opacity:0.12;
+    background:var(--accent-3); filter:blur(130px); opacity:0.1;
+  }
+  /* cinematic vignette + split teal/orange color grade */
+  .vignette{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(15,61,62,0.35), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,77,35,0.08), transparent 60%),
+      radial-gradient(ellipse 140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
   }
   @keyframes float{
     0%{ transform:translate(0,0) scale(1); }
@@ -93,9 +106,58 @@
     transition:background .1s ease;
   }
 
+  /* cinematic letterbox frame, persistent widescreen bars */
+  .letterbox{
+    position:fixed; left:0; right:0; height:var(--letterbox); z-index:60;
+    background:#000; display:flex; align-items:center;
+    padding:0 20px; justify-content:space-between;
+    font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.08em;
+    color:var(--muted-2); text-transform:uppercase; pointer-events:none;
+  }
+  .letterbox-top{ top:0; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .letterbox-bottom{ bottom:0; border-top:1px solid rgba(255,255,255,0.06); }
+  .letterbox .lb-dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); animation:pulse 1.6s infinite; margin-right:7px; }
+  .letterbox .lb-left{ display:flex; align-items:center; color:var(--muted); }
+  .letterbox .lb-scene{ color:var(--text); font-weight:600; }
+  @media (max-width:700px){ .letterbox{ padding:0 12px; font-size:0.58rem; } .letterbox .lb-right-extra{ display:none; } }
+
+  /* scroll progress, runs along the inner edge of the top letterbox bar */
+  .scroll-progress{
+    position:fixed; top:var(--letterbox); left:0; height:2px; width:0%; z-index:61;
+    background:linear-gradient(90deg, var(--accent), var(--teal-3)); pointer-events:none;
+    transition:width .08s linear;
+  }
+
+  body{ padding-top:0; }
+
+  /* opening curtain reveal */
+  .curtain{ position:fixed; inset:0; z-index:200; display:flex; pointer-events:none; }
+  .curtain-panel{ flex:1; background:#000; transition:transform 1.1s cubic-bezier(.76,0,.24,1); }
+  .curtain-panel.left{ transform-origin:left; }
+  .curtain-panel.right{ transform-origin:right; }
+  .curtain.opened .curtain-panel.left{ transform:translateX(-100%); }
+  .curtain.opened .curtain-panel.right{ transform:translateX(100%); }
+  .curtain-mark{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:0.02em;
+    font-size:clamp(1.4rem,4vw,2.4rem); color:var(--text); opacity:1; transition:opacity .4s ease;
+    white-space:nowrap; z-index:1;
+  }
+  .curtain.opened .curtain-mark{ opacity:0; }
+
+  /* custom cinema cursor: ring + dot, desktop only */
+  .cur-dot, .cur-ring{ position:fixed; top:0; left:0; z-index:300; pointer-events:none; border-radius:50%; will-change:transform; }
+  .cur-dot{ width:6px; height:6px; background:var(--accent); transform:translate(-50%,-50%); }
+  .cur-ring{
+    width:34px; height:34px; border:1px solid rgba(255,255,255,0.5); transform:translate(-50%,-50%);
+    transition:width .2s ease, height .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .cur-ring.hover{ width:54px; height:54px; border-color:var(--accent); background:rgba(255,77,35,0.08); }
+  body.cursor-ready, body.cursor-ready a, body.cursor-ready button, body.cursor-ready .magnetic{ cursor:none; }
+
   /* nav */
   nav{
-    position:fixed; top:0; left:0; right:0; z-index:50;
+    position:fixed; top:var(--letterbox); left:0; right:0; z-index:50;
     display:flex; justify-content:center;
     padding:0 24px;
     border-bottom:1px solid transparent;
@@ -150,12 +212,6 @@
     box-shadow:0 10px 30px -10px rgba(255,77,35,0.6);
   }
   .cta-pill:hover{ transform:translateY(-2px); box-shadow:0 14px 36px -8px rgba(255,77,35,0.8); }
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--muted);
-    padding:6px 14px; border-radius:999px; background:rgba(255,255,255,0.05);
-    margin-bottom:28px;
-  }
-  .eyebrow .pulse{width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
   h1.headline{
     font-size:clamp(2.6rem,6.5vw,5rem); font-weight:900; letter-spacing:-0.04em; line-height:1.04;
@@ -263,7 +319,25 @@
 
   /* section headers */
   .section-head{ margin-bottom:44px; }
-  .section-tag{ font-size:0.8rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; display:block;}
+  .section-tag{
+    font-size:0.8rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:10px; display:inline-flex; align-items:center; gap:10px; font-family:'JetBrains Mono',monospace;
+  }
+  .section-tag::before{
+    content:''; display:inline-block; width:34px; height:10px;
+    background-image:repeating-linear-gradient(90deg, var(--card-border) 0 4px, transparent 4px 9px);
+    opacity:0.9;
+  }
+  .ticket-badge{
+    display:inline-flex; align-items:center; gap:10px; font-size:0.78rem; color:var(--muted);
+    padding:7px 16px 7px 10px; border-radius:7px; background:rgba(255,255,255,0.04);
+    border:1px dashed var(--card-border); margin-bottom:28px; position:relative; font-family:'JetBrains Mono',monospace;
+  }
+  .ticket-badge::after{
+    content:''; position:absolute; right:-6px; top:50%; width:11px; height:11px; border-radius:50%;
+    background:var(--bg); border:1px dashed var(--card-border); transform:translateY(-50%);
+  }
+  .ticket-badge .pulse{width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite;}
   .section-title{ font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; letter-spacing:-0.03em; }
   .section-desc{ color:var(--muted); margin-top:10px; max-width:560px; font-size:1.02rem;}
 
@@ -316,6 +390,7 @@
     background:var(--accent); color:#0a0a0a; padding:70px 24px 40px; margin-top:60px;
   }
   .footer-cta-inner{ max-width:var(--maxw); margin:0 auto; }
+  .footer-kicker{ font-family:'JetBrains Mono',monospace; font-size:0.78rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; opacity:0.65; margin-bottom:14px; }
   .footer-wordmark{
     font-family:'Anton',sans-serif; text-transform:uppercase; font-size:clamp(2.6rem,9vw,7rem);
     line-height:0.85; letter-spacing:-0.01em; color:#0a0a0a; margin-bottom:40px;
@@ -448,10 +523,31 @@
 </head>
 <body>
 
+<div class="curtain" id="curtain">
+  <div class="curtain-panel left"></div>
+  <div class="curtain-mark">S. GANDIBOYANA</div>
+  <div class="curtain-panel right"></div>
+</div>
+
 <div class="mesh"><div class="mesh-dot"></div></div>
+<div class="vignette"></div>
 <canvas id="webgl-bg"></canvas>
 <div class="spotlight"></div>
 <div class="grain"></div>
+<div class="cur-ring" id="curRing"></div>
+<div class="cur-dot" id="curDot"></div>
+
+<div class="letterbox letterbox-top">
+  <span class="lb-left"><span class="lb-dot"></span>REEL 01 · DATA &amp; AI PORTFOLIO</span>
+  <span class="lb-scene" id="sceneIndicator">Opening</span>
+  <span class="lb-right-extra">Chicago, IL · Est. 2024</span>
+</div>
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="letterbox letterbox-bottom">
+  <span>Sudheer K. Gandiboyana</span>
+  <span id="letterboxClock">--:-- --</span>
+  <span class="lb-right-extra">Dir. by S.K.G. · Runtime: Ongoing</span>
+</div>
 
 <nav>
   <div class="nav-inner">
@@ -490,7 +586,7 @@
       <div class="photo3d-shadow"></div>
     </div>
   </div>
-  <div class="eyebrow"><span class="pulse"></span> Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
+  <div class="ticket-badge"><span class="pulse"></span> NOW CASTING — Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
   <h1 class="headline" id="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
   <p class="sub">I'm <b>Sudheer</b> — an MSBA grad from DePaul University transitioning into Machine Learning Engineering: dashboards that move KPIs, NLP pipelines that classify at scale, and full-stack AI products built end-to-end, from database to Docker deploy.</p>
   <div class="hero-actions">
@@ -520,7 +616,7 @@
 
 <section id="about">
   <div class="section-head reveal">
-    <span class="section-tag">About</span>
+    <span class="section-tag">Scene 01 — About</span>
     <h2 class="big-heading">From the plant floor<br>to the data stack</h2>
   </div>
   <p class="word-reveal reveal" id="aboutReveal">We combine process-engineering discipline with modern machine learning to turn messy, high-stakes data into decisions, models, and shipped AI products.</p>
@@ -603,7 +699,7 @@
 
 <section id="experience">
   <div class="section-head reveal">
-    <span class="section-tag">Experience</span>
+    <span class="section-tag">Scene 02 — Experience</span>
     <h2 class="section-title">Where I've made an impact</h2>
   </div>
   <div class="card reveal" style="padding:10px 28px;">
@@ -662,7 +758,7 @@
 
 <section id="projects">
   <div class="section-head reveal">
-    <span class="section-tag">Projects</span>
+    <span class="section-tag">Scene 03 — Projects</span>
     <h2 class="section-title">Things I've built</h2>
     <p class="section-desc">Independent, end-to-end projects — not tutorials. Each one shipped to real infrastructure.</p>
   </div>
@@ -713,7 +809,7 @@
   </div>
 
   <div class="section-head reveal" style="margin-top:60px;">
-    <span class="section-tag">More Projects</span>
+    <span class="section-tag">Scene 03b — More Projects</span>
   </div>
   <div class="projects-grid">
 
@@ -805,7 +901,7 @@
 
 <section id="academic-projects">
   <div class="section-head reveal">
-    <span class="section-tag">MSBA Coursework</span>
+    <span class="section-tag">Scene 04 — MSBA Coursework</span>
     <h2 class="section-title">Academic projects</h2>
     <p class="section-desc">Applied analytics work from the DePaul MSBA program — real datasets, real business questions.</p>
   </div>
@@ -839,7 +935,7 @@
 
 <section id="education">
   <div class="section-head reveal">
-    <span class="section-tag">Education &amp; Certifications</span>
+    <span class="section-tag">Scene 05 — Education &amp; Certifications</span>
     <h2 class="section-title">Foundations</h2>
   </div>
   <div class="edu-grid">
@@ -870,7 +966,7 @@
 
 <section id="contact">
   <div class="contact-card reveal">
-    <span class="section-tag">Contact</span>
+    <span class="section-tag">Final Scene — Contact</span>
     <h2 class="section-title">Let's build something data-driven</h2>
     <p class="section-desc" style="margin:14px auto 0;">Open to Data Analyst, Business Analyst, and AI/ML roles in Chicago or remote. I reply fast.</p>
     <div class="contact-links">
@@ -884,10 +980,11 @@
 
 <div class="footer-cta">
   <div class="footer-cta-inner">
+    <div class="footer-kicker">Roll Credits</div>
     <h2 class="footer-wordmark">Let's build<br>something.</h2>
     <div class="footer-grid">
       <div>
-        <div class="footer-col-label">Contact</div>
+        <div class="footer-col-label">Reach the lead</div>
         <div class="footer-links">
           <a href="mailto:gsudheer56@gmail.com">gsudheer56@gmail.com</a>
           <a href="tel:+17734336054">+1 773-433-6054</a>
@@ -895,7 +992,7 @@
         </div>
       </div>
       <div>
-        <div class="footer-col-label">Links</div>
+        <div class="footer-col-label">Chapters</div>
         <div class="footer-links">
           <a href="#about">About</a>
           <a href="#experience">Experience</a>
@@ -904,7 +1001,7 @@
         </div>
       </div>
       <div>
-        <div class="footer-col-label">Socials</div>
+        <div class="footer-col-label">Also streaming on</div>
         <div class="footer-links">
           <a href="https://linkedin.com/in/sudheergsk" target="_blank" rel="noopener">LinkedIn ↗</a>
           <a href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub ↗</a>
@@ -912,7 +1009,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Sudheer Kumar Gandiboyana. All rights reserved.</span>
+      <span>&copy; 2026 Sudheer Kumar Gandiboyana. Written, directed &amp; deployed by the same person.</span>
       <span>Built with Inter, Anton &amp; GSAP</span>
     </div>
   </div>
@@ -997,14 +1094,74 @@
     onScroll();
   })();
 
-  // live Chicago clock in the nav
+  // live Chicago clock, shown in nav + bottom letterbox bar
   (function liveClock(){
-    const el = document.getElementById('localClock');
-    if (!el) return;
+    const els = [document.getElementById('localClock'), document.getElementById('letterboxClock')].filter(Boolean);
+    if (!els.length) return;
     const fmt = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' });
-    const tick = () => { el.textContent = fmt.format(new Date()); };
+    const tick = () => { const t = fmt.format(new Date()); els.forEach(el => el.textContent = t); };
     tick();
     setInterval(tick, 30000);
+  })();
+
+  // scroll progress bar along the top letterbox edge
+  (function scrollProgress(){
+    const bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+    const onScroll = () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // scene indicator in the top letterbox bar, tracks the section in view
+  (function sceneIndicator(){
+    const el = document.getElementById('sceneIndicator');
+    const sections = document.querySelectorAll('section[id]');
+    if (!el || !sections.length) return;
+    const names = { about: 'Scene 01 · About', experience: 'Scene 02 · Experience', projects: 'Scene 03 · Projects', 'academic-projects': 'Scene 04 · Coursework', education: 'Scene 05 · Education', contact: 'Final Scene · Contact' };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { el.textContent = names[e.target.id] || e.target.id; } });
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(s => io.observe(s));
+  })();
+
+  // opening curtain reveal
+  (function curtainReveal(){
+    const curtain = document.getElementById('curtain');
+    if (!curtain) return;
+    if (reduceMotion) { curtain.remove(); return; }
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        curtain.classList.add('opened');
+        setTimeout(() => curtain.remove(), 1300);
+      }, 350);
+    });
+  })();
+
+  // custom cinema cursor: lagging ring + sharp dot, desktop pointer only
+  (function cinemaCursor(){
+    const ring = document.getElementById('curRing');
+    const dot = document.getElementById('curDot');
+    if (!ring || !dot || reduceMotion || !matchMedia('(hover:hover)').matches) return;
+    document.body.classList.add('cursor-ready');
+    let rx = window.innerWidth / 2, ry = window.innerHeight / 2, mx = rx, my = ry;
+    window.addEventListener('pointermove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+    });
+    (function loop(){
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a, button, .magnetic, .tilt, .work-item').forEach((el) => {
+      el.addEventListener('pointerenter', () => ring.classList.add('hover'));
+      el.addEventListener('pointerleave', () => ring.classList.remove('hover'));
+    });
   })();
 
   // word-by-word scroll reveal for the About intro statement
