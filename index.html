@@ -182,6 +182,9 @@
   }
   @media (max-width:520px){ .photo3d{ width:210px; } .photo3d-stage{ height:270px; } .photo3d-chip-1{ right:-10px; } .photo3d-chip-2{ left:-10px; } }
 
+  /* ambient "hand of letters" background animation in hero */
+  .hand-bg{ position:absolute; inset:0; z-index:-1; pointer-events:none; }
+
   /* floating 3D badge orb in hero */
   .orb{
     position:absolute; top:140px; right:6%; width:120px; height:120px; perspective:800px; display:none;
@@ -227,32 +230,6 @@
   .stat .num{ font-size:1.9rem; font-weight:800; font-family:'JetBrains Mono',monospace; }
   .stat .num span{ color:var(--accent); }
   .stat .label{ font-size:0.78rem; color:var(--muted); margin-top:4px; }
-
-  /* 3D scroll-driven keyword reveal */
-  .stack-reveal{
-    max-width:none; padding:0; height:100vh; overflow:hidden; position:relative;
-    background:radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.04), transparent 70%);
-  }
-  .stack-reveal-inner{
-    position:absolute; inset:0; perspective:1400px; display:flex; align-items:center; justify-content:center;
-  }
-  .stack-glow{
-    position:absolute; width:46vw; height:46vw; max-width:640px; max-height:640px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,0.22), rgba(180,180,180,0.08) 45%, transparent 72%);
-    filter:blur(50px); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; opacity:0.8;
-  }
-  .stack-word{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center;
-    font-weight:900; letter-spacing:-0.03em; line-height:0.95; opacity:0;
-    font-size:clamp(2.2rem,8vw,6.4rem); padding:0 24px; white-space:normal;
-    background:linear-gradient(135deg,#fff 20%,var(--accent) 60%,var(--accent-2) 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .stack-reveal-label{
-    position:absolute; top:56px; left:50%; transform:translateX(-50%); z-index:2;
-    font-size:0.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.14em;
-  }
-  @media (max-width:700px){ .stack-reveal{ height:70vh; } }
 
   /* section headers */
   .section-head{ margin-bottom:44px; }
@@ -399,6 +376,7 @@
 </nav>
 
 <section class="hero">
+  <canvas class="hand-bg" id="hand-bg"></canvas>
   <div class="orb"><div class="orb-inner">AI / ML</div></div>
   <div class="photo3d reveal" id="photo3d">
     <div class="photo3d-stage" id="photo3dStage">
@@ -427,18 +405,6 @@
     <div class="stat"><div class="num"><span class="count" data-target="3.93" data-decimals="2">0</span></div><div class="label">MSBA GPA</div></div>
     <div class="stat"><div class="num"><span class="count" data-target="6">0</span></div><div class="label">Shipped Projects</div></div>
     <div class="stat"><div class="num"><span class="count" data-target="1" data-suffix="M+">0</span></div><div class="label">Records Processed</div></div>
-  </div>
-</section>
-
-<section class="stack-reveal" id="stack-reveal">
-  <div class="stack-reveal-label">What I build with</div>
-  <div class="stack-reveal-inner">
-    <div class="stack-glow"></div>
-    <div class="stack-word">MACHINE<br>LEARNING</div>
-    <div class="stack-word">NEURAL<br>NETWORKS</div>
-    <div class="stack-word">LLM<br>AGENTS</div>
-    <div class="stack-word">DATA<br>PIPELINES</div>
-    <div class="stack-word">MLOps &amp;<br>DEPLOYMENT</div>
   </div>
 </section>
 
@@ -829,50 +795,115 @@
     reveals.forEach(el => io.observe(el));
   }
 
-  // pinned 3D keyword flythrough (AI/ML stack reveal)
-  (function stackReveal(){
-    const section = document.getElementById('stack-reveal');
-    const words = document.querySelectorAll('.stack-word');
-    const glow = document.querySelector('.stack-glow');
-    if (!section || !words.length) return;
+  // ambient "hand of letters" drifting in the hero background
+  (function handLetters(){
+    const canvas = document.getElementById('hand-bg');
+    const hero = canvas ? canvas.closest('.hero') : null;
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext('2d');
 
-    if (reduceMotion || !window.gsap || !window.ScrollTrigger) {
-      words.forEach((w, i) => { if (i === 0) w.style.opacity = 1; });
+    function lerpPoints(base, tip, count, bulge, sizeFrom, sizeTo){
+      const [x0, y0] = base, [x1, y1] = tip;
+      const dx = x1 - x0, dy = y1 - y0;
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = -dy / len, ny = dx / len;
+      const pts = [];
+      for (let i = 0; i < count; i++){
+        const t = i / (count - 1);
+        const curve = Math.sin(t * Math.PI) * bulge;
+        pts.push({
+          x: x0 + dx * t + nx * curve,
+          y: y0 + dy * t + ny * curve,
+          size: sizeFrom + (sizeTo - sizeFrom) * t,
+        });
+      }
+      return pts;
+    }
+
+    // open-hand silhouette: thumb, index, middle, ring, pinky + palm + wrist
+    let points = [];
+    points = points.concat(lerpPoints([0.33, 0.72], [0.13, 0.54], 6, -0.035, 17, 11));
+    points = points.concat(lerpPoints([0.39, 0.60], [0.31, 0.08], 8, 0.025, 17, 9));
+    points = points.concat(lerpPoints([0.48, 0.56], [0.47, 0.01], 9, 0, 18, 9));
+    points = points.concat(lerpPoints([0.57, 0.57], [0.62, 0.08], 8, -0.025, 17, 9));
+    points = points.concat(lerpPoints([0.65, 0.62], [0.76, 0.24], 6, -0.03, 16, 10));
+    const palmCx = 0.49, palmCy = 0.79, palmRx = 0.22, palmRy = 0.165;
+    for (let gy = -2; gy <= 2; gy++){
+      for (let gx = -3; gx <= 3; gx++){
+        const x = palmCx + (gx / 3) * palmRx;
+        const y = palmCy + (gy / 2) * palmRy;
+        const nx = (x - palmCx) / palmRx, ny = (y - palmCy) / palmRy;
+        if (nx * nx + ny * ny <= 1) points.push({ x, y, size: 17 });
+      }
+    }
+    points = points.concat(lerpPoints([0.44, 0.95], [0.54, 1.08], 4, 0, 16, 15));
+
+    const letters = 'MACHINELEARNINGNEURALNETWORKSLLMAGENTSDATAPIPELINESMLOPSDEPLOYMENTPYTHONAI'.split('');
+    points.forEach((p, i) => {
+      p.letter = letters[i % letters.length];
+      p.phase = Math.random() * Math.PI * 2;
+      p.speed = 0.6 + Math.random() * 0.6;
+    });
+
+    let w, h, dpr, active;
+    function resize(){
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = hero.clientWidth; h = hero.clientHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      active = w >= 820;
+      canvas.style.display = active ? 'block' : 'none';
+    }
+    resize();
+    let resizeTimer;
+    window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 200); });
+
+    const boxW = () => Math.min(w * 0.4, 360);
+    const boxH = () => boxW() * 0.95;
+    const cxBase = () => w * 0.72;
+    const cyBase = () => Math.min(h * 0.34, 380);
+
+    function drawPoint(p, cx, cy, bw, bh, alpha){
+      ctx.font = `700 ${p.size}px 'JetBrains Mono', monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fillText(p.letter, cx + (p.x - 0.5) * bw, cy + (p.y - 0.6) * bh);
+    }
+
+    if (reduceMotion) {
+      if (!active) return;
+      const bw = boxW(), bh = boxH();
+      points.forEach((p) => drawPoint(p, cxBase(), cyBase(), bw, bh, 0.16));
       return;
     }
 
-    gsap.set(words, { opacity: 0, z: -500, rotateY: 0 });
-    gsap.set(words[0], { opacity: 1, z: 0 });
+    function draw(time){
+      if (active) {
+        const t = time / 1000;
+        ctx.clearRect(0, 0, w, h);
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '+=' + (words.length * 90) + '%',
-        scrub: 0.8,
-        pin: true,
-      },
-    });
+        const cx = cxBase() + Math.sin(t * 0.1) * 14;
+        const cy = cyBase() + Math.sin(t * 0.22) * 10;
+        const angle = Math.sin(t * 0.12) * 0.1;
+        const bw = boxW(), bh = boxH();
 
-    words.forEach((w, i) => {
-      if (i > 0) {
-        tl.fromTo(w,
-          { opacity: 0, z: -520, rotateY: i % 2 ? 50 : -50, rotateX: 14 },
-          { opacity: 1, z: 0, rotateY: 0, rotateX: 0, duration: 0.6, ease: 'power2.out' }, i - 0.6);
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        ctx.shadowColor = 'rgba(255,255,255,0.65)';
+        ctx.shadowBlur = 6;
+        points.forEach((p) => {
+          const flicker = Math.max(0, 0.22 + 0.18 * Math.sin(t * p.speed + p.phase));
+          drawPoint(p, 0, 0, bw, bh, flicker);
+        });
+        ctx.restore();
       }
-      if (i < words.length - 1) {
-        tl.to(w, { opacity: 0, z: 480, rotateY: i % 2 ? -50 : 50, rotateX: -14, duration: 0.6, ease: 'power2.in' }, i + 0.4);
-      }
-    });
 
-    if (glow) {
-      tl.to(glow, {
-        x: () => gsap.utils.random(-120, 120),
-        y: () => gsap.utils.random(-80, 80),
-        duration: words.length,
-        ease: 'none',
-      }, 0);
+      requestAnimationFrame(draw);
     }
+    requestAnimationFrame(draw);
   })();
 
   // layered 3D tilt on the hero photo card
