@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudheer Kumar Gandiboyana — Data & AI Analyst</title>
+<meta name="description" content="Sudheer Kumar Gandiboyana — Data & Business Analyst building AI agents, NLP pipelines, and full-stack products. MSBA Candidate, DePaul University.">
+<link rel="canonical" href="https://myhai.org/portfolio">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Sudheer Kumar Gandiboyana — Data & AI Analyst">
+<meta property="og:description" content="Data-driven analytics professional building AI agents, NLP pipelines, and full-stack products.">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Sudheer Kumar Gandiboyana",
+  "email": "mailto:gsudheer56@gmail.com",
+  "url": "https://myhai.org/portfolio",
+  "sameAs": ["https://linkedin.com/in/sudheergsk", "https://github.com/sudheer-050"],
+  "jobTitle": "Data & Business Analyst",
+  "alumniOf": "DePaul University",
+  "address": { "@type": "PostalAddress", "addressLocality": "Chicago", "addressRegion": "IL" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --bg-soft:#0e0e16;
+    --card:#131320;
+    --card-border:#23232f;
+    --text:#e8e8ef;
+    --muted:#8b8b9e;
+    --muted-2:#5c5c70;
+    --accent:#8b5cf6;
+    --accent-2:#3b82f6;
+    --accent-3:#ec4899;
+    --green:#22c55e;
+    --radius:16px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent); color:#fff;}
+  a{color:inherit;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* background mesh */
+  .mesh{
+    position:fixed; inset:0; z-index:-2; overflow:hidden; background:var(--bg);
+  }
+  .mesh::before, .mesh::after{
+    content:''; position:absolute; width:60vw; height:60vw; border-radius:50%;
+    filter:blur(120px); opacity:0.25; animation:float 18s ease-in-out infinite alternate;
+  }
+  .mesh::before{ background:var(--accent); top:-20%; left:-10%; }
+  .mesh::after{ background:var(--accent-2); bottom:-20%; right:-10%; animation-delay:-9s; }
+  .mesh-dot{
+    position:absolute; width:45vw; height:45vw; border-radius:50%; top:30%; left:55%;
+    background:var(--accent-3); filter:blur(130px); opacity:0.12;
+  }
+  @keyframes float{
+    0%{ transform:translate(0,0) scale(1); }
+    100%{ transform:translate(6%,8%) scale(1.15); }
+  }
+  .grain{
+    position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.025;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* nav */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:center;
+    padding:18px 24px;
+  }
+  .nav-inner{
+    width:100%; max-width:var(--maxw);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 18px; border-radius:999px;
+    background:rgba(19,19,32,0.6); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .brand{font-weight:800; font-size:1rem; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px;}
+  .brand .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); display:inline-block;}
+  .nav-links{display:flex; gap:28px; font-size:0.88rem; color:var(--muted);}
+  .nav-links a{text-decoration:none; transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    font-size:0.82rem; font-weight:600; padding:8px 16px; border-radius:999px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; text-decoration:none;
+    white-space:nowrap;
+  }
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  section{ max-width:var(--maxw); margin:0 auto; padding:120px 24px 0; position:relative; }
+
+  /* hero */
+  .hero{ padding-top:160px; padding-bottom:80px; text-align:center; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--muted);
+    padding:6px 14px; border:1px solid var(--card-border); border-radius:999px; background:rgba(255,255,255,0.03);
+    margin-bottom:28px;
+  }
+  .eyebrow .pulse{width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  h1.headline{
+    font-size:clamp(2.6rem,6.5vw,5rem); font-weight:900; letter-spacing:-0.04em; line-height:1.04;
+    margin-bottom:22px;
+  }
+  .gradient-text{
+    background:linear-gradient(135deg,#fff 20%,var(--accent) 60%,var(--accent-2) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .sub{
+    max-width:640px; margin:0 auto 38px; color:var(--muted); font-size:1.15rem; font-weight:400;
+  }
+  .sub b{color:var(--text); font-weight:600;}
+  .hero-actions{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:64px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:12px;
+    font-weight:600; font-size:0.95rem; text-decoration:none; transition:transform .2s, box-shadow .2s, background .2s;
+    border:1px solid transparent; cursor:pointer;
+  }
+  .btn-primary{ background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; box-shadow:0 8px 30px -8px rgba(139,92,246,0.6); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 36px -8px rgba(139,92,246,0.8); }
+  .btn-ghost{ background:rgba(255,255,255,0.04); color:var(--text); border-color:var(--card-border); }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.08); transform:translateY(-2px); }
+
+  /* stats bento */
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px; max-width:860px; margin:0 auto;
+  }
+  @media (max-width:700px){ .stats{grid-template-columns:repeat(2,1fr);} }
+  .stat{
+    background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:22px 16px; text-align:center;
+  }
+  .stat .num{ font-size:1.9rem; font-weight:800; font-family:'JetBrains Mono',monospace; }
+  .stat .num span{ color:var(--accent); }
+  .stat .label{ font-size:0.78rem; color:var(--muted); margin-top:4px; }
+
+  /* section headers */
+  .section-head{ margin-bottom:44px; }
+  .section-tag{ font-size:0.8rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; display:block;}
+  .section-title{ font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; letter-spacing:-0.03em; }
+  .section-desc{ color:var(--muted); margin-top:10px; max-width:560px; font-size:1.02rem;}
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* about / skills bento */
+  .bento{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:18px; }
+  @media (max-width:760px){ .bento{grid-template-columns:1fr;} }
+  .card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:28px;
+    position:relative; overflow:hidden;
+  }
+  .card:hover{ border-color:rgba(139,92,246,0.4); }
+  .card-glow{
+    position:absolute; top:-40%; right:-20%; width:200px; height:200px; border-radius:50%;
+    background:var(--accent); filter:blur(80px); opacity:0.15; pointer-events:none;
+  }
+  .skill-groups{ display:flex; flex-direction:column; gap:18px; }
+  .skill-group-label{ font-size:0.78rem; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+  .pills{ display:flex; flex-wrap:wrap; gap:8px; }
+  .pill{
+    font-size:0.85rem; padding:7px 14px; border-radius:999px; background:rgba(139,92,246,0.08);
+    border:1px solid rgba(139,92,246,0.25); color:#c4b5fd; font-weight:500;
+  }
+
+  /* timeline */
+  .timeline{ display:flex; flex-direction:column; gap:0; }
+  .tl-item{ display:grid; grid-template-columns:140px 1fr; gap:24px; padding:28px 0; border-bottom:1px solid var(--card-border); }
+  .tl-item:last-child{ border-bottom:none; }
+  @media (max-width:600px){ .tl-item{grid-template-columns:1fr; gap:6px;} }
+  .tl-date{ color:var(--muted-2); font-size:0.85rem; font-family:'JetBrains Mono',monospace; padding-top:2px;}
+  .tl-role{ font-size:1.15rem; font-weight:700; margin-bottom:2px;}
+  .tl-org{ color:var(--accent); font-size:0.92rem; font-weight:600; margin-bottom:12px; }
+  .tl-item ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .tl-item li{ color:var(--muted); font-size:0.95rem; padding-left:18px; position:relative; }
+  .tl-item li::before{ content:'→'; position:absolute; left:0; color:var(--accent); }
+
+  /* projects */
+  .projects-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  @media (max-width:760px){ .projects-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:26px;
+    display:flex; flex-direction:column; transition:transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .proj-card:hover{ transform:translateY(-4px); border-color:rgba(139,92,246,0.45); box-shadow:0 16px 40px -16px rgba(139,92,246,0.35); }
+  .proj-card.featured{ grid-column:span 2; display:grid; grid-template-columns:1fr auto; align-items:center; gap:24px; }
+  @media (max-width:760px){ .proj-card.featured{grid-template-columns:1fr;} }
+  .proj-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .proj-name{ font-size:1.15rem; font-weight:700; }
+  .proj-badge{ font-size:0.7rem; font-weight:700; padding:4px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em;}
+  .badge-live{ background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
+  .badge-pub{ background:rgba(59,130,246,0.12); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
+  .proj-desc{ color:var(--muted); font-size:0.92rem; margin-bottom:16px; flex:1; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+  .tag{ font-size:0.72rem; padding:3px 9px; border-radius:6px; background:rgba(255,255,255,0.05); color:var(--muted); font-family:'JetBrains Mono',monospace; }
+  .proj-links{ display:flex; gap:10px; }
+  .proj-link{ font-size:0.85rem; font-weight:600; text-decoration:none; color:var(--text); display:flex; align-items:center; gap:4px; }
+  .proj-link.primary{ color:var(--accent-2); }
+  .proj-link:hover{ text-decoration:underline; }
+
+  /* education / certs */
+  .edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:760px){ .edu-grid{grid-template-columns:1fr;} }
+
+  /* contact */
+  .contact-card{
+    text-align:center; padding:70px 32px; border-radius:24px;
+    background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.08));
+    border:1px solid rgba(139,92,246,0.25); margin-bottom:100px;
+  }
+  .contact-links{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px; }
+
+  footer{ text-align:center; padding:36px 24px; color:var(--muted-2); font-size:0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="mesh"><div class="mesh-dot"></div></div>
+<div class="grain"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span>Sudheer K. Gandiboyana</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+    </div>
+    <a class="nav-cta" href="#contact">Let's talk</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow"><span class="pulse"></span> Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
+  <h1 class="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
+  <p class="sub">I'm <b>Sudheer</b> — a Business Analyst &amp; MSBA candidate at DePaul University who ships real software: dashboards that move KPIs, NLP pipelines that classify at scale, and full-stack AI products built end-to-end, from database to Docker deploy.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="#projects">View Projects</a>
+    <a class="btn btn-ghost" href="mailto:gsudheer56@gmail.com">Get in Touch</a>
+    <a class="btn btn-ghost" href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub</a>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num"><span>2+</span></div><div class="label">Years in Analytics</div></div>
+    <div class="stat"><div class="num"><span>3.93</span></div><div class="label">MSBA GPA</div></div>
+    <div class="stat"><div class="num"><span>6</span></div><div class="label">Shipped Projects</div></div>
+    <div class="stat"><div class="num"><span>1M+</span></div><div class="label">Records Processed</div></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-head reveal">
+    <span class="section-tag">About</span>
+    <h2 class="section-title">From the plant floor to the data stack</h2>
+    <p class="section-desc">A unique path: process engineering discipline, now applied to data, machine learning, and product engineering.</p>
+  </div>
+  <div class="bento">
+    <div class="card reveal">
+      <div class="card-glow"></div>
+      <p style="color:var(--muted); font-size:1.02rem;">
+        I started as a chemical process engineer, where I learned to find root causes in noisy, high-stakes production data — then moved into analytics because I wanted to build the tools, not just read the reports. Today I work across the full stack: SQL and Python for the data layer, Power BI/Tableau for the story, and Node.js/Flask/Docker when the answer is "build the product."
+      </p>
+      <p style="color:var(--muted); font-size:1.02rem; margin-top:14px;">
+        Outside coursework, I ship independent projects end-to-end — including a published PyPI package and a production chat app serving real users — because the fastest way to prove I can do the job is to already be doing it.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="skill-groups">
+        <div>
+          <div class="skill-group-label">Data &amp; Analytics</div>
+          <div class="pills">
+            <span class="pill">Python</span><span class="pill">SQL</span><span class="pill">R</span>
+            <span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Statistical Analysis</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">ML &amp; AI</div>
+          <div class="pills">
+            <span class="pill">Predictive Modeling</span><span class="pill">NLP / TF-IDF</span>
+            <span class="pill">Scikit-learn</span><span class="pill">LLM Agents</span><span class="pill">Ollama / Llama 3</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Engineering</div>
+          <div class="pills">
+            <span class="pill">Node.js</span><span class="pill">Flask</span><span class="pill">Docker</span>
+            <span class="pill">PostgreSQL</span><span class="pill">Redis</span><span class="pill">AWS</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Business</div>
+          <div class="pills">
+            <span class="pill">KPI Design</span><span class="pill">Forecasting</span><span class="pill">Project Management</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-head reveal">
+    <span class="section-tag">Experience</span>
+    <h2 class="section-title">Where I've made an impact</h2>
+  </div>
+  <div class="card reveal" style="padding:10px 28px;">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">Mar — Jun 2024</div>
+        <div>
+          <div class="tl-role">Data Analytics Intern</div>
+          <div class="tl-org">Unified Mentor</div>
+          <ul>
+            <li>Analyzed 100K+ Amazon sales transactions using Power BI and R, driving a 10% increase in targeted customer segment sales.</li>
+            <li>Built predictive HR attrition segmentation models in Tableau, improving overall retention by 10%.</li>
+            <li>Used Python and SQL to clean, validate, and manipulate datasets exceeding 1M records.</li>
+            <li>Designed Power BI data models and dashboards centralizing regional performance metrics for faster decision-making.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Feb 2021 — Jul 2023</div>
+        <div>
+          <div class="tl-role">Junior Engineer</div>
+          <div class="tl-org">Hetero Labs Limited (Unit-IX)</div>
+          <ul>
+            <li>Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.</li>
+            <li>Monitored and analyzed compound yield across production batches, identifying yield-loss drivers.</li>
+            <li>Led adoption of new methodologies and trained 8 team members, increasing execution speed by 50%.</li>
+            <li>Delivered safety training to 25+ employees, achieving 100% compliance and reducing safety incidents by 30%.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-head reveal">
+    <span class="section-tag">Projects</span>
+    <h2 class="section-title">Things I've built</h2>
+    <p class="section-desc">Independent, end-to-end projects — not tutorials. Each one shipped to real infrastructure.</p>
+  </div>
+  <div class="projects-grid">
+
+    <div class="proj-card featured reveal">
+      <div>
+        <div class="proj-top">
+          <div class="proj-name">HAI Messenger</div>
+          <span class="proj-badge badge-live">Live in Production</span>
+        </div>
+        <p class="proj-desc">A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour "Nearby" chat mode, plus a built-in local-LLM AI assistant.</p>
+        <div class="proj-tags">
+          <span class="tag">Node.js</span><span class="tag">Socket.IO</span><span class="tag">Postgres</span><span class="tag">Redis</span><span class="tag">Docker</span><span class="tag">Ollama</span>
+        </div>
+        <div class="proj-links">
+          <a class="proj-link primary" href="https://myhai.org" target="_blank" rel="noopener">Try it live →</a>
+          <a class="proj-link" href="https://github.com/sudheer-050/HAI-messenger" target="_blank" rel="noopener">Source</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top">
+        <div class="proj-name">bizpack</div>
+        <span class="proj-badge badge-pub">PyPI Package</span>
+      </div>
+      <p class="proj-desc">Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs.</p>
+      <div class="proj-tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">PyPI</span><span class="tag">Streamlit</span></div>
+      <div class="proj-links">
+        <a class="proj-link primary" href="https://pypi.org/project/bizpack/" target="_blank" rel="noopener">pip install bizpack →</a>
+        <a class="proj-link" href="https://github.com/sudheer-050/bizpack" target="_blank" rel="noopener">Source</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top">
+        <div class="proj-name">Hagent</div>
+        <span class="proj-badge badge-pub">Open Source</span>
+      </div>
+      <p class="proj-desc">Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots, and a full Kanban issue tracker.</p>
+      <div class="proj-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQLAlchemy</span><span class="tag">APScheduler</span></div>
+      <div class="proj-links">
+        <a class="proj-link" href="https://github.com/sudheer-050/hagent" target="_blank" rel="noopener">Source →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top">
+        <div class="proj-name">MorningStar NLP</div>
+        <span class="proj-badge badge-pub">ML / NLP</span>
+      </div>
+      <p class="proj-desc">NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, with custom knowledge-based imputation and macro/micro F1 optimization for class imbalance.</p>
+      <div class="proj-tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">pandas</span></div>
+      <div class="proj-links">
+        <a class="proj-link" href="https://github.com/sudheer-050/MorningStar" target="_blank" rel="noopener">Source →</a>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-top">
+        <div class="proj-name">H-AI Assistant</div>
+        <span class="proj-badge badge-pub">Open Source</span>
+      </div>
+      <p class="proj-desc">A local, memory-aware AI assistant built with Ollama and Llama 3 — multi-user support, persistent conversation history, and monthly keyword summaries for consistent, personal terminal-based chats.</p>
+      <div class="proj-tags"><span class="tag">Python</span><span class="tag">Ollama</span><span class="tag">Llama 3</span></div>
+      <div class="proj-links">
+        <a class="proj-link" href="https://github.com/sudheer-050/H-AI" target="_blank" rel="noopener">Source →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-head reveal">
+    <span class="section-tag">Education &amp; Certifications</span>
+    <h2 class="section-title">Foundations</h2>
+  </div>
+  <div class="edu-grid">
+    <div class="card reveal">
+      <div class="tl-role">Master of Science, Business Analytics</div>
+      <div class="tl-org">DePaul University, Kellstadt Graduate School of Business</div>
+      <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Chicago, IL &middot; Sep 2024 – Aug 2026 &middot; GPA: 3.925</p>
+    </div>
+    <div class="card reveal">
+      <div class="tl-role">B.Tech, Chemical Engineering</div>
+      <div class="tl-org">Rajiv Gandhi University of Knowledge Technologies</div>
+      <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Nuzvid, India &middot; Aug 2016 – Oct 2020</p>
+    </div>
+  </div>
+  <div class="pills reveal" style="margin-top:18px;">
+    <span class="pill">Business Analysis Foundations — LinkedIn Learning (2024)</span>
+    <span class="pill">Career Essentials in Data Analysis — Microsoft &amp; LinkedIn Learning (2024)</span>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-card reveal">
+    <span class="section-tag">Contact</span>
+    <h2 class="section-title">Let's build something data-driven</h2>
+    <p class="section-desc" style="margin:14px auto 0;">Open to Data Analyst, Business Analyst, and AI/ML roles in Chicago or remote. I reply fast.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="mailto:gsudheer56@gmail.com">gsudheer56@gmail.com</a>
+      <a class="btn btn-ghost" href="tel:+17734336054">+1 773-433-6054</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/sudheergsk" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>&copy; 2026 Sudheer Kumar Gandiboyana &middot; Chicago, IL</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
