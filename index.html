@@ -25,26 +25,28 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
   :root{
-    --bg:#0a0a0f;
-    --bg-soft:#0e0e16;
-    --card:#131320;
-    --card-border:#23232f;
-    --text:#e8e8ef;
-    --muted:#8b8b9e;
-    --muted-2:#5c5c70;
-    --accent:#a3a3a3;
-    --accent-2:#b0b0b8;
-    --accent-3:#d4d4d4;
+    --bg:#0a0a0a;
+    --bg-soft:#0f0f0f;
+    --card:#161616;
+    --card-border:#2a2a2a;
+    --text:#f3f3ef;
+    --muted:#9a9a9a;
+    --muted-2:#656565;
+    --accent:#ff4d23;
+    --accent-2:#ff7a4d;
+    --accent-3:#ffb199;
     --green:#22c55e;
     --radius:16px;
-    --maxw:1120px;
+    --maxw:1200px;
   }
+  .display{ font-family:'Anton',sans-serif; text-transform:uppercase; }
+  .orange-text{ color:var(--accent); }
   *{box-sizing:border-box; margin:0; padding:0;}
   section[id]{scroll-margin-top:100px;}
   body{
@@ -95,20 +97,29 @@
   nav{
     position:fixed; top:0; left:0; right:0; z-index:50;
     display:flex; justify-content:center;
-    padding:18px 24px;
+    padding:0 24px;
+    border-bottom:1px solid transparent;
+    transition:border-color .3s, background .3s;
   }
+  nav.scrolled{ background:rgba(10,10,10,0.75); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom-color:var(--card-border); }
   .nav-inner{
     width:100%; max-width:var(--maxw);
     display:flex; align-items:center; justify-content:space-between;
-    padding:10px 18px; border-radius:999px;
-    background:rgba(19,19,32,0.6); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-    box-shadow:0 8px 30px -16px rgba(0,0,0,0.6);
+    padding:18px 0;
   }
   .brand{font-weight:800; font-size:1rem; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px;}
   .brand .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); display:inline-block;}
   .nav-links{display:flex; gap:28px; font-size:0.88rem; color:var(--muted);}
   .nav-links a{text-decoration:none; transition:color .2s;}
   .nav-links a:hover{color:var(--text);}
+  .nav-status{
+    display:flex; align-items:center; gap:10px; font-size:0.78rem; color:var(--muted);
+    font-family:'JetBrains Mono',monospace;
+  }
+  .nav-status .status-dot{width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green); animation:pulse 2s infinite; display:inline-block;}
+  .nav-status b{color:var(--text); font-weight:600;}
+  .nav-sep{color:var(--muted-2);}
+  @media (max-width:980px){ .nav-status{display:none;} }
   .nav-cta{
     font-size:0.82rem; font-weight:600; padding:8px 16px; border-radius:999px;
     background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; text-decoration:none;
@@ -119,7 +130,26 @@
   section{ max-width:var(--maxw); margin:0 auto; padding:120px 24px 0; position:relative; }
 
   /* hero */
-  .hero{ padding-top:160px; padding-bottom:80px; text-align:center; }
+  .hero{ padding-top:120px; padding-bottom:50px; text-align:center; }
+  .wordmark-row{ text-align:left; margin-bottom:28px; }
+  .wordmark{
+    font-family:'Anton',sans-serif; text-transform:uppercase;
+    font-size:clamp(3rem,10.5vw,8.5rem); line-height:0.84; letter-spacing:-0.01em;
+    color:var(--text); display:inline-flex; align-items:flex-start; gap:10px;
+  }
+  .wordmark sup{ font-size:0.22em; font-family:'JetBrains Mono',monospace; color:var(--muted); margin-top:0.3em; }
+  .hero-focus-bar{
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    text-align:left; padding:28px 0 0; margin-top:30px; border-top:1px solid var(--card-border);
+  }
+  .hero-focus-label{ font-size:0.75rem; font-weight:700; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; }
+  .cta-pill{
+    display:inline-flex; align-items:center; gap:8px; padding:16px 28px; border-radius:999px;
+    background:var(--accent); color:#0a0a0a; font-weight:800; font-size:0.9rem; text-decoration:none;
+    text-transform:uppercase; letter-spacing:0.03em; white-space:nowrap; transition:transform .2s, box-shadow .2s;
+    box-shadow:0 10px 30px -10px rgba(255,77,35,0.6);
+  }
+  .cta-pill:hover{ transform:translateY(-2px); box-shadow:0 14px 36px -8px rgba(255,77,35,0.8); }
   .eyebrow{
     display:inline-flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--muted);
     padding:6px 14px; border-radius:999px; background:rgba(255,255,255,0.05);
@@ -236,6 +266,67 @@
   .section-tag{ font-size:0.8rem; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; display:block;}
   .section-title{ font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; letter-spacing:-0.03em; }
   .section-desc{ color:var(--muted); margin-top:10px; max-width:560px; font-size:1.02rem;}
+
+  /* big masked display heading, Nakula-style */
+  .big-heading{
+    font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:-0.01em;
+    font-size:clamp(2.6rem,7.5vw,6rem); line-height:0.92; margin-bottom:8px;
+    background:linear-gradient(180deg, var(--text) 30%, rgba(243,243,239,0.08) 95%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* word-by-word scroll reveal */
+  .word-reveal{ font-size:clamp(1.5rem,3.4vw,2.6rem); font-weight:700; letter-spacing:-0.01em; line-height:1.3; max-width:900px; }
+  .word-reveal .wd{ color:var(--muted-2); transition:color .25s; }
+  .word-reveal .wd.lit{ color:var(--text); }
+  .word-reveal .wd.lit.hl{ color:var(--accent); }
+
+  /* work showcase: numbered list + live frame */
+  .work-showcase{ display:grid; grid-template-columns:280px 1fr; gap:48px; align-items:start; margin-bottom:60px; }
+  @media (max-width:860px){ .work-showcase{ grid-template-columns:1fr; } }
+  .work-list{ display:flex; flex-direction:column; }
+  .work-item{
+    display:flex; align-items:baseline; gap:14px; padding:16px 0; cursor:pointer;
+    border-bottom:1px solid var(--card-border); transition:opacity .2s;
+    opacity:0.45;
+  }
+  .work-item:hover{ opacity:0.8; }
+  .work-item.active{ opacity:1; }
+  .work-index{ font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--muted-2); }
+  .work-item.active .work-index{ color:var(--accent); }
+  .work-name{ font-size:1.2rem; font-weight:700; }
+  .work-frame{
+    border-radius:20px; overflow:hidden; background:var(--card); aspect-ratio:16/10;
+    box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 24px 50px -24px rgba(0,0,0,0.8);
+    position:relative;
+  }
+  .work-frame-panel{ width:100%; height:100%; }
+  .work-frame img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+  .work-frame .work-mock{
+    width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; gap:10px;
+    padding:36px; font-family:'JetBrains Mono',monospace; font-size:0.95rem; color:var(--accent-3);
+    background:linear-gradient(135deg, rgba(255,77,35,0.08), rgba(255,77,35,0));
+  }
+  .work-mock .ml{ color:var(--muted-2); }
+  .work-detail{ margin-top:22px; }
+  .work-detail p{ color:var(--muted); font-size:1rem; max-width:640px; margin-bottom:16px; }
+
+  /* footer mirror hero */
+  .footer-cta{
+    background:var(--accent); color:#0a0a0a; padding:70px 24px 40px; margin-top:60px;
+  }
+  .footer-cta-inner{ max-width:var(--maxw); margin:0 auto; }
+  .footer-wordmark{
+    font-family:'Anton',sans-serif; text-transform:uppercase; font-size:clamp(2.6rem,9vw,7rem);
+    line-height:0.85; letter-spacing:-0.01em; color:#0a0a0a; margin-bottom:40px;
+  }
+  .footer-grid{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:24px; padding-top:30px; border-top:1px solid rgba(10,10,10,0.2); }
+  @media (max-width:700px){ .footer-grid{ grid-template-columns:1fr; } }
+  .footer-col-label{ font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; opacity:0.6; margin-bottom:14px; }
+  .footer-links{ display:flex; flex-direction:column; gap:10px; }
+  .footer-links a{ color:#0a0a0a; text-decoration:none; font-weight:600; }
+  .footer-links a:hover{ text-decoration:underline; }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-top:40px; font-size:0.85rem; opacity:0.7; }
 
   /* reveal */
   .reveal{ opacity:0; transform:translateY(24px); }
@@ -371,12 +462,20 @@
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
     </div>
+    <div class="nav-status">
+      <span class="status-dot"></span> <b>Open to roles</b>
+      <span class="nav-sep">·</span>
+      <span id="localClock">--:-- --</span> <span class="mono">(CT)</span>
+    </div>
     <a class="nav-cta" href="#contact">Let's talk</a>
   </div>
 </nav>
 
 <section class="hero">
   <canvas class="hand-bg" id="hand-bg"></canvas>
+  <div class="wordmark-row reveal">
+    <h2 class="wordmark">Sudheer<sup>®</sup></h2>
+  </div>
   <div class="orb"><div class="orb-inner">AI / ML</div></div>
   <div class="photo3d reveal" id="photo3d">
     <div class="photo3d-stage" id="photo3dStage">
@@ -406,15 +505,26 @@
     <div class="stat"><div class="num"><span class="count" data-target="6">0</span></div><div class="label">Shipped Projects</div></div>
     <div class="stat"><div class="num"><span class="count" data-target="1" data-suffix="M+">0</span></div><div class="label">Records Processed</div></div>
   </div>
+
+  <div class="hero-focus-bar reveal">
+    <div>
+      <div class="hero-focus-label">Focus Areas</div>
+      <div class="pills">
+        <span class="pill">ML Engineering</span><span class="pill">Data Analytics</span>
+        <span class="pill">Business Intelligence</span><span class="pill">LLM Agents</span>
+      </div>
+    </div>
+    <a class="cta-pill magnetic" href="#contact">Start a conversation ↗</a>
+  </div>
 </section>
 
 <section id="about">
   <div class="section-head reveal">
     <span class="section-tag">About</span>
-    <h2 class="section-title">From the plant floor to the data stack</h2>
-    <p class="section-desc">A unique path: process engineering discipline, now applied to data, machine learning, and product engineering.</p>
+    <h2 class="big-heading">From the plant floor<br>to the data stack</h2>
   </div>
-  <div class="bento">
+  <p class="word-reveal reveal" id="aboutReveal">We combine process-engineering discipline with modern machine learning to turn messy, high-stakes data into decisions, models, and shipped AI products.</p>
+  <div class="bento" style="margin-top:60px;">
     <div class="card reveal tilt">
       <div class="card-glow"></div>
       <p style="color:var(--muted); font-size:1.02rem;">
@@ -555,6 +665,55 @@
     <span class="section-tag">Projects</span>
     <h2 class="section-title">Things I've built</h2>
     <p class="section-desc">Independent, end-to-end projects — not tutorials. Each one shipped to real infrastructure.</p>
+  </div>
+
+  <div class="work-showcase reveal">
+    <div class="work-list">
+      <div class="work-item active" data-target="0"><span class="work-index">01.</span><span class="work-name">HAI Messenger</span></div>
+      <div class="work-item" data-target="1"><span class="work-index">02.</span><span class="work-name">bizpack</span></div>
+      <div class="work-item" data-target="2"><span class="work-index">03.</span><span class="work-name">Hagent</span></div>
+      <div class="work-item" data-target="3"><span class="work-index">04.</span><span class="work-name">MorningStar NLP</span></div>
+      <div class="work-item" data-target="4"><span class="work-index">05.</span><span class="work-name">Auto Data Analyst</span></div>
+      <div class="work-item" data-target="5"><span class="work-index">06.</span><span class="work-name">H-AI Assistant</span></div>
+    </div>
+    <div class="work-frame">
+      <div class="work-frame-panel" data-panel="0"><img src="screenshots/hai-messenger.jpg?v=2" alt="HAI Messenger screenshot"></div>
+      <div class="work-frame-panel" data-panel="1" style="display:none;"><div class="work-mock"><div>$ pip install bizpack</div><div class="ml">Cleans accounting negatives, multi-currency<br>columns, mixed date formats &amp; leading-zero IDs</div><div>✓ Published on PyPI</div></div></div>
+      <div class="work-frame-panel" data-panel="2" style="display:none;"><img src="screenshots/hagent.png?v=2" alt="Hagent screenshot"></div>
+      <div class="work-frame-panel" data-panel="3" style="display:none;"><div class="work-mock"><div class="ml">Classifying into 145 hierarchical<br>GICS industries</div><div>macro F1 ≈ 0.83</div><div class="ml">TF-IDF + LinearSVC</div></div></div>
+      <div class="work-frame-panel" data-panel="4" style="display:none;"><img src="screenshots/auto-data-analyst.jpg?v=2" alt="Auto Data Analyst screenshot"></div>
+      <div class="work-frame-panel" data-panel="5" style="display:none;"><img src="screenshots/h-ai.jpg?v=2" alt="H-AI Assistant screenshot"></div>
+    </div>
+  </div>
+  <div class="work-detail reveal">
+    <div class="work-detail-panel" data-detail="0">
+      <p>A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour "Nearby" chat mode, plus a built-in local-LLM AI assistant. Deployed on a self-managed Docker + Cloudflare Tunnel stack with zero-touch CI/CD.</p>
+      <div class="proj-links"><a class="proj-link primary" href="https://myhai.org" target="_blank" rel="noopener">Try it live →</a><a class="proj-link" href="https://github.com/sudheer-050/HAI-messenger" target="_blank" rel="noopener">Source</a></div>
+    </div>
+    <div class="work-detail-panel" data-detail="1" style="display:none;">
+      <p>Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs. Ships with a Streamlit demo UI and full PyPI packaging.</p>
+      <div class="proj-links"><a class="proj-link primary" href="https://pypi.org/project/bizpack/" target="_blank" rel="noopener">pip install bizpack →</a><a class="proj-link" href="https://github.com/sudheer-050/bizpack" target="_blank" rel="noopener">Source</a></div>
+    </div>
+    <div class="work-detail-panel" data-detail="2" style="display:none;">
+      <p>Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots that rebalance workload and fail over between runtimes automatically, and a full Kanban issue tracker.</p>
+      <div class="proj-links"><a class="proj-link" href="https://github.com/sudheer-050/hagent" target="_blank" rel="noopener">Source →</a></div>
+    </div>
+    <div class="work-detail-panel" data-detail="3" style="display:none;">
+      <p>Grew out of my DePaul capstone (MGT 599): an NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83 with custom knowledge-based imputation and class-imbalance tuning.</p>
+      <div class="proj-links"><a class="proj-link" href="https://github.com/sudheer-050/MorningStar" target="_blank" rel="noopener">Source →</a></div>
+    </div>
+    <div class="work-detail-panel" data-detail="4" style="display:none;">
+      <p>End-to-end ML web app that takes any raw dataset and automates the entire pipeline — cleaning, EDA, and model training across Linear/Ridge/Lasso Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM — with a Streamlit UI and Docker deployment.</p>
+      <div class="proj-links"><a class="proj-link primary" href="https://myhai.org/analyst/" target="_blank" rel="noopener">Try it live →</a></div>
+    </div>
+    <div class="work-detail-panel" data-detail="5" style="display:none;">
+      <p>A local, memory-aware AI assistant built with Ollama and Llama 3 — multi-user support, persistent conversation history, and monthly keyword summaries for consistent, personal terminal-based chats.</p>
+      <div class="proj-links"><a class="proj-link primary" href="https://myhai.org/h.html" target="_blank" rel="noopener">Try it live →</a><a class="proj-link" href="https://github.com/sudheer-050/H-AI" target="_blank" rel="noopener">Source →</a></div>
+    </div>
+  </div>
+
+  <div class="section-head reveal" style="margin-top:60px;">
+    <span class="section-tag">More Projects</span>
   </div>
   <div class="projects-grid">
 
@@ -723,7 +882,41 @@
   </div>
 </section>
 
-<footer>&copy; 2026 Sudheer Kumar Gandiboyana &middot; Chicago, IL</footer>
+<div class="footer-cta">
+  <div class="footer-cta-inner">
+    <h2 class="footer-wordmark">Let's build<br>something.</h2>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-col-label">Contact</div>
+        <div class="footer-links">
+          <a href="mailto:gsudheer56@gmail.com">gsudheer56@gmail.com</a>
+          <a href="tel:+17734336054">+1 773-433-6054</a>
+          <span>Chicago, IL</span>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-label">Links</div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#education">Education</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-label">Socials</div>
+        <div class="footer-links">
+          <a href="https://linkedin.com/in/sudheergsk" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://github.com/sudheer-050" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Sudheer Kumar Gandiboyana. All rights reserved.</span>
+      <span>Built with Inter, Anton &amp; GSAP</span>
+    </div>
+  </div>
+</div>
 
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -794,6 +987,62 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
   }
+
+  // nav background on scroll
+  (function navScroll(){
+    const navEl = document.querySelector('nav');
+    if (!navEl) return;
+    const onScroll = () => { navEl.classList.toggle('scrolled', window.scrollY > 40); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // live Chicago clock in the nav
+  (function liveClock(){
+    const el = document.getElementById('localClock');
+    if (!el) return;
+    const fmt = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' });
+    const tick = () => { el.textContent = fmt.format(new Date()); };
+    tick();
+    setInterval(tick, 30000);
+  })();
+
+  // word-by-word scroll reveal for the About intro statement
+  (function wordReveal(){
+    const el = document.getElementById('aboutReveal');
+    if (!el) return;
+    const text = el.textContent;
+    el.innerHTML = text.split(/(\s+)/).map(tok => tok.trim() ? `<span class="wd">${tok}</span>` : tok).join('');
+    const words = el.querySelectorAll('.wd');
+    if (reduceMotion || !window.gsap || !window.ScrollTrigger) {
+      words.forEach(w => w.classList.add('lit'));
+      return;
+    }
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 75%',
+      end: 'bottom 45%',
+      scrub: 0.3,
+      onUpdate(self){
+        const lit = Math.round(self.progress * words.length);
+        words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+      },
+    });
+  })();
+
+  // project showcase: numbered list swaps the live preview frame + detail copy
+  (function workShowcase(){
+    const items = document.querySelectorAll('.work-item');
+    if (!items.length) return;
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const idx = item.dataset.target;
+        items.forEach(i => i.classList.toggle('active', i === item));
+        document.querySelectorAll('.work-frame-panel').forEach(p => { p.style.display = p.dataset.panel === idx ? '' : 'none'; });
+        document.querySelectorAll('.work-detail-panel').forEach(p => { p.style.display = p.dataset.detail === idx ? '' : 'none'; });
+      });
+    });
+  })();
 
   // ambient "hand of letters" drifting in the hero background
   (function handLetters(){
