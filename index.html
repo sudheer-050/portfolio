@@ -137,6 +137,28 @@
   .word{ display:inline-block; opacity:0; transform:translateY(100%) rotateX(-40deg); animation:word-in .8s cubic-bezier(.22,1,.36,1) forwards; }
   @keyframes word-in{ to{ opacity:1; transform:translateY(0) rotateX(0); } }
 
+  /* hero portrait */
+  .portrait-wrap{
+    width:168px; height:168px; margin:0 auto 32px; position:relative; perspective:800px;
+  }
+  .portrait-ring{
+    position:absolute; inset:-6px; border-radius:50%;
+    background:conic-gradient(from var(--beam-angle,0deg), var(--accent), var(--accent-2), var(--accent-3), var(--accent));
+    animation:spin-beam 6s linear infinite; opacity:0.9;
+  }
+  .portrait-ring::after{
+    content:''; position:absolute; inset:4px; border-radius:50%; background:var(--bg);
+  }
+  .portrait{
+    position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden; z-index:1;
+    box-shadow:0 20px 60px -16px rgba(139,92,246,0.55), 0 0 0 4px var(--bg);
+  }
+  .portrait img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .portrait-status{
+    position:absolute; bottom:6px; right:6px; width:18px; height:18px; border-radius:50%;
+    background:var(--green); border:3px solid var(--bg); box-shadow:0 0 10px var(--green); z-index:2;
+  }
+
   /* floating 3D badge orb in hero */
   .orb{
     position:absolute; top:10px; right:6%; width:120px; height:120px; perspective:800px; display:none;
@@ -260,6 +282,29 @@
   .proj-link.primary{ color:var(--accent-2); }
   .proj-link:hover{ text-decoration:underline; }
 
+  /* academic projects */
+  .acad-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media (max-width:900px){ .acad-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .acad-grid{grid-template-columns:1fr;} }
+  .acad-card{
+    background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:22px;
+    transition:transform .25s, border-color .25s;
+  }
+  .acad-card:hover{ transform:translateY(-3px); border-color:rgba(139,92,246,0.4); }
+  .acad-name{ font-weight:700; font-size:1rem; margin-bottom:8px; }
+  .acad-desc{ color:var(--muted); font-size:0.87rem; }
+
+  /* strengths strip */
+  .strengths{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+  @media (max-width:760px){ .strengths{grid-template-columns:1fr;} }
+  .strength-icon{
+    width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(59,130,246,0.1)); border:1px solid rgba(139,92,246,0.3);
+    font-size:1.2rem; margin-bottom:14px;
+  }
+  .strength-title{ font-weight:700; font-size:1.02rem; margin-bottom:6px; }
+  .strength-desc{ color:var(--muted); font-size:0.9rem; }
+
   /* education / certs */
   .edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
   @media (max-width:760px){ .edu-grid{grid-template-columns:1fr;} }
@@ -297,9 +342,14 @@
 
 <section class="hero">
   <div class="orb"><div class="orb-inner">AI / ML</div></div>
+  <div class="portrait-wrap reveal">
+    <div class="portrait-ring"></div>
+    <div class="portrait"><img src="profile.jpg" alt="Sudheer Kumar Gandiboyana" width="168" height="168"></div>
+    <div class="portrait-status"></div>
+  </div>
   <div class="eyebrow"><span class="pulse"></span> Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
   <h1 class="headline" id="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
-  <p class="sub">I'm <b>Sudheer</b> — a Business Analyst &amp; MSBA candidate at DePaul University who ships real software: dashboards that move KPIs, NLP pipelines that classify at scale, and full-stack AI products built end-to-end, from database to Docker deploy.</p>
+  <p class="sub">I'm <b>Sudheer</b> — an MSBA grad from DePaul University transitioning into Machine Learning Engineering: dashboards that move KPIs, NLP pipelines that classify at scale, and full-stack AI products built end-to-end, from database to Docker deploy.</p>
   <div class="hero-actions">
     <a class="btn btn-primary magnetic" href="#projects">View Projects</a>
     <a class="btn btn-ghost magnetic" href="mailto:gsudheer56@gmail.com">Get in Touch</a>
@@ -324,10 +374,16 @@
     <div class="card reveal tilt">
       <div class="card-glow"></div>
       <p style="color:var(--muted); font-size:1.02rem;">
-        I started as a chemical process engineer, where I learned to find root causes in noisy, high-stakes production data — then moved into analytics because I wanted to build the tools, not just read the reports. Today I work across the full stack: SQL and Python for the data layer, Power BI/Tableau for the story, and Node.js/Flask/Docker when the answer is "build the product."
+        I started as a chemical process engineer at Hetero Labs, where I spent two years in a GMP pharmaceutical plant learning to find root causes in noisy, high-stakes production data — tracing yield loss back through batch records, tightening process controls, and training a team to trust the data over gut feel. That job taught me discipline under real operational pressure; it also showed me I wanted to build the analytical tools, not just consume them.
       </p>
       <p style="color:var(--muted); font-size:1.02rem; margin-top:14px;">
-        Outside coursework, I ship independent projects end-to-end — including a published PyPI package and a production chat app serving real users — because the fastest way to prove I can do the job is to already be doing it.
+        That pivot led me to a Data Analytics internship at Unified Mentor and an MS in Business Analytics at DePaul University's Kellstadt Graduate School of Business (GPA 3.925), graduating June 2026. Since then I've been deliberately pushing further into <b style="color:var(--text);">Machine Learning Engineering</b> — completing the DeepLearning.AI/Stanford Machine Learning Specialization and working through the Deep Learning Specialization, while applying it to capstone and independent projects rather than leaving it in a notebook.
+      </p>
+      <p style="color:var(--muted); font-size:1.02rem; margin-top:14px;">
+        Today I work across the full stack end-to-end: SQL and Python for the data layer, scikit-learn/XGBoost/TensorFlow and LLM agents for the intelligence layer, Power BI/Tableau for the story, and Node.js, FastAPI, Docker, and Nginx when the answer is "build and deploy the product." Outside coursework, I ship independent projects to real infrastructure — a published PyPI package, a production chat app serving real users, and a self-hosted AI agent platform — because the fastest way to prove I can do the job is to already be doing it.
+      </p>
+      <p style="color:var(--muted); font-size:1.02rem; margin-top:14px;">
+        I'm currently looking for full-time or internship roles in <b style="color:var(--text);">Machine Learning Engineering, Data Analytics, or Business Intelligence</b> — ideally on a team that values both rigorous analysis and the engineering discipline to put it into production.
       </p>
     </div>
     <div class="card reveal tilt">
@@ -340,26 +396,53 @@
           </div>
         </div>
         <div>
-          <div class="skill-group-label">ML &amp; AI</div>
+          <div class="skill-group-label">ML &amp; Deep Learning</div>
           <div class="pills">
-            <span class="pill">Predictive Modeling</span><span class="pill">NLP / TF-IDF</span>
-            <span class="pill">Scikit-learn</span><span class="pill">LLM Agents</span><span class="pill">Ollama / Llama 3</span>
+            <span class="pill">Scikit-learn</span><span class="pill">TensorFlow / Keras</span><span class="pill">PyTorch</span>
+            <span class="pill">XGBoost / LightGBM</span><span class="pill">NLP / TF-IDF / spaCy</span>
+            <span class="pill">LLM Agents</span><span class="pill">Ollama / Llama 3</span><span class="pill">MLOps &amp; Model Deployment</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Statistics &amp; Optimization</div>
+          <div class="pills">
+            <span class="pill">Hypothesis Testing</span><span class="pill">A/B Testing</span><span class="pill">Time Series Forecasting</span>
+            <span class="pill">Linear Programming / Solver</span><span class="pill">Regression &amp; Classification</span>
           </div>
         </div>
         <div>
           <div class="skill-group-label">Engineering</div>
           <div class="pills">
-            <span class="pill">Node.js</span><span class="pill">Flask</span><span class="pill">Docker</span>
-            <span class="pill">PostgreSQL</span><span class="pill">Redis</span><span class="pill">AWS</span>
+            <span class="pill">Node.js / Express</span><span class="pill">FastAPI</span><span class="pill">Flask</span><span class="pill">Docker</span>
+            <span class="pill">PostgreSQL</span><span class="pill">Redis</span><span class="pill">AWS (EC2, S3, SageMaker)</span>
+            <span class="pill">Nginx</span><span class="pill">Git / GitHub Actions</span><span class="pill">REST APIs</span>
           </div>
         </div>
         <div>
           <div class="skill-group-label">Business</div>
           <div class="pills">
-            <span class="pill">KPI Design</span><span class="pill">Forecasting</span><span class="pill">Project Management</span>
+            <span class="pill">KPI Design &amp; Tracking</span><span class="pill">Forecasting</span><span class="pill">Process Optimization</span>
+            <span class="pill">Financial &amp; Valuation Analysis</span><span class="pill">Stakeholder Reporting</span><span class="pill">Team Leadership</span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="strengths">
+    <div class="card reveal tilt">
+      <div class="strength-icon">📊</div>
+      <div class="strength-title">Data → Decisions</div>
+      <div class="strength-desc">I don't stop at a clean chart. Every analysis is framed around the business decision it should change — segment targeting, retention, staffing, or process yield.</div>
+    </div>
+    <div class="card reveal tilt">
+      <div class="strength-icon">🤖</div>
+      <div class="strength-title">ML &amp; AI, Applied</div>
+      <div class="strength-desc">From classical models (LinearSVC, segmentation) to local LLM agents with memory and retrieval — I pick the simplest model that solves the actual problem.</div>
+    </div>
+    <div class="card reveal tilt">
+      <div class="strength-icon">🚀</div>
+      <div class="strength-title">Ship to Production</div>
+      <div class="strength-desc">I don't hand off a notebook. I containerize it, put it behind Nginx, wire up CI/CD, and keep it running — the same bar I'd expect on a real team.</div>
     </div>
   </div>
 </section>
@@ -379,9 +462,27 @@
           <ul>
             <li>Analyzed 100K+ Amazon sales transactions using Power BI and R, driving a 10% increase in targeted customer segment sales.</li>
             <li>Built predictive HR attrition segmentation models in Tableau, improving overall retention by 10%.</li>
-            <li>Used Python and SQL to clean, validate, and manipulate datasets exceeding 1M records.</li>
-            <li>Designed Power BI data models and dashboards centralizing regional performance metrics for faster decision-making.</li>
+            <li>Used Python and SQL to clean, validate, and manipulate datasets exceeding 1M records across multiple source systems.</li>
+            <li>Designed Power BI data models and dashboards centralizing regional performance metrics for faster decision-making across teams.</li>
+            <li>Partnered directly with stakeholders to translate open-ended business questions into measurable, trackable KPIs.</li>
           </ul>
+          <div class="pills" style="margin-top:14px;">
+            <span class="pill">Power BI</span><span class="pill">R</span><span class="pill">Python</span><span class="pill">SQL</span><span class="pill">Tableau</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Aug 2023 — Feb 2024</div>
+        <div>
+          <div class="tl-role">Independent Business Consultant (Volunteer)</div>
+          <div class="tl-org">Self-directed</div>
+          <ul>
+            <li>Advised 2 local electronics retail stores on inventory optimization, sales analytics, and business performance improvement.</li>
+            <li>Analyzed sales trends, customer behavior patterns, and competitive positioning to inform strategic recommendations.</li>
+          </ul>
+          <div class="pills" style="margin-top:14px;">
+            <span class="pill">Inventory Analytics</span><span class="pill">Sales Trend Analysis</span><span class="pill">Business Strategy</span>
+          </div>
         </div>
       </div>
       <div class="tl-item">
@@ -391,10 +492,14 @@
           <div class="tl-org">Hetero Labs Limited (Unit-IX)</div>
           <ul>
             <li>Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.</li>
-            <li>Monitored and analyzed compound yield across production batches, identifying yield-loss drivers.</li>
+            <li>Monitored and analyzed compound yield across production batches, identifying yield-loss drivers in a regulated GMP environment.</li>
             <li>Led adoption of new methodologies and trained 8 team members, increasing execution speed by 50%.</li>
             <li>Delivered safety training to 25+ employees, achieving 100% compliance and reducing safety incidents by 30%.</li>
+            <li>Maintained detailed batch and quality-control records that fed directly into plant-wide yield and compliance reporting.</li>
           </ul>
+          <div class="pills" style="margin-top:14px;">
+            <span class="pill">Process Optimization</span><span class="pill">Quality Control</span><span class="pill">Yield Analysis</span><span class="pill">Team Training</span>
+          </div>
         </div>
       </div>
     </div>
@@ -415,7 +520,7 @@
           <div class="proj-name">HAI Messenger</div>
           <span class="proj-badge badge-live">Live in Production</span>
         </div>
-        <p class="proj-desc">A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour "Nearby" chat mode, plus a built-in local-LLM AI assistant.</p>
+        <p class="proj-desc">A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour "Nearby" chat mode, plus a built-in local-LLM AI assistant. Deployed on a self-managed Docker + Cloudflare Tunnel stack with a GitHub Actions self-hosted runner for zero-touch CI/CD, running live for real users on its own domain.</p>
         <div class="proj-tags">
           <span class="tag">Node.js</span><span class="tag">Socket.IO</span><span class="tag">Postgres</span><span class="tag">Redis</span><span class="tag">Docker</span><span class="tag">Ollama</span>
         </div>
@@ -431,7 +536,7 @@
         <div class="proj-name">bizpack</div>
         <span class="proj-badge badge-pub">PyPI Package</span>
       </div>
-      <p class="proj-desc">Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs.</p>
+      <p class="proj-desc">Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs. Ships with a Streamlit demo UI and full PyPI packaging, versioning, and docs.</p>
       <div class="proj-tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">PyPI</span><span class="tag">Streamlit</span></div>
       <div class="proj-links">
         <a class="proj-link primary" href="https://pypi.org/project/bizpack/" target="_blank" rel="noopener">pip install bizpack →</a>
@@ -444,7 +549,7 @@
         <div class="proj-name">Hagent</div>
         <span class="proj-badge badge-pub">Open Source</span>
       </div>
-      <p class="proj-desc">Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots, and a full Kanban issue tracker.</p>
+      <p class="proj-desc">Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots that rebalance workload and fail over between runtimes automatically, and a full Kanban issue tracker for managing agent-driven work.</p>
       <div class="proj-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">SQLAlchemy</span><span class="tag">APScheduler</span></div>
       <div class="proj-links">
         <a class="proj-link" href="https://github.com/sudheer-050/hagent" target="_blank" rel="noopener">Source →</a>
@@ -456,11 +561,20 @@
         <div class="proj-name">MorningStar NLP</div>
         <span class="proj-badge badge-pub">ML / NLP</span>
       </div>
-      <p class="proj-desc">NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, with custom knowledge-based imputation and macro/micro F1 optimization for class imbalance.</p>
+      <p class="proj-desc">Grew out of my DePaul capstone (MGT 599): an NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83 with custom knowledge-based imputation and class-imbalance tuning.</p>
       <div class="proj-tags"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">pandas</span></div>
       <div class="proj-links">
         <a class="proj-link" href="https://github.com/sudheer-050/MorningStar" target="_blank" rel="noopener">Source →</a>
       </div>
+    </div>
+
+    <div class="proj-card reveal tilt">
+      <div class="proj-top">
+        <div class="proj-name">Auto Data Analyst</div>
+        <span class="proj-badge badge-pub">Full-Stack ML</span>
+      </div>
+      <p class="proj-desc">End-to-end ML web app that takes any raw dataset and automates the entire pipeline — cleaning, EDA, and model training across Linear/Ridge/Lasso Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM — with a Streamlit UI and Docker deployment so a non-technical user gets a trained, evaluated model with zero code.</p>
+      <div class="proj-tags"><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Docker</span></div>
     </div>
 
     <div class="proj-card reveal tilt">
@@ -478,6 +592,40 @@
   </div>
 </section>
 
+<section id="academic-projects">
+  <div class="section-head reveal">
+    <span class="section-tag">MSBA Coursework</span>
+    <h2 class="section-title">Academic projects</h2>
+    <p class="section-desc">Applied analytics work from the DePaul MSBA program — real datasets, real business questions.</p>
+  </div>
+  <div class="acad-grid">
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">CTA Ridership Trend Analysis</div>
+      <div class="acad-desc">Analyzed Chicago Transit Authority ridership data to identify trend shifts and seasonal patterns, informing service-planning recommendations.</div>
+    </div>
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">Bird Strike &amp; Aviation Risk Assessment</div>
+      <div class="acad-desc">Analyzed FAA wildlife strike data to assess aviation safety risk factors and surface patterns for risk-mitigation recommendations.</div>
+    </div>
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">Walsh Juice Co. Supply Chain Optimization</div>
+      <div class="acad-desc">Modeled supply chain costs for a juice manufacturer and applied optimization techniques to reduce total distribution cost.</div>
+    </div>
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">Berry Airport Security Checkpoint Optimization</div>
+      <div class="acad-desc">Used simulation and queuing analysis to optimize security checkpoint staffing and throughput at Berry International Airport.</div>
+    </div>
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">Financial Analytics — India Top 500 Companies</div>
+      <div class="acad-desc">Analyzed financial performance metrics across India's top 500 companies to surface sector-level trends and outliers.</div>
+    </div>
+    <div class="acad-card reveal tilt">
+      <div class="acad-name">Super Bowl Advertising Analysis</div>
+      <div class="acad-desc">Used R and Power BI to analyze decades of Super Bowl ad spend and performance data, identifying what drives ad effectiveness.</div>
+    </div>
+  </div>
+</section>
+
 <section id="education">
   <div class="section-head reveal">
     <span class="section-tag">Education &amp; Certifications</span>
@@ -487,17 +635,22 @@
     <div class="card reveal tilt">
       <div class="tl-role">Master of Science, Business Analytics</div>
       <div class="tl-org">DePaul University, Kellstadt Graduate School of Business</div>
-      <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Chicago, IL &middot; Sep 2024 – Aug 2026 &middot; GPA: 3.925</p>
+      <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Chicago, IL &middot; Sep 2024 – Jun 2026 &middot; GPA: 3.925</p>
+      <p style="color:var(--muted); font-size:0.88rem; margin-top:12px;">Capstone (MGT 599): ensemble ML classification (Random Forest, XGBoost) of business activities into 145 hierarchical GECS industries, deployed with scikit-learn and AWS.</p>
     </div>
     <div class="card reveal tilt">
       <div class="tl-role">B.Tech, Chemical Engineering</div>
       <div class="tl-org">Rajiv Gandhi University of Knowledge Technologies</div>
       <p style="color:var(--muted); font-size:0.9rem; margin-top:8px;">Nuzvid, India &middot; Aug 2016 – Oct 2020</p>
+      <p style="color:var(--muted); font-size:0.88rem; margin-top:12px;">Foundation in process control, statistics, and quality systems — the analytical rigor that now carries over directly into data work.</p>
     </div>
   </div>
   <div class="pills reveal" style="margin-top:18px;">
-    <span class="pill">Business Analysis Foundations — LinkedIn Learning (2024)</span>
+    <span class="pill">Machine Learning Specialization — DeepLearning.AI &amp; Stanford Online (2026)</span>
+    <span class="pill">Deep Learning Specialization — DeepLearning.AI (4/5 courses, in progress)</span>
+    <span class="pill">Career Essentials in Business Analysis — Microsoft &amp; LinkedIn Learning (2024)</span>
     <span class="pill">Career Essentials in Data Analysis — Microsoft &amp; LinkedIn Learning (2024)</span>
+    <span class="pill">Business Analysis Foundations — LinkedIn Learning (2024)</span>
   </div>
 </section>
 
