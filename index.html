@@ -46,7 +46,7 @@
     --maxw:1120px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  section[id]{scroll-margin-top:100px;}
   body{
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     background:var(--bg);
@@ -723,16 +723,39 @@
   // Lenis buttery smooth scroll, driven by GSAP's ticker + ScrollTrigger
   let lenis = null;
   if (!reduceMotion && window.Lenis) {
-    lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    lenis = new Lenis({
+      duration: 1.0,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.2,
+    });
     if (window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add((time) => { lenis.raf(time * 1000); });
       gsap.ticker.lagSmoothing(0);
+      // keep trigger positions accurate once lazy-loaded images settle final layout
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+      document.querySelectorAll('.proj-thumb img').forEach((img) => {
+        if (!img.complete) img.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+      });
     } else {
       const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
       requestAnimationFrame(raf);
     }
+
+    // route in-page nav links through Lenis so they don't fight native smooth-scroll,
+    // and land below the fixed pill nav instead of flush against the viewport top
+    const navOffset = -84;
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: navOffset, duration: 1.2 });
+      });
+    });
   }
 
   // scroll-linked reveals (GSAP ScrollTrigger when available, IO fallback)
