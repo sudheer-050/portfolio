@@ -26,6 +26,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
   :root{
     --bg:#0a0a0f;
@@ -137,27 +140,47 @@
   .word{ display:inline-block; opacity:0; transform:translateY(100%) rotateX(-40deg); animation:word-in .8s cubic-bezier(.22,1,.36,1) forwards; }
   @keyframes word-in{ to{ opacity:1; transform:translateY(0) rotateX(0); } }
 
-  /* hero portrait */
-  .portrait-wrap{
-    width:168px; height:168px; margin:0 auto 32px; position:relative; perspective:800px;
+  /* hero photo — layered 3D card */
+  @keyframes photo-float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  .photo3d{ width:260px; margin:0 auto 36px; perspective:1500px; position:relative; }
+  .photo3d-stage{
+    position:relative; width:100%; height:330px; transform-style:preserve-3d;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    animation:photo-float 5s ease-in-out infinite;
   }
-  .portrait-ring{
-    position:absolute; inset:-6px; border-radius:50%;
+  .photo3d:hover .photo3d-stage{ transition:transform .08s ease-out; animation-play-state:paused; }
+  .photo3d-glow{
+    position:absolute; inset:-34px; border-radius:36px; transform:translateZ(-80px) scale(0.92);
     background:conic-gradient(from var(--beam-angle,0deg), var(--accent), var(--accent-2), var(--accent-3), var(--accent));
-    animation:spin-beam 6s linear infinite; opacity:0.9;
+    filter:blur(34px); opacity:0.55; animation:spin-beam 7s linear infinite;
   }
-  .portrait-ring::after{
-    content:''; position:absolute; inset:4px; border-radius:50%; background:var(--bg);
+  .photo3d-grid{
+    position:absolute; inset:10px; border-radius:28px; transform:translateZ(-36px);
+    background-image:linear-gradient(rgba(139,92,246,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.18) 1px, transparent 1px);
+    background-size:18px 18px; opacity:0.5;
   }
-  .portrait{
-    position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden; z-index:1;
-    box-shadow:0 20px 60px -16px rgba(139,92,246,0.55), 0 0 0 4px var(--bg);
+  .photo3d-frame{
+    position:relative; width:100%; height:100%; border-radius:26px; overflow:hidden; transform:translateZ(50px);
+    box-shadow:0 40px 70px -24px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.08) inset;
   }
-  .portrait img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .portrait-status{
-    position:absolute; bottom:6px; right:6px; width:18px; height:18px; border-radius:50%;
-    background:var(--green); border:3px solid var(--bg); box-shadow:0 0 10px var(--green); z-index:2;
+  .photo3d-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo3d-sheen{
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay;
+    background:linear-gradient(125deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 32%);
   }
+  .photo3d-chip{
+    position:absolute; display:flex; align-items:center; gap:7px; padding:9px 14px; border-radius:999px;
+    background:rgba(16,16,26,0.82); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.12);
+    font-size:0.78rem; font-weight:700; white-space:nowrap; box-shadow:0 16px 36px -12px rgba(0,0,0,0.6); z-index:2;
+  }
+  .photo3d-chip-1{ top:14px; right:-38px; transform:translateZ(100px); }
+  .photo3d-chip-2{ bottom:22px; left:-30px; transform:translateZ(80px); }
+  .photo3d-dot{ width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); }
+  .photo3d-shadow{
+    position:absolute; left:50%; bottom:-28px; width:70%; height:26px; transform:translateX(-50%);
+    background:radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 72%); filter:blur(3px); z-index:-1;
+  }
+  @media (max-width:520px){ .photo3d{ width:210px; } .photo3d-stage{ height:270px; } .photo3d-chip-1{ right:-10px; } .photo3d-chip-2{ left:-10px; } }
 
   /* floating 3D badge orb in hero */
   .orb{
@@ -211,8 +234,8 @@
   .section-desc{ color:var(--muted); margin-top:10px; max-width:560px; font-size:1.02rem;}
 
   /* reveal */
-  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
-  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal{ opacity:0; transform:translateY(24px); }
+  .reveal.in{ opacity:1; transform:translateY(0); transition:opacity .7s ease, transform .7s ease; }
 
   /* about / skills bento */
   .bento{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:18px; }
@@ -274,6 +297,11 @@
   .proj-badge{ font-size:0.7rem; font-weight:700; padding:4px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.04em;}
   .badge-live{ background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.3); }
   .badge-pub{ background:rgba(59,130,246,0.12); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
+  .proj-thumb{ border-radius:12px; overflow:hidden; border:1px solid var(--card-border); margin-bottom:16px; aspect-ratio:16/8; background:#0a0a14; }
+  .proj-thumb img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:transform .4s ease; }
+  .proj-card:hover .proj-thumb img{ transform:scale(1.03); }
+  .proj-card.featured .proj-thumb{ width:360px; aspect-ratio:16/10; margin-bottom:0; flex-shrink:0; }
+  @media (max-width:760px){ .proj-card.featured .proj-thumb{ width:100%; } }
   .proj-desc{ color:var(--muted); font-size:0.92rem; margin-bottom:16px; flex:1; }
   .proj-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
   .tag{ font-size:0.72rem; padding:3px 9px; border-radius:6px; background:rgba(255,255,255,0.05); color:var(--muted); font-family:'JetBrains Mono',monospace; }
@@ -342,10 +370,18 @@
 
 <section class="hero">
   <div class="orb"><div class="orb-inner">AI / ML</div></div>
-  <div class="portrait-wrap reveal">
-    <div class="portrait-ring"></div>
-    <div class="portrait"><img src="profile.jpg" alt="Sudheer Kumar Gandiboyana" width="168" height="168"></div>
-    <div class="portrait-status"></div>
+  <div class="photo3d reveal" id="photo3d">
+    <div class="photo3d-stage" id="photo3dStage">
+      <div class="photo3d-glow"></div>
+      <div class="photo3d-grid"></div>
+      <div class="photo3d-frame">
+        <img src="profile.jpg" alt="Sudheer Kumar Gandiboyana" width="260" height="330">
+        <div class="photo3d-sheen"></div>
+      </div>
+      <div class="photo3d-chip photo3d-chip-1"><span class="photo3d-dot"></span> Available now</div>
+      <div class="photo3d-chip photo3d-chip-2">🎓 3.925 GPA</div>
+      <div class="photo3d-shadow"></div>
+    </div>
   </div>
   <div class="eyebrow"><span class="pulse"></span> Open to Data / Analytics / AI roles &middot; Chicago, IL</div>
   <h1 class="headline" id="headline">Turning messy data<br>into <span class="gradient-text">decisions &amp; AI products</span></h1>
@@ -529,6 +565,7 @@
           <a class="proj-link" href="https://github.com/sudheer-050/HAI-messenger" target="_blank" rel="noopener">Source</a>
         </div>
       </div>
+      <div class="proj-thumb"><img src="screenshots/hai-messenger.jpg" alt="HAI Messenger live app screenshot" loading="lazy"></div>
     </div>
 
     <div class="proj-card reveal tilt">
@@ -573,8 +610,12 @@
         <div class="proj-name">Auto Data Analyst</div>
         <span class="proj-badge badge-pub">Full-Stack ML</span>
       </div>
+      <div class="proj-thumb"><img src="screenshots/auto-data-analyst.jpg" alt="Auto Data Analyst live app screenshot" loading="lazy"></div>
       <p class="proj-desc">End-to-end ML web app that takes any raw dataset and automates the entire pipeline — cleaning, EDA, and model training across Linear/Ridge/Lasso Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM — with a Streamlit UI and Docker deployment so a non-technical user gets a trained, evaluated model with zero code.</p>
       <div class="proj-tags"><span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Docker</span></div>
+      <div class="proj-links">
+        <a class="proj-link primary" href="https://myhai.org/analyst/" target="_blank" rel="noopener">Try it live →</a>
+      </div>
     </div>
 
     <div class="proj-card reveal tilt">
@@ -582,9 +623,11 @@
         <div class="proj-name">H-AI Assistant</div>
         <span class="proj-badge badge-pub">Open Source</span>
       </div>
+      <div class="proj-thumb"><img src="screenshots/h-ai.jpg" alt="H-AI Assistant live app screenshot" loading="lazy"></div>
       <p class="proj-desc">A local, memory-aware AI assistant built with Ollama and Llama 3 — multi-user support, persistent conversation history, and monthly keyword summaries for consistent, personal terminal-based chats.</p>
       <div class="proj-tags"><span class="tag">Python</span><span class="tag">Ollama</span><span class="tag">Llama 3</span></div>
       <div class="proj-links">
+        <a class="proj-link primary" href="https://myhai.org/h.html" target="_blank" rel="noopener">Try it live →</a>
         <a class="proj-link" href="https://github.com/sudheer-050/H-AI" target="_blank" rel="noopener">Source →</a>
       </div>
     </div>
@@ -674,13 +717,65 @@
 <footer>&copy; 2026 Sudheer Kumar Gandiboyana &middot; Chicago, IL</footer>
 
 <script>
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => io.observe(el));
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Lenis buttery smooth scroll, driven by GSAP's ticker + ScrollTrigger
+  let lenis = null;
+  if (!reduceMotion && window.Lenis) {
+    lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+  }
+
+  // scroll-linked reveals (GSAP ScrollTrigger when available, IO fallback)
+  if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+    gsap.utils.toArray('.reveal').forEach((el) => {
+      gsap.fromTo(el, { opacity: 0, y: 28 }, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%' },
+      });
+    });
+    // parallax drift on the background particle canvas + floating orb
+    gsap.to('#webgl-bg', {
+      yPercent: 12, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 },
+    });
+    const orbEl = document.querySelector('.orb');
+    if (orbEl) {
+      gsap.to(orbEl, {
+        yPercent: -30, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 },
+      });
+    }
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+  }
+
+  // layered 3D tilt on the hero photo card
+  (function photo3d(){
+    const wrap = document.getElementById('photo3d');
+    const stage = document.getElementById('photo3dStage');
+    if (!wrap || !stage || reduceMotion || !matchMedia('(hover:hover)').matches) return;
+    wrap.addEventListener('pointermove', (e) => {
+      const r = wrap.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      stage.style.transform = `rotateX(${(-py * 18).toFixed(2)}deg) rotateY(${(px * 22).toFixed(2)}deg)`;
+    });
+    wrap.addEventListener('pointerleave', () => { stage.style.transform = ''; });
+  })();
 
   // staggered word reveal for the headline
   (function splitHeadline(){
