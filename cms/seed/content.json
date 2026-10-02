@@ -1,4 +1,5 @@
 {
+  "theme": "cinematic",
   "hero": {
     "badge": "NOW CASTING — Open to Machine Learning / AI Engineering roles · Chicago, IL",
     "sub": "I'm Sudheer Kumar — an MSBA grad from DePaul University building toward Machine Learning Engineering by shipping real systems: NLP pipelines that classify at scale, a published PyPI package, and full-stack AI products built end-to-end, from database to Docker deploy. I learn new techniques by putting them into production, not by collecting certificates."

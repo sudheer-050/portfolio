@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+  // Admin-chosen theme gate: redirect before paint if the other theme is active,
+  // so visitors only ever see the one theme the admin has selected.
+  (function(){
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'api/content', false);
+      xhr.send(null);
+      if (xhr.status !== 200) return;
+      const c = JSON.parse(xhr.responseText);
+      if (c.theme === 'ironman') location.replace('ironman.html');
+    } catch (err) { /* content API unreachable — stay on default theme */ }
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sudheer Kumar Gandiboyana — Aspiring ML/AI Engineer</title>
@@ -553,7 +567,6 @@
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="resume.html" target="_blank" rel="noopener">Resume</a>
-      <a href="ironman.html" title="Try the Iron Man themed version of this site">Try the Iron Man theme →</a>
     </div>
     <div class="nav-status">
       <span class="status-dot"></span> <b>Open to roles</b>

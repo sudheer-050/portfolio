@@ -112,6 +112,18 @@
   .quick-link .ql-title{ font-weight:600; font-size:0.92em; margin-bottom:4px; }
   .quick-link .ql-desc{ font-size:0.8em; color:var(--muted); }
 
+  /* theme picker */
+  .theme-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .theme-option{
+    border:2px solid var(--border); background:var(--panel-2); border-radius:var(--radius);
+    padding:18px 20px; cursor:pointer; transition:border-color .15s;
+  }
+  .theme-option.selected{ border-color:var(--accent); }
+  .theme-option .theme-name{ font-weight:600; font-size:0.95em; margin-bottom:4px; }
+  .theme-option .theme-desc{ font-size:0.8em; color:var(--muted); }
+  .theme-option .theme-check{ font-size:0.76em; color:var(--accent-2); font-weight:700; margin-top:10px; visibility:hidden; }
+  .theme-option.selected .theme-check{ visibility:visible; }
+
   .toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
     background:var(--panel-2); border:1px solid var(--border); color:var(--text); padding:11px 22px;
@@ -131,6 +143,7 @@
       <div class="nav-item" data-view="dashboard"><span class="ic">&#9679;</span>Dashboard</div>
 
       <div class="nav-group-label">Content</div>
+      <div class="nav-item" data-view="theme"><span class="ic">&#9728;</span>Theme</div>
       <div class="nav-item" data-view="hero"><span class="ic">&#9733;</span>Hero</div>
       <div class="nav-item" data-view="about"><span class="ic">&#9776;</span>About</div>
       <div class="nav-item" data-view="photo"><span class="ic">&#9679;</span>Profile Photo</div>
@@ -169,12 +182,33 @@
           <h2>Quick edit</h2>
           <p class="card-hint">Jump straight to a section.</p>
           <div class="quick-links">
+            <div class="quick-link" data-goto="theme"><div class="ql-title">Theme</div><div class="ql-desc">Choose the one theme visitors see</div></div>
             <div class="quick-link" data-goto="hero"><div class="ql-title">Hero</div><div class="ql-desc">Status badge &amp; intro paragraph</div></div>
             <div class="quick-link" data-goto="about"><div class="ql-title">About</div><div class="ql-desc">Intro line &amp; paragraphs</div></div>
             <div class="quick-link" data-goto="photo"><div class="ql-title">Profile Photo</div><div class="ql-desc">Replace your hero photo</div></div>
             <div class="quick-link" data-goto="projects"><div class="ql-title">Projects</div><div class="ql-desc">Add, edit, or remove project cards</div></div>
             <div class="quick-link" data-goto="certs"><div class="ql-title">Certifications</div><div class="ql-desc">Manage certification pills</div></div>
             <div class="quick-link" data-goto="contact"><div class="ql-title">Contact</div><div class="ql-desc">Email, phone, socials, location</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THEME -->
+      <div class="view" data-view="theme">
+        <div class="card">
+          <h2>Site theme</h2>
+          <p class="card-hint">Visitors only ever see one theme — whichever you pick here.</p>
+          <div class="theme-grid">
+            <div class="theme-option" data-theme="cinematic">
+              <div class="theme-name">Cinematic Reel</div>
+              <div class="theme-desc">Scroll-driven, GSAP-animated default theme.</div>
+              <div class="theme-check">&#10003; Selected</div>
+            </div>
+            <div class="theme-option" data-theme="ironman">
+              <div class="theme-name">Iron Man HUD</div>
+              <div class="theme-desc">Dark sci-fi heads-up-display theme.</div>
+              <div class="theme-check">&#10003; Selected</div>
+            </div>
           </div>
         </div>
       </div>
@@ -279,6 +313,7 @@ let state = null;
 
 const VIEW_META = {
   dashboard: ['Dashboard', 'Overview of your site content'],
+  theme:     ['Theme', 'The one theme visitors see'],
   hero:      ['Hero', 'The first thing visitors see'],
   about:     ['About', 'Your background, in your own words'],
   photo:     ['Profile Photo', 'Shown on the hero section'],
@@ -359,7 +394,14 @@ function renderCerts() {
   document.getElementById('statCerts').textContent = state.certifications.length;
 }
 
+function renderTheme() {
+  document.querySelectorAll('.theme-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.theme === (state.theme || 'cinematic'));
+  });
+}
+
 function renderAll() {
+  renderTheme();
   document.getElementById('heroBadge').value = state.hero.badge || '';
   document.getElementById('heroSub').value = state.hero.sub || '';
   document.getElementById('aboutIntro').value = state.about.intro || '';
@@ -427,6 +469,13 @@ async function handlePendingUploads() {
     state.projects[idx].image = await uploadFile(file);
   }
 }
+
+document.querySelectorAll('.theme-option').forEach(el => {
+  el.addEventListener('click', () => {
+    state.theme = el.dataset.theme;
+    renderTheme();
+  });
+});
 
 document.getElementById('addProjectBtn').addEventListener('click', () => {
   collectFromForm();
