@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Portfolio Content</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:#0f1115; color:#e6e8eb; margin:0; padding:0 0 80px;
+  }
+  header{
+    position:sticky; top:0; z-index:10; background:#12141a; border-bottom:1px solid #2a2e37;
+    padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+  }
+  header h1{ font-size:1.05em; margin:0; }
+  header .actions{ display:flex; gap:10px; align-items:center; }
+  .status{ font-size:0.85em; color:#9aa0a8; }
+  button{
+    padding:9px 16px; border-radius:6px; border:1px solid #2a2e37; cursor:pointer;
+    background:#1b1e26; color:#e6e8eb; font-size:0.88em; font-weight:600;
+  }
+  button.primary{ background:#2563eb; border-color:#2563eb; color:#fff; }
+  button:disabled{ opacity:0.5; cursor:default; }
+  main{ max-width:880px; margin:28px auto; padding:0 24px; }
+  section{ background:#171a21; border:1px solid #2a2e37; border-radius:10px; padding:22px 24px; margin-bottom:20px; }
+  section h2{ font-size:0.95em; text-transform:uppercase; letter-spacing:0.06em; color:#9aa0a8; margin:0 0 16px; }
+  label{ display:block; font-size:0.82em; color:#9aa0a8; margin:14px 0 5px; }
+  label:first-of-type{ margin-top:0; }
+  input[type=text], textarea{
+    width:100%; padding:9px 11px; border-radius:6px; border:1px solid #2a2e37;
+    background:#0f1115; color:#e6e8eb; font-size:0.9em; font-family:inherit;
+  }
+  textarea{ resize:vertical; min-height:70px; line-height:1.4; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .proj-card, .cert-row{
+    border:1px solid #2a2e37; border-radius:8px; padding:16px; margin-bottom:14px; position:relative;
+  }
+  .remove-btn{
+    position:absolute; top:10px; right:10px; padding:4px 10px; font-size:0.75em;
+    background:#2a1418; border-color:#5c2a2e; color:#f87171;
+  }
+  .add-btn{ margin-top:4px; }
+  .img-preview{ max-width:140px; max-height:90px; border-radius:4px; margin-top:8px; display:block; border:1px solid #2a2e37; }
+  .upload-row{ display:flex; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
+  .hint{ font-size:0.75em; color:#6b7280; margin-top:4px; }
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    background:#1b1e26; border:1px solid #2a2e37; color:#e6e8eb; padding:10px 20px;
+    border-radius:8px; font-size:0.88em; opacity:0; transition:opacity 0.2s; pointer-events:none;
+  }
+  .toast.show{ opacity:1; }
+  .toast.error{ background:#2a1418; border-color:#5c2a2e; color:#f87171; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Portfolio Content Admin</h1>
+  <div class="actions">
+    <span class="status" id="statusText"></span>
+    <button id="saveBtn" class="primary">Save &amp; Publish</button>
+    <button id="logoutBtn">Log out</button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>Hero</h2>
+    <label>Status badge</label>
+    <input type="text" id="heroBadge">
+    <label>Intro paragraph</label>
+    <textarea id="heroSub"></textarea>
+  </section>
+
+  <section>
+    <h2>About</h2>
+    <label>Short intro line</label>
+    <textarea id="aboutIntro" style="min-height:50px;"></textarea>
+    <label>Paragraph 1</label>
+    <textarea id="aboutP0"></textarea>
+    <label>Paragraph 2</label>
+    <textarea id="aboutP1"></textarea>
+    <label>Paragraph 3</label>
+    <textarea id="aboutP2"></textarea>
+  </section>
+
+  <section>
+    <h2>Profile Photo</h2>
+    <img id="profileImgPreview" class="img-preview" src="" alt="">
+    <div class="upload-row">
+      <input type="file" id="profileImgFile" accept="image/*">
+    </div>
+    <div class="hint">Uploads replace the photo shown on the live site immediately after you save.</div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div id="projectsList"></div>
+    <button class="add-btn" id="addProjectBtn" type="button">+ Add project</button>
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <div id="certsList"></div>
+    <button class="add-btn" id="addCertBtn" type="button">+ Add certification</button>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <div class="row2">
+      <div>
+        <label>Email</label>
+        <input type="text" id="contactEmail">
+      </div>
+      <div>
+        <label>Phone</label>
+        <input type="text" id="contactPhone">
+      </div>
+      <div>
+        <label>LinkedIn URL</label>
+        <input type="text" id="contactLinkedin">
+      </div>
+      <div>
+        <label>GitHub URL</label>
+        <input type="text" id="contactGithub">
+      </div>
+    </div>
+    <label>Location</label>
+    <input type="text" id="contactLocation">
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let state = null;
+
+function toast(msg, isError) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => { el.className = 'toast'; }, 2600);
+}
+
+function projectRowHtml(p, idx) {
+  return `
+    <div class="proj-card" data-idx="${idx}">
+      <button type="button" class="remove-btn" data-remove-project="${idx}">Remove</button>
+      <label>Name</label>
+      <input type="text" data-field="name" value="${escapeAttr(p.name)}">
+      <label>Badge</label>
+      <input type="text" data-field="badge" value="${escapeAttr(p.badge)}">
+      <label>Description</label>
+      <textarea data-field="description">${escapeHtml(p.description)}</textarea>
+      <label>Screenshot</label>
+      ${p.image ? `<img class="img-preview" src="${p.image}" alt="">` : ''}
+      <div class="upload-row">
+        <input type="file" accept="image/*" data-field="imageFile">
+      </div>
+    </div>`;
+}
+
+function certRowHtml(text, idx) {
+  return `
+    <div class="cert-row" data-idx="${idx}">
+      <button type="button" class="remove-btn" data-remove-cert="${idx}">Remove</button>
+      <input type="text" data-field="cert" value="${escapeAttr(text)}">
+    </div>`;
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+function escapeAttr(s) {
+  return escapeHtml(s).replace(/"/g, '&quot;');
+}
+
+function renderProjects() {
+  document.getElementById('projectsList').innerHTML =
+    state.projects.map((p, i) => projectRowHtml(p, i)).join('');
+}
+function renderCerts() {
+  document.getElementById('certsList').innerHTML =
+    state.certifications.map((c, i) => certRowHtml(c, i)).join('');
+}
+
+function renderAll() {
+  document.getElementById('heroBadge').value = state.hero.badge || '';
+  document.getElementById('heroSub').value = state.hero.sub || '';
+  document.getElementById('aboutIntro').value = state.about.intro || '';
+  document.getElementById('aboutP0').value = (state.about.paragraphs || [])[0] || '';
+  document.getElementById('aboutP1').value = (state.about.paragraphs || [])[1] || '';
+  document.getElementById('aboutP2').value = (state.about.paragraphs || [])[2] || '';
+  document.getElementById('profileImgPreview').src = state.profileImage || '';
+  document.getElementById('contactEmail').value = state.contact.email || '';
+  document.getElementById('contactPhone').value = state.contact.phone || '';
+  document.getElementById('contactLinkedin').value = state.contact.linkedin || '';
+  document.getElementById('contactGithub').value = state.contact.github || '';
+  document.getElementById('contactLocation').value = state.contact.location || '';
+  renderProjects();
+  renderCerts();
+}
+
+function collectFromForm() {
+  state.hero.badge = document.getElementById('heroBadge').value;
+  state.hero.sub = document.getElementById('heroSub').value;
+  state.about.intro = document.getElementById('aboutIntro').value;
+  state.about.paragraphs = [
+    document.getElementById('aboutP0').value,
+    document.getElementById('aboutP1').value,
+    document.getElementById('aboutP2').value,
+  ];
+  document.querySelectorAll('#projectsList .proj-card').forEach((card) => {
+    const idx = Number(card.dataset.idx);
+    card.querySelectorAll('[data-field]').forEach((input) => {
+      const field = input.dataset.field;
+      if (field === 'imageFile') return;
+      state.projects[idx][field] = input.value;
+    });
+  });
+  document.querySelectorAll('#certsList .cert-row').forEach((row) => {
+    const idx = Number(row.dataset.idx);
+    state.certifications[idx] = row.querySelector('[data-field=cert]').value;
+  });
+  state.contact.email = document.getElementById('contactEmail').value;
+  state.contact.phone = document.getElementById('contactPhone').value;
+  state.contact.linkedin = document.getElementById('contactLinkedin').value;
+  state.contact.github = document.getElementById('contactGithub').value;
+  state.contact.location = document.getElementById('contactLocation').value;
+}
+
+async function uploadFile(file) {
+  const fd = new FormData();
+  fd.append('image', file);
+  const res = await fetch('api/upload', { method: 'POST', body: fd });
+  if (!res.ok) throw new Error('Upload failed');
+  const data = await res.json();
+  return data.path;
+}
+
+async function handlePendingUploads() {
+  const profileFile = document.getElementById('profileImgFile').files[0];
+  if (profileFile) {
+    state.profileImage = await uploadFile(profileFile);
+  }
+  const projectFileInputs = document.querySelectorAll('#projectsList [data-field=imageFile]');
+  for (const input of projectFileInputs) {
+    const file = input.files[0];
+    if (!file) continue;
+    const card = input.closest('.proj-card');
+    const idx = Number(card.dataset.idx);
+    state.projects[idx].image = await uploadFile(file);
+  }
+}
+
+document.getElementById('addProjectBtn').addEventListener('click', () => {
+  collectFromForm();
+  state.projects.push({ id: 'project-' + Date.now(), name: '', badge: '', description: '', image: '' });
+  renderProjects();
+});
+
+document.getElementById('addCertBtn').addEventListener('click', () => {
+  collectFromForm();
+  state.certifications.push('');
+  renderCerts();
+});
+
+document.getElementById('projectsList').addEventListener('click', (e) => {
+  if (e.target.dataset.removeProject !== undefined) {
+    collectFromForm();
+    state.projects.splice(Number(e.target.dataset.removeProject), 1);
+    renderProjects();
+  }
+});
+document.getElementById('certsList').addEventListener('click', (e) => {
+  if (e.target.dataset.removeCert !== undefined) {
+    collectFromForm();
+    state.certifications.splice(Number(e.target.dataset.removeCert), 1);
+    renderCerts();
+  }
+});
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  try {
+    collectFromForm();
+    await handlePendingUploads();
+    const res = await fetch('api/content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state),
+    });
+    if (!res.ok) throw new Error('Save failed');
+    toast('Saved — live site updated.');
+    renderAll();
+  } catch (err) {
+    toast(err.message || 'Save failed', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Save & Publish';
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await fetch('api/logout', { method: 'POST' });
+  window.location.href = 'login';
+});
+
+(async function init() {
+  try {
+    const res = await fetch('api/content');
+    state = await res.json();
+    renderAll();
+  } catch (err) {
+    toast('Could not load content', true);
+  }
+})();
+</script>
+</body>
+</html>

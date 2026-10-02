@@ -116,8 +116,23 @@
   .spotlight{
     position:fixed; inset:0; z-index:-1; pointer-events:none;
     background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.10), transparent 70%);
-    transition:background .1s ease;
   }
+
+  /* cursor target ring — locked 1:1 to pointer position, no easing/lag */
+  .cursor-ring{
+    position:fixed; top:0; left:0; width:28px; height:28px; z-index:120; pointer-events:none;
+    border:1.5px solid var(--arc); border-radius:50%;
+    box-shadow:0 0 10px rgba(95,216,255,0.5);
+    transform:translate(calc(var(--mx,-100px) - 50%), calc(var(--my,-100px) - 50%));
+    opacity:0;
+  }
+  .cursor-ring.active{ opacity:0.85; }
+  .cursor-ring::before{
+    content:''; position:absolute; top:50%; left:50%; width:3px; height:3px;
+    margin:-1.5px; border-radius:50%; background:var(--arc);
+  }
+  @media (hover:none){ .cursor-ring{ display:none; } }
+  @media (prefers-reduced-motion: reduce){ .cursor-ring{ display:none; } }
 
   /* cinematic letterbox frame, persistent widescreen bars */
   .letterbox{
@@ -616,6 +631,7 @@
 <div class="vignette"></div>
 <canvas id="webgl-bg"></canvas>
 <div class="spotlight"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <div class="grain"></div>
 <div class="hud-corners"><span></span><span></span><span></span><span></span></div>
 
@@ -1301,12 +1317,17 @@
     h.querySelectorAll('.word').forEach((w, i) => { w.style.animationDelay = (i * 0.055) + 's'; });
   })();
 
-  // cursor spotlight
+  // cursor spotlight + target ring (locked 1:1 to pointer, no trailing/lerp)
   if (!reduceMotion) {
+    const cursorRing = document.getElementById('cursorRing');
     window.addEventListener('pointermove', (e) => {
       document.documentElement.style.setProperty('--mx', e.clientX + 'px');
       document.documentElement.style.setProperty('--my', e.clientY + 'px');
+      if (cursorRing) cursorRing.classList.add('active');
     }, { passive: true });
+    window.addEventListener('pointerleave', () => {
+      if (cursorRing) cursorRing.classList.remove('active');
+    });
   }
 
   // 3D tilt on cards
@@ -1385,7 +1406,6 @@
     }
     function tick(){
       ctx.clearRect(0, 0, w, h);
-      const linkDist = 140 * dpr;
       for (const p of particles) {
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > w) p.vx *= -1;
@@ -1397,19 +1417,6 @@
         ctx.arc(a.x, a.y, 1.4 * dpr, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(143,227,255,0.55)';
         ctx.fill();
-        for (let j = i + 1; j < particles.length; j++) {
-          const b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < linkDist) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(0,194,255,${0.22 * (1 - dist / linkDist)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
       }
       requestAnimationFrame(tick);
     }

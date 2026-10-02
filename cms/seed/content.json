@@ -1,0 +1,72 @@
+{
+  "hero": {
+    "badge": "NOW CASTING — Open to Machine Learning / AI Engineering roles · Chicago, IL",
+    "sub": "I'm Sudheer Kumar — an MSBA grad from DePaul University building toward Machine Learning Engineering by shipping real systems: NLP pipelines that classify at scale, a published PyPI package, and full-stack AI products built end-to-end, from database to Docker deploy. I learn new techniques by putting them into production, not by collecting certificates."
+  },
+  "about": {
+    "intro": "I combine rigorous analysis with modern machine learning engineering to turn messy, high-stakes data into decisions, models, and shipped AI products.",
+    "paragraphs": [
+      "I'm an MS Business Analytics candidate at DePaul University's Kellstadt Graduate School of Business (GPA 3.925, graduating June 2026), with hands-on experience from a Data Analytics internship at Unified Mentor. I'm deliberately retraining toward Machine Learning Engineering — I completed the Stanford Machine Learning Specialization and the DeepLearning.AI Deep Learning Specialization, and instead of stopping at the certificate, I immediately rebuilt each concept into a shipped project: classical ML into a 145-class NLP classifier, agent orchestration into a self-hosted multi-agent platform with 293 passing tests.",
+      "Today I work across the full stack end-to-end: SQL and Python for the data layer, scikit-learn/XGBoost/TensorFlow and LLM agents for the intelligence layer, Power BI/Tableau for the story, and Node.js, FastAPI, Docker, and Nginx when the answer is \"build and deploy the product.\" Outside coursework, I ship independent projects to real infrastructure — a published PyPI package with a full test suite, a production chat app serving real users, and a self-hosted AI agent platform — because the fastest way to prove I can do the job, and the fastest way to actually learn it, is to already be doing it.",
+      "I'm not finished learning, and I don't plan to be — every project I take on picks up at least one tool or technique I haven't used in production yet. I'm looking for a Machine Learning / AI Engineering role (or Data Analytics / BI role with a growth path into one) on a team willing to invest in that trajectory — I learn fast, I ship what I learn, and I'd rather be evaluated on that pattern than on years of titled experience."
+    ]
+  },
+  "projects": [
+    {
+      "id": "hai-messenger",
+      "name": "HAI Messenger",
+      "badge": "Live in Production",
+      "description": "A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour \"Nearby\" chat mode, plus a built-in local-LLM AI assistant. Deployed on a self-managed Docker + Cloudflare Tunnel stack with a GitHub Actions self-hosted runner for zero-touch CI/CD, running live for real users on its own domain.",
+      "image": "screenshots/hai-messenger.jpg"
+    },
+    {
+      "id": "bizpack",
+      "name": "bizpack",
+      "badge": "PyPI Package",
+      "description": "Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs. 43 unit tests, 100% pass rate. Ships with a Streamlit demo UI and full PyPI packaging, versioning, and docs.",
+      "image": ""
+    },
+    {
+      "id": "hagent",
+      "name": "Hagent",
+      "badge": "Open Source",
+      "description": "Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots that rebalance workload and fail over between runtimes automatically, and a full Kanban issue tracker for managing agent-driven work. ~11,500 lines of Python, 293 passing tests, built solo in about a month.",
+      "image": "screenshots/hagent.png"
+    },
+    {
+      "id": "morningstar",
+      "name": "MorningStar NLP",
+      "badge": "ML / NLP",
+      "description": "Grew out of my DePaul capstone (MGT 599): an NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83 with custom knowledge-based imputation and class-imbalance tuning.",
+      "image": ""
+    },
+    {
+      "id": "auto-data-analyst",
+      "name": "Auto Data Analyst",
+      "badge": "Full-Stack ML",
+      "description": "End-to-end ML web app that takes any raw dataset and automates the entire pipeline — cleaning, EDA, and model training across Linear/Ridge/Lasso Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM — with a Streamlit UI and Docker deployment so a non-technical user gets a trained, evaluated model with zero code.",
+      "image": "screenshots/auto-data-analyst.jpg"
+    },
+    {
+      "id": "h-ai",
+      "name": "H-AI Assistant",
+      "badge": "Open Source",
+      "description": "A local, memory-aware AI assistant built with Ollama and Llama 3 — multi-user support, persistent conversation history, and monthly keyword summaries for consistent, personal terminal-based chats.",
+      "image": "screenshots/h-ai.jpg"
+    }
+  ],
+  "certifications": [
+    "Deep Learning Specialization — DeepLearning.AI (2026)",
+    "Machine Learning Specialization — Stanford Online (2026)",
+    "Career Essentials in Business Analysis — Microsoft & LinkedIn Learning (2024)",
+    "Career Essentials in Data Analysis — Microsoft & LinkedIn Learning (2024)"
+  ],
+  "contact": {
+    "email": "gsudheer56@gmail.com",
+    "phone": "+1 773-433-6054",
+    "linkedin": "https://linkedin.com/in/sudheergsk",
+    "github": "https://github.com/sudheer-050",
+    "location": "Chicago, IL"
+  },
+  "profileImage": "profile.png"
+}
