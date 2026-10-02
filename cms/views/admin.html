@@ -3,140 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Portfolio Content</title>
+<title>Admin — Portfolio</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
+  :root{
+    --bg:#0b0d12; --panel:#12151c; --panel-2:#171b24; --border:#262b36;
+    --text:#e8eaed; --muted:#9aa2b1; --muted-2:#6b7280; --accent:#2563eb; --accent-2:#3b82f6;
+    --danger:#f87171; --danger-bg:#2a1418; --danger-border:#5c2a2e; --radius:10px;
+  }
   *{box-sizing:border-box;}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    background:#0f1115; color:#e6e8eb; margin:0; padding:0 0 80px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg); color:var(--text); margin:0; height:100vh; overflow:hidden;
   }
-  header{
-    position:sticky; top:0; z-index:10; background:#12141a; border-bottom:1px solid #2a2e37;
-    padding:14px 24px; display:flex; align-items:center; justify-content:space-between;
+  .app{ display:flex; height:100vh; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:250px; flex:0 0 250px; background:var(--panel); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; height:100vh;
   }
-  header h1{ font-size:1.05em; margin:0; }
-  header .actions{ display:flex; gap:10px; align-items:center; }
-  .status{ font-size:0.85em; color:#9aa0a8; }
+  .sidebar-brand{
+    padding:22px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px;
+  }
+  .sidebar-brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 8px var(--accent-2); }
+  .sidebar-brand span{ font-weight:700; font-size:0.95em; letter-spacing:0.01em; }
+  .sidebar-nav{ flex:1; overflow-y:auto; padding:14px 10px; }
+  .nav-group-label{ font-size:0.68em; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-2); padding:14px 12px 6px; }
+  .nav-item{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; cursor:pointer;
+    color:var(--muted); font-size:0.9em; font-weight:500; margin-bottom:2px; user-select:none;
+  }
+  .nav-item:hover{ background:var(--panel-2); color:var(--text); }
+  .nav-item.active{ background:rgba(37,99,235,0.15); color:#8ab4ff; }
+  .nav-item .ic{ width:18px; height:18px; flex:0 0 18px; display:flex; align-items:center; justify-content:center; opacity:0.9; }
+  .nav-item .count{
+    margin-left:auto; background:var(--panel-2); color:var(--muted); font-size:0.72em; font-weight:700;
+    padding:1px 7px; border-radius:20px;
+  }
+  .nav-item.active .count{ background:rgba(37,99,235,0.25); color:#8ab4ff; }
+  .sidebar-footer{ padding:14px; border-top:1px solid var(--border); }
+  .sidebar-footer a{ color:var(--muted); font-size:0.82em; text-decoration:none; display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; }
+  .sidebar-footer a:hover{ background:var(--panel-2); color:var(--text); }
+
+  /* ---------- Main ---------- */
+  .main{ flex:1; display:flex; flex-direction:column; height:100vh; min-width:0; }
+  .topbar{
+    position:sticky; top:0; z-index:10; background:var(--panel); border-bottom:1px solid var(--border);
+    padding:16px 32px; display:flex; align-items:center; justify-content:space-between; flex:0 0 auto;
+  }
+  .topbar h1{ font-size:1.15em; margin:0; }
+  .topbar .sub{ font-size:0.82em; color:var(--muted); margin-top:2px; }
+  .topbar .actions{ display:flex; gap:10px; align-items:center; }
+  .status{ font-size:0.82em; color:var(--muted); margin-right:4px; }
   button{
-    padding:9px 16px; border-radius:6px; border:1px solid #2a2e37; cursor:pointer;
-    background:#1b1e26; color:#e6e8eb; font-size:0.88em; font-weight:600;
+    padding:10px 18px; border-radius:8px; border:1px solid var(--border); cursor:pointer;
+    background:var(--panel-2); color:var(--text); font-size:0.87em; font-weight:600; transition:background .15s, opacity .15s;
   }
-  button.primary{ background:#2563eb; border-color:#2563eb; color:#fff; }
+  button:hover{ background:#1f2430; }
+  button.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  button.primary:hover{ background:var(--accent-2); }
+  button.ghost{ background:transparent; }
   button:disabled{ opacity:0.5; cursor:default; }
-  main{ max-width:880px; margin:28px auto; padding:0 24px; }
-  section{ background:#171a21; border:1px solid #2a2e37; border-radius:10px; padding:22px 24px; margin-bottom:20px; }
-  section h2{ font-size:0.95em; text-transform:uppercase; letter-spacing:0.06em; color:#9aa0a8; margin:0 0 16px; }
-  label{ display:block; font-size:0.82em; color:#9aa0a8; margin:14px 0 5px; }
+
+  .content{ flex:1; overflow-y:auto; padding:32px; }
+  .view{ display:none; max-width:900px; margin:0 auto; }
+  .view.active{ display:block; animation:fade .2s ease; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:translateY(0);} }
+
+  .card{ background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:24px 26px; margin-bottom:20px; }
+  .card h2{ font-size:1em; margin:0 0 4px; }
+  .card .card-hint{ font-size:0.82em; color:var(--muted); margin:0 0 18px; }
+  label{ display:block; font-size:0.82em; color:var(--muted); margin:16px 0 6px; font-weight:600; }
   label:first-of-type{ margin-top:0; }
   input[type=text], textarea{
-    width:100%; padding:9px 11px; border-radius:6px; border:1px solid #2a2e37;
-    background:#0f1115; color:#e6e8eb; font-size:0.9em; font-family:inherit;
+    width:100%; padding:11px 13px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:0.92em; font-family:inherit; transition:border-color .15s;
   }
-  textarea{ resize:vertical; min-height:70px; line-height:1.4; }
-  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  input[type=text]:focus, textarea:focus{ outline:none; border-color:var(--accent); }
+  textarea{ resize:vertical; min-height:80px; line-height:1.5; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:640px){ .row2{ grid-template-columns:1fr; } }
+
   .proj-card, .cert-row{
-    border:1px solid #2a2e37; border-radius:8px; padding:16px; margin-bottom:14px; position:relative;
+    border:1px solid var(--border); background:var(--panel-2); border-radius:var(--radius);
+    padding:18px 20px; margin-bottom:16px; position:relative;
   }
-  .remove-btn{
-    position:absolute; top:10px; right:10px; padding:4px 10px; font-size:0.75em;
-    background:#2a1418; border-color:#5c2a2e; color:#f87171;
+  .proj-card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .proj-card-head .tag{ font-size:0.72em; color:var(--muted-2); text-transform:uppercase; letter-spacing:0.05em; font-weight:700; }
+  .remove-btn{ padding:5px 12px; font-size:0.76em; background:var(--danger-bg); border-color:var(--danger-border); color:var(--danger); }
+  .add-btn{ margin-top:6px; width:100%; border-style:dashed; }
+  .img-preview{ max-width:160px; max-height:100px; border-radius:6px; margin-top:8px; display:block; border:1px solid var(--border); object-fit:cover; }
+  .upload-row{ display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  input[type=file]{ color:var(--muted); font-size:0.82em; }
+  .hint{ font-size:0.78em; color:var(--muted-2); margin-top:6px; }
+
+  /* dashboard */
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:24px; }
+  .stat{ background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+  .stat .num{ font-size:1.8em; font-weight:700; }
+  .stat .label{ font-size:0.8em; color:var(--muted); margin-top:4px; }
+  .quick-links{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+  .quick-link{
+    display:block; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:18px 20px; text-decoration:none; color:var(--text); cursor:pointer; transition:border-color .15s;
   }
-  .add-btn{ margin-top:4px; }
-  .img-preview{ max-width:140px; max-height:90px; border-radius:4px; margin-top:8px; display:block; border:1px solid #2a2e37; }
-  .upload-row{ display:flex; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
-  .hint{ font-size:0.75em; color:#6b7280; margin-top:4px; }
+  .quick-link:hover{ border-color:var(--accent); }
+  .quick-link .ql-title{ font-weight:600; font-size:0.92em; margin-bottom:4px; }
+  .quick-link .ql-desc{ font-size:0.8em; color:var(--muted); }
+
   .toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-    background:#1b1e26; border:1px solid #2a2e37; color:#e6e8eb; padding:10px 20px;
-    border-radius:8px; font-size:0.88em; opacity:0; transition:opacity 0.2s; pointer-events:none;
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text); padding:11px 22px;
+    border-radius:8px; font-size:0.88em; opacity:0; transition:opacity 0.2s; pointer-events:none; z-index:100;
   }
   .toast.show{ opacity:1; }
-  .toast.error{ background:#2a1418; border-color:#5c2a2e; color:#f87171; }
+  .toast.error{ background:var(--danger-bg); border-color:var(--danger-border); color:var(--danger); }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Portfolio Content Admin</h1>
-  <div class="actions">
-    <span class="status" id="statusText"></span>
-    <button id="saveBtn" class="primary">Save &amp; Publish</button>
-    <button id="logoutBtn">Log out</button>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="dot"></span><span>Portfolio Admin</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Overview</div>
+      <div class="nav-item" data-view="dashboard"><span class="ic">&#9679;</span>Dashboard</div>
+
+      <div class="nav-group-label">Content</div>
+      <div class="nav-item" data-view="hero"><span class="ic">&#9733;</span>Hero</div>
+      <div class="nav-item" data-view="about"><span class="ic">&#9776;</span>About</div>
+      <div class="nav-item" data-view="photo"><span class="ic">&#9679;</span>Profile Photo</div>
+      <div class="nav-item" data-view="projects"><span class="ic">&#9632;</span>Projects<span class="count" id="navProjCount">0</span></div>
+      <div class="nav-item" data-view="certs"><span class="ic">&#9733;</span>Certifications<span class="count" id="navCertCount">0</span></div>
+      <div class="nav-item" data-view="contact"><span class="ic">&#9993;</span>Contact</div>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="../" target="_blank" rel="noopener">&#8599; View live site</a>
+      <a href="#" id="logoutBtn">&#8592; Log out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="topbarTitle">Dashboard</h1>
+        <div class="sub" id="topbarSub">Overview of your site content</div>
+      </div>
+      <div class="actions">
+        <span class="status" id="statusText"></span>
+        <button id="saveBtn" class="primary">Save &amp; Publish</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="view" data-view="dashboard">
+        <div class="stat-grid">
+          <div class="stat"><div class="num" id="statProjects">0</div><div class="label">Projects</div></div>
+          <div class="stat"><div class="num" id="statCerts">0</div><div class="label">Certifications</div></div>
+          <div class="stat"><div class="num">3</div><div class="label">Live themes</div></div>
+        </div>
+        <div class="card">
+          <h2>Quick edit</h2>
+          <p class="card-hint">Jump straight to a section.</p>
+          <div class="quick-links">
+            <div class="quick-link" data-goto="hero"><div class="ql-title">Hero</div><div class="ql-desc">Status badge &amp; intro paragraph</div></div>
+            <div class="quick-link" data-goto="about"><div class="ql-title">About</div><div class="ql-desc">Intro line &amp; paragraphs</div></div>
+            <div class="quick-link" data-goto="photo"><div class="ql-title">Profile Photo</div><div class="ql-desc">Replace your hero photo</div></div>
+            <div class="quick-link" data-goto="projects"><div class="ql-title">Projects</div><div class="ql-desc">Add, edit, or remove project cards</div></div>
+            <div class="quick-link" data-goto="certs"><div class="ql-title">Certifications</div><div class="ql-desc">Manage certification pills</div></div>
+            <div class="quick-link" data-goto="contact"><div class="ql-title">Contact</div><div class="ql-desc">Email, phone, socials, location</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <div class="view" data-view="hero">
+        <div class="card">
+          <h2>Hero section</h2>
+          <p class="card-hint">The first thing visitors see at the top of the page.</p>
+          <label>Status badge</label>
+          <input type="text" id="heroBadge">
+          <label>Intro paragraph</label>
+          <textarea id="heroSub"></textarea>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="view" data-view="about">
+        <div class="card">
+          <h2>About section</h2>
+          <p class="card-hint">Your background, in your own words.</p>
+          <label>Short intro line</label>
+          <textarea id="aboutIntro" style="min-height:50px;"></textarea>
+          <label>Paragraph 1</label>
+          <textarea id="aboutP0"></textarea>
+          <label>Paragraph 2</label>
+          <textarea id="aboutP1"></textarea>
+          <label>Paragraph 3</label>
+          <textarea id="aboutP2"></textarea>
+        </div>
+      </div>
+
+      <!-- PHOTO -->
+      <div class="view" data-view="photo">
+        <div class="card">
+          <h2>Profile photo</h2>
+          <p class="card-hint">Shown on the hero section of every theme.</p>
+          <img id="profileImgPreview" class="img-preview" src="" alt="">
+          <div class="upload-row">
+            <input type="file" id="profileImgFile" accept="image/*">
+          </div>
+          <div class="hint">Uploads replace the photo shown on the live site immediately after you save.</div>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div class="view" data-view="projects">
+        <div class="card">
+          <h2>Projects</h2>
+          <p class="card-hint">The project cards shown in your Projects section.</p>
+          <div id="projectsList"></div>
+          <button class="add-btn" id="addProjectBtn" type="button">+ Add project</button>
+        </div>
+      </div>
+
+      <!-- CERTS -->
+      <div class="view" data-view="certs">
+        <div class="card">
+          <h2>Certifications</h2>
+          <p class="card-hint">Shown as pills near your education/background.</p>
+          <div id="certsList"></div>
+          <button class="add-btn" id="addCertBtn" type="button">+ Add certification</button>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="view" data-view="contact">
+        <div class="card">
+          <h2>Contact</h2>
+          <p class="card-hint">Links shown in the Contact section and footer.</p>
+          <div class="row2">
+            <div>
+              <label>Email</label>
+              <input type="text" id="contactEmail">
+            </div>
+            <div>
+              <label>Phone</label>
+              <input type="text" id="contactPhone">
+            </div>
+            <div>
+              <label>LinkedIn URL</label>
+              <input type="text" id="contactLinkedin">
+            </div>
+            <div>
+              <label>GitHub URL</label>
+              <input type="text" id="contactGithub">
+            </div>
+          </div>
+          <label>Location</label>
+          <input type="text" id="contactLocation">
+        </div>
+      </div>
+
+    </div>
   </div>
-</header>
-
-<main>
-  <section>
-    <h2>Hero</h2>
-    <label>Status badge</label>
-    <input type="text" id="heroBadge">
-    <label>Intro paragraph</label>
-    <textarea id="heroSub"></textarea>
-  </section>
-
-  <section>
-    <h2>About</h2>
-    <label>Short intro line</label>
-    <textarea id="aboutIntro" style="min-height:50px;"></textarea>
-    <label>Paragraph 1</label>
-    <textarea id="aboutP0"></textarea>
-    <label>Paragraph 2</label>
-    <textarea id="aboutP1"></textarea>
-    <label>Paragraph 3</label>
-    <textarea id="aboutP2"></textarea>
-  </section>
-
-  <section>
-    <h2>Profile Photo</h2>
-    <img id="profileImgPreview" class="img-preview" src="" alt="">
-    <div class="upload-row">
-      <input type="file" id="profileImgFile" accept="image/*">
-    </div>
-    <div class="hint">Uploads replace the photo shown on the live site immediately after you save.</div>
-  </section>
-
-  <section>
-    <h2>Projects</h2>
-    <div id="projectsList"></div>
-    <button class="add-btn" id="addProjectBtn" type="button">+ Add project</button>
-  </section>
-
-  <section>
-    <h2>Certifications</h2>
-    <div id="certsList"></div>
-    <button class="add-btn" id="addCertBtn" type="button">+ Add certification</button>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
-    <div class="row2">
-      <div>
-        <label>Email</label>
-        <input type="text" id="contactEmail">
-      </div>
-      <div>
-        <label>Phone</label>
-        <input type="text" id="contactPhone">
-      </div>
-      <div>
-        <label>LinkedIn URL</label>
-        <input type="text" id="contactLinkedin">
-      </div>
-      <div>
-        <label>GitHub URL</label>
-        <input type="text" id="contactGithub">
-      </div>
-    </div>
-    <label>Location</label>
-    <input type="text" id="contactLocation">
-  </section>
-</main>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 let state = null;
+
+const VIEW_META = {
+  dashboard: ['Dashboard', 'Overview of your site content'],
+  hero:      ['Hero', 'The first thing visitors see'],
+  about:     ['About', 'Your background, in your own words'],
+  photo:     ['Profile Photo', 'Shown on the hero section'],
+  projects:  ['Projects', 'Cards shown in your Projects section'],
+  certs:     ['Certifications', 'Pills shown near your background'],
+  contact:   ['Contact', 'Links shown in Contact & footer'],
+};
+
+function showView(name) {
+  document.querySelectorAll('.nav-item[data-view]').forEach(el => el.classList.toggle('active', el.dataset.view === name));
+  document.querySelectorAll('.view[data-view]').forEach(el => el.classList.toggle('active', el.dataset.view === name));
+  const meta = VIEW_META[name] || VIEW_META.dashboard;
+  document.getElementById('topbarTitle').textContent = meta[0];
+  document.getElementById('topbarSub').textContent = meta[1];
+  document.querySelector('.content').scrollTop = 0;
+}
+
+document.querySelectorAll('.nav-item[data-view]').forEach(el => {
+  el.addEventListener('click', () => showView(el.dataset.view));
+});
+document.querySelectorAll('[data-goto]').forEach(el => {
+  el.addEventListener('click', () => showView(el.dataset.goto));
+});
 
 function toast(msg, isError) {
   const el = document.getElementById('toast');
@@ -148,7 +313,10 @@ function toast(msg, isError) {
 function projectRowHtml(p, idx) {
   return `
     <div class="proj-card" data-idx="${idx}">
-      <button type="button" class="remove-btn" data-remove-project="${idx}">Remove</button>
+      <div class="proj-card-head">
+        <span class="tag">Project ${idx + 1}</span>
+        <button type="button" class="remove-btn" data-remove-project="${idx}">Remove</button>
+      </div>
       <label>Name</label>
       <input type="text" data-field="name" value="${escapeAttr(p.name)}">
       <label>Badge</label>
@@ -181,10 +349,14 @@ function escapeAttr(s) {
 function renderProjects() {
   document.getElementById('projectsList').innerHTML =
     state.projects.map((p, i) => projectRowHtml(p, i)).join('');
+  document.getElementById('navProjCount').textContent = state.projects.length;
+  document.getElementById('statProjects').textContent = state.projects.length;
 }
 function renderCerts() {
   document.getElementById('certsList').innerHTML =
     state.certifications.map((c, i) => certRowHtml(c, i)).join('');
+  document.getElementById('navCertCount').textContent = state.certifications.length;
+  document.getElementById('statCerts').textContent = state.certifications.length;
 }
 
 function renderAll() {
@@ -306,7 +478,8 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('logoutBtn').addEventListener('click', async () => {
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
   await fetch('api/logout', { method: 'POST' });
   window.location.href = 'login';
 });
@@ -316,6 +489,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
     const res = await fetch('api/content');
     state = await res.json();
     renderAll();
+    showView('dashboard');
   } catch (err) {
     toast('Could not load content', true);
   }
