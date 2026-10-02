@@ -21,12 +21,12 @@
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     color:var(--ink);
     background:#f4f5f6;
-    line-height:1.5;
-    padding:36px 16px 80px;
+    line-height:1.26;
+    padding:28px 16px 60px;
   }
   .sheet{
     max-width:800px; margin:0 auto; background:var(--bg);
-    padding:48px 54px; border-radius:6px; box-shadow:0 2px 24px rgba(0,0,0,0.08);
+    padding:26px 46px; border-radius:6px; box-shadow:0 2px 24px rgba(0,0,0,0.08);
   }
   .toolbar{
     max-width:800px; margin:0 auto 14px; display:flex; justify-content:flex-end; gap:10px;
@@ -38,49 +38,45 @@
   }
   .toolbar button{ background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  h1{ font-size:1.9em; letter-spacing:-0.01em; }
-  .role{ color:var(--accent); font-weight:700; font-size:1.02em; margin-top:4px; }
-  .contact{ margin-top:10px; font-size:0.9em; color:var(--muted); display:flex; flex-wrap:wrap; gap:4px 14px; }
+  h1{ font-size:1.5em; letter-spacing:-0.01em; }
+  .role{ color:var(--accent); font-weight:700; font-size:0.88em; margin-top:2px; }
+  .contact{ margin-top:6px; font-size:0.8em; color:var(--muted); display:flex; flex-wrap:wrap; gap:2px 12px; }
   .contact a{ color:var(--muted); text-decoration:none; border-bottom:1px solid var(--rule); }
 
-  .summary{ margin-top:18px; font-size:0.95em; color:var(--ink); }
+  .summary{ margin-top:8px; font-size:0.83em; color:var(--ink); }
 
-  section{ margin-top:24px; }
+  section{ margin-top:8px; }
   h2{
-    font-size:0.78em; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent);
-    border-bottom:2px solid var(--rule); padding-bottom:6px; margin-bottom:12px; font-weight:700;
+    font-size:0.7em; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent);
+    border-bottom:1.5px solid var(--rule); padding-bottom:2px; margin-bottom:5px; font-weight:700;
   }
 
-  .entry{ margin-bottom:16px; }
+  .entry{ margin-bottom:6px; }
   .entry:last-child{ margin-bottom:0; }
   .entry-head{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
-  .entry-title{ font-weight:700; font-size:0.98em; }
-  .entry-org{ color:var(--muted); font-size:0.9em; }
-  .entry-date{ font-size:0.82em; color:var(--muted); font-family:'JetBrains Mono',monospace; white-space:nowrap; }
-  ul{ margin:6px 0 0 18px; }
-  li{ margin-bottom:4px; font-size:0.9em; }
-  .entry-tags{ margin-top:6px; font-size:0.78em; color:var(--accent); font-family:'JetBrains Mono',monospace; }
+  .entry-title{ font-weight:700; font-size:0.84em; }
+  .entry-org{ color:var(--muted); font-size:0.78em; }
+  .entry-date{ font-size:0.73em; color:var(--muted); font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  ul{ margin:2px 0 0 16px; }
+  li{ margin-bottom:1px; font-size:0.78em; }
+  .entry-tags{ margin-top:2px; font-size:0.69em; color:var(--accent); font-family:'JetBrains Mono',monospace; }
 
-  .skills-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px 28px; }
-  .skill-row{ font-size:0.88em; }
-  .skill-row b{ display:block; font-size:0.78em; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); margin-bottom:2px; }
+  .skills-grid{ display:grid; grid-template-columns:1fr 1fr; gap:4px 24px; }
+  .skill-row{ font-size:0.78em; }
+  .skill-row b{ display:inline; font-weight:700; }
 
-  .pills{ display:flex; flex-wrap:wrap; gap:6px; }
-  .pill{ background:#fdeee9; color:#c23c17; font-size:0.78em; font-weight:600; padding:3px 10px; border-radius:20px; }
+  .certs{ font-size:0.78em; color:var(--ink); }
 
-  .learning-note{
-    margin-top:6px; font-size:0.9em; color:var(--ink); background:#fff6f3;
-    border-left:3px solid var(--accent); padding:10px 14px; border-radius:4px;
-  }
-
+  @page{ size:letter; margin:0.32in; }
   @media print{
     body{ background:#fff; padding:0; }
     .toolbar{ display:none; }
     .sheet{ box-shadow:none; padding:0; max-width:none; }
     section{ page-break-inside:avoid; }
+    section:last-child{ page-break-inside:auto; }
   }
   @media (max-width:640px){
-    .sheet{ padding:28px 22px; }
+    .sheet{ padding:24px 20px; }
     .skills-grid{ grid-template-columns:1fr; }
   }
 </style>
@@ -106,74 +102,8 @@
   </div>
 
   <p class="summary">
-    MS Business Analytics candidate (GPA 3.925) retraining toward Machine Learning Engineering — not by collecting certificates, but by rebuilding every concept I learn into a shipped project within weeks. Published a PyPI package with a full test suite, built and deployed a production chat app serving real users, and shipped a 293-test multi-agent AI orchestration platform solo. 2+ years of analytics experience turning messy data into measurable business decisions. I learn fast, ship what I learn, and I'm looking for a team willing to invest in that trajectory.
+    MS Business Analytics candidate (GPA 3.925) retraining toward Machine Learning Engineering by rebuilding every concept I learn into a shipped project within weeks — a published PyPI package with a full test suite, a production chat app serving real users, and a 293-test multi-agent AI platform built solo. 2+ years of analytics experience turning messy data into measurable business decisions. Currently deepening production ML/MLOps practice and intend to keep learning this way indefinitely.
   </p>
-
-  <section>
-    <h2>Currently Learning</h2>
-    <div class="learning-note">Deepening production ML/MLOps practice — model serving, evaluation, and monitoring — through hands-on builds rather than coursework alone. My pattern: finish a specialization, then ship a project with it inside of weeks (Deep Learning Specialization → agent routing in Hagent; Stanford ML Specialization → the classifier in MorningStar). I intend to keep learning this way indefinitely.</div>
-  </section>
-
-  <section>
-    <h2>Projects</h2>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">Hagent — Self-Hosted Multi-Agent AI Orchestration Platform</span>
-        <span class="entry-date">Open Source</span>
-      </div>
-      <ul>
-        <li>Built a CLI + web dashboard orchestrating pluggable AI runtimes (Claude, OpenAI, local Ollama) with automatic failover and cron-triggered workload rebalancing.</li>
-        <li>~11,500 lines of Python, 293 passing tests, solo-built in about a month, including its own auth layer and a Kanban issue tracker for agent-driven work.</li>
-      </ul>
-      <div class="entry-tags">Python · FastAPI · SQLAlchemy · APScheduler</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">bizpack — Open-Source Pandas Data-Cleaning Library</span>
-        <span class="entry-date">PyPI Package</span>
-      </div>
-      <ul>
-        <li>Published Python library that cleans messy corporate spreadsheets — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, leading-zero IDs.</li>
-        <li>43 unit tests at a 100% pass rate; ships with a Streamlit demo, versioned PyPI releases, and full docs.</li>
-      </ul>
-      <div class="entry-tags">Python · pandas · PyPI · Streamlit</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">HAI Messenger — Self-Hosted Encrypted Chat App</span>
-        <span class="entry-date">Live in Production</span>
-      </div>
-      <ul>
-        <li>End-to-end encrypted chat app — real-time messaging, voice notes, file sharing, live location, and an anonymous "Nearby" mode, plus a built-in local-LLM assistant.</li>
-        <li>Deployed on a self-managed Docker + Cloudflare Tunnel stack with a GitHub Actions self-hosted runner for zero-touch CI/CD, serving real users on its own domain.</li>
-      </ul>
-      <div class="entry-tags">Node.js · Socket.IO · PostgreSQL · Redis · Docker · Ollama</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">MorningStar — NLP Industry Classifier</span>
-        <span class="entry-date">DePaul Capstone, MGT 599</span>
-      </div>
-      <ul>
-        <li>TF-IDF + LinearSVC pipeline classifying corporate text descriptions into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83 with custom knowledge-based imputation and class-imbalance tuning.</li>
-      </ul>
-      <div class="entry-tags">Python · scikit-learn · pandas</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">Auto Data Analyst — Full-Stack AutoML Web App</span>
-      </div>
-      <ul>
-        <li>Automated end-to-end pipeline (cleaning, EDA, model training) across Linear/Ridge/Lasso, Random Forest, Gradient Boosting, XGBoost, and LightGBM, with a Streamlit UI and Docker deployment.</li>
-      </ul>
-      <div class="entry-tags">Python · Streamlit · scikit-learn · XGBoost · Docker</div>
-    </div>
-  </section>
 
   <section>
     <h2>Experience</h2>
@@ -185,21 +115,8 @@
       </div>
       <div class="entry-org">Unified Mentor</div>
       <ul>
-        <li>Analyzed 100K+ Amazon sales transactions using Power BI and R, driving a 10% increase in targeted customer segment sales.</li>
-        <li>Built predictive HR attrition segmentation models in Tableau, improving overall retention by 10%.</li>
-        <li>Used Python and SQL to clean, validate, and manipulate datasets exceeding 1M records across multiple source systems.</li>
-        <li>Designed Power BI data models and dashboards centralizing regional performance metrics for faster decision-making.</li>
-      </ul>
-    </div>
-
-    <div class="entry">
-      <div class="entry-head">
-        <span class="entry-title">Independent Business Consultant (Volunteer)</span>
-        <span class="entry-date">Aug 2023 — Feb 2024</span>
-      </div>
-      <div class="entry-org">Self-directed</div>
-      <ul>
-        <li>Advised 2 local electronics retail stores on inventory optimization, sales analytics, and business performance improvement.</li>
+        <li>Analyzed 100K+ Amazon sales transactions in Power BI and R, driving a 10% increase in targeted customer segment sales.</li>
+        <li>Built predictive HR attrition segmentation models in Tableau, improving overall retention by 10%; cleaned 1M+ records across systems with Python and SQL.</li>
       </ul>
     </div>
 
@@ -211,32 +128,66 @@
       <div class="entry-org">Hetero Labs Limited (Unit-IX)</div>
       <ul>
         <li>Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.</li>
-        <li>Monitored and analyzed compound yield across production batches in a regulated GMP environment, identifying yield-loss drivers.</li>
-        <li>Led adoption of new methodologies and trained 8 team members, increasing execution speed by 50%.</li>
-        <li>Delivered safety training to 25+ employees, achieving 100% compliance and reducing safety incidents by 30%.</li>
+        <li>Led adoption of new methodologies across 8 team members (+50% execution speed) and drove 100% safety-training compliance (-30% incidents).</li>
       </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title">Hagent — Self-Hosted Multi-Agent AI Orchestration Platform</span>
+        <span class="entry-date">Open Source</span>
+      </div>
+      <ul>
+        <li>CLI + web dashboard orchestrating pluggable AI runtimes (Claude, OpenAI, Ollama) with automatic failover and cron-triggered rebalancing — ~11,500 lines, 293 passing tests, solo-built in ~1 month.</li>
+      </ul>
+      <div class="entry-tags">Python · FastAPI · SQLAlchemy · APScheduler</div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title">bizpack — Open-Source Pandas Data-Cleaning Library</span>
+        <span class="entry-date">PyPI Package</span>
+      </div>
+      <ul>
+        <li>Published library cleaning messy corporate spreadsheets (mixed currencies, dates, footer inflation); 43 unit tests, 100% pass rate, with a Streamlit demo and versioned releases.</li>
+      </ul>
+      <div class="entry-tags">Python · pandas · PyPI · Streamlit</div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title">HAI Messenger — Self-Hosted Encrypted Chat App</span>
+        <span class="entry-date">Live in Production</span>
+      </div>
+      <ul>
+        <li>End-to-end encrypted chat app with real-time messaging, voice notes, and a local-LLM assistant; deployed on Docker + Cloudflare Tunnel with GitHub Actions CI/CD, serving real users.</li>
+      </ul>
+      <div class="entry-tags">Node.js · Socket.IO · PostgreSQL · Redis · Docker</div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-title">MorningStar — NLP Industry Classifier</span>
+        <span class="entry-date">DePaul Capstone</span>
+      </div>
+      <ul>
+        <li>TF-IDF + LinearSVC pipeline classifying text into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83.</li>
+      </ul>
+      <div class="entry-tags">Python · scikit-learn · pandas</div>
     </div>
   </section>
 
   <section>
     <h2>Skills</h2>
     <div class="skills-grid">
-      <div class="skill-row">
-        <b>Data &amp; Analytics</b>
-        <div class="pills"><span class="pill">Python</span><span class="pill">SQL</span><span class="pill">R</span><span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Statistical Analysis</span></div>
-      </div>
-      <div class="skill-row">
-        <b>ML &amp; Deep Learning</b>
-        <div class="pills"><span class="pill">scikit-learn</span><span class="pill">TensorFlow</span><span class="pill">PyTorch</span><span class="pill">XGBoost</span><span class="pill">NLP / TF-IDF</span><span class="pill">LLM Agents</span></div>
-      </div>
-      <div class="skill-row">
-        <b>Engineering</b>
-        <div class="pills"><span class="pill">FastAPI</span><span class="pill">Flask</span><span class="pill">Node.js</span><span class="pill">Docker</span><span class="pill">PostgreSQL</span><span class="pill">Git / GitHub Actions</span></div>
-      </div>
-      <div class="skill-row">
-        <b>Business</b>
-        <div class="pills"><span class="pill">KPI Design</span><span class="pill">Forecasting</span><span class="pill">Process Optimization</span><span class="pill">Stakeholder Reporting</span></div>
-      </div>
+      <div class="skill-row"><b>Data &amp; Analytics:</b> Python, SQL, R, Power BI, Tableau, Statistical Analysis</div>
+      <div class="skill-row"><b>ML &amp; Deep Learning:</b> scikit-learn, TensorFlow, PyTorch, XGBoost, NLP, LLM Agents</div>
+      <div class="skill-row"><b>Engineering:</b> FastAPI, Flask, Node.js, Docker, PostgreSQL, Git/GitHub Actions</div>
+      <div class="skill-row"><b>Business:</b> KPI Design, Forecasting, Process Optimization, Stakeholder Reporting</div>
     </div>
   </section>
 
@@ -260,12 +211,7 @@
 
   <section>
     <h2>Certifications</h2>
-    <ul>
-      <li>Deep Learning Specialization — DeepLearning.AI (2026)</li>
-      <li>Machine Learning Specialization — Stanford Online (2026)</li>
-      <li>Career Essentials in Business Analysis — Microsoft &amp; LinkedIn Learning (2024)</li>
-      <li>Career Essentials in Data Analysis — Microsoft &amp; LinkedIn Learning (2024)</li>
-    </ul>
+    <div class="certs">Deep Learning Specialization — DeepLearning.AI (2026) · Machine Learning Specialization — Stanford Online (2026) · Career Essentials in Business Analysis — Microsoft &amp; LinkedIn Learning (2024) · Career Essentials in Data Analysis — Microsoft &amp; LinkedIn Learning (2024)</div>
   </section>
 
 </div>
