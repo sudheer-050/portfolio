@@ -159,6 +159,23 @@
   }
   .curtain.opened .curtain-mark{ opacity:0; }
 
+  /* intro video, plays once before the site reveals */
+  .intro-overlay{
+    position:fixed; inset:0; z-index:500; background:#000;
+    display:flex; align-items:center; justify-content:center;
+    opacity:1; transition:opacity .6s ease;
+  }
+  .intro-overlay.fading{ opacity:0; pointer-events:none; }
+  .intro-overlay video{ width:100%; height:100%; object-fit:cover; }
+  .intro-skip{
+    position:absolute; right:24px; bottom:24px; z-index:1;
+    font-family:inherit; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase;
+    color:#fff; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.35);
+    padding:8px 16px; border-radius:999px; cursor:pointer; backdrop-filter:blur(4px);
+    transition:background .2s ease;
+  }
+  .intro-skip:hover{ background:rgba(255,255,255,0.18); }
+
   /* custom cinema cursor: ring + dot, desktop only */
   .cur-dot, .cur-ring{ position:fixed; top:0; left:0; z-index:300; pointer-events:none; border-radius:50%; will-change:transform; }
   .cur-dot{ width:6px; height:6px; background:var(--accent); transform:translate(-50%,-50%); }
@@ -531,6 +548,11 @@
 </style>
 </head>
 <body>
+
+<div class="intro-overlay" id="introOverlay">
+  <video id="introVideo" src="intro.mp4" autoplay muted playsinline></video>
+  <button class="intro-skip" id="introSkip" type="button">Skip intro</button>
+</div>
 
 <div class="curtain" id="curtain">
   <div class="curtain-panel left"></div>
@@ -1204,6 +1226,32 @@
       entries.forEach(e => { if (e.isIntersecting) { el.textContent = names[e.target.id] || e.target.id; } });
     }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
     sections.forEach(s => io.observe(s));
+  })();
+
+  // intro video: plays once (max 8s) before the site reveals
+  (function introVideo(){
+    const overlay = document.getElementById('introOverlay');
+    if (!overlay) return;
+    const video = document.getElementById('introVideo');
+    const skipBtn = document.getElementById('introSkip');
+    const seen = sessionStorage.getItem('introSeen');
+    if (reduceMotion || seen) { overlay.remove(); return; }
+
+    let dismissed = false;
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      sessionStorage.setItem('introSeen', '1');
+      overlay.classList.add('fading');
+      setTimeout(() => overlay.remove(), 650);
+    };
+
+    setTimeout(dismiss, 8000);
+    if (video) {
+      video.addEventListener('ended', dismiss);
+      video.play().catch(() => dismiss());
+    }
+    if (skipBtn) skipBtn.addEventListener('click', dismiss);
   })();
 
   // opening curtain reveal
