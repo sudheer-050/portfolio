@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /login
+
+Sitemap: https://sudheerkumargandiboyana.com/sitemap.xml

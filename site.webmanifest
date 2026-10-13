@@ -1,0 +1,17 @@
+{
+  "name": "Sudheer Kumar Gandiboyana",
+  "short_name": "Sudheer",
+  "description": "Machine learning and AI engineering portfolio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
