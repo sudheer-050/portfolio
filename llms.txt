@@ -1,0 +1,18 @@
+# Sudheer Kumar Gandiboyana
+
+> Professional portfolio of Sudheer Kumar Gandiboyana, a Chicago-based machine learning, artificial intelligence, data science, and analytics engineer and DePaul University MSBA graduate who is open to full-time roles.
+
+## Primary pages
+
+- [Portfolio](https://sudheerkumargandiboyana.com/): Professional profile, experience, technical skills, education, and production projects.
+- [Resume](https://sudheerkumargandiboyana.com/resume.html): Detailed experience, education, projects, certifications, and technical skills.
+
+## Verified profiles
+
+- [LinkedIn](https://linkedin.com/in/sudheergsk)
+- [GitHub](https://github.com/sudheer-050)
+- [PyPI](https://pypi.org/user/gsudheer56/)
+
+## Focus areas
+
+Machine learning engineering, AI engineering, natural language processing, data science, analytics engineering, Python, SQL, FastAPI, Docker, PostgreSQL, AI agents, and production data products.
