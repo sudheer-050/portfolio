@@ -1,20 +1,20 @@
 {
   "hero": {
     "badge": "Open to ML & AI engineering roles",
-    "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products — from the first experiment to a working deployment."
+    "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products \u2014 from the first experiment to a working deployment."
   },
   "about": {
     "intro": "I combine business analytics with hands-on engineering to turn complex data into working products.",
     "paragraphs": [
-      "I’m a DePaul University MS Business Analytics graduate with a background in process engineering and data analytics. My work spans classical machine learning, AI agents and the infrastructure needed to put them into use.",
-      "I'm looking for a team where I can contribute to ML and AI engineering, data science or analytics engineering — and keep learning through work that ships.",
+      "I\u2019m a DePaul University MS Business Analytics graduate with a background in process engineering and data analytics. My work spans classical machine learning, AI agents and the infrastructure needed to put them into use.",
+      "I'm looking for a team where I can contribute to ML and AI engineering, data science or analytics engineering \u2014 and keep learning through work that ships.",
       "My approach is practical: start with the problem, build the simplest useful solution, and make the implementation easy to inspect."
     ]
   },
   "projects": [
     {
       "category": "Private desktop voice workspace",
-      "image": "https://myhai.org/project-images/dotflow-banner.svg",
+      "image": "https://myhai.org/project-images/notewll-banner.svg",
       "summary": "Private voice typing, personal notes and meeting transcripts for Windows, with local English speech recognition and selectable microphone or computer audio.",
       "tech": [
         "C#",
@@ -23,7 +23,7 @@
         "Vosk",
         "WASAPI"
       ],
-      "why": "Typing a message, capturing an idea and remembering a meeting should not require three disconnected tools. Dotflow combines shortcut-driven writing with local notes and source-aware meeting transcripts, keeping the original conversation separate from editable personal notes.",
+      "why": "Typing a message, capturing an idea and remembering a meeting should not require three disconnected tools. Notewll combines shortcut-driven writing with local notes and source-aware meeting transcripts, keeping the original conversation separate from editable personal notes.",
       "features": [
         [
           "Hold to write",
@@ -52,7 +52,7 @@
       ],
       "workflow": [
         "Build the Windows installer from GitHub source, or check Releases for available installer assets.",
-        "Run setup online once to obtain the pinned runtime and small English model, then open Dotflow.",
+        "Run setup online once to obtain the pinned runtime and small English model, then open Notewll.",
         "Use Practice to test your microphone and recognition, then confirm typing into another app.",
         "Hold your dictation shortcut, or start a personal note/meeting with the chosen audio source.",
         "Review the original conversation, add personal notes, play audio and export a PDF snapshot."
@@ -75,22 +75,24 @@
         ],
         [
           "Verification",
-          "84 automated checks passed"
+          "85 automated checks passed; four live checks excluded"
         ]
       ],
-      "tryUrl": "https://github.com/sudheer-050/dotflow#get-started",
-      "tryLabel": "Build for Windows",
-      "sourceUrl": "https://github.com/sudheer-050/dotflow",
+      "tryUrl": "https://github.com/sudheer-050/notewll/releases/tag/v0.7.0",
+      "tryLabel": "Download Windows preview",
+      "sourceUrl": "https://github.com/sudheer-050/notewll",
       "id": "dotflow",
       "slug": "dotflow",
-      "name": "Dotflow",
+      "name": "Notewll",
       "badge": "Windows Preview",
       "description": "Private voice typing, personal notes and meeting transcripts for Windows, with local English speech recognition and selectable microphone or computer audio.",
       "featured": true,
       "featuredOrder": 3,
       "resume": false,
       "publication": "published",
-      "aliases": [],
+      "aliases": [
+        "notewll"
+      ],
       "guide": {
         "uses": [
           [
@@ -130,19 +132,36 @@
       "sourceAvailability": "public",
       "releases": [
         {
-          "version": "v0.6.1",
+          "version": "v0.7.0",
           "preview": true,
-          "date": "2026-10-21T21:23:12Z",
-          "notes": "﻿# Dotflow / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. The application currently appears as Local Dictation; Dotflow is its public repository name.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
-          "url": "https://github.com/sudheer-050/dotflow/releases/tag/v0.6.1",
+          "date": "2026-10-22T20:17:34Z",
+          "notes": "# Notewll 0.7.0\n\nWindows x64, English-only, offline speech after initial setup download.\n\n- PDF-only conversation export with readable scope previews and explicit participant-label wording. Original words remain read-only; external PDF copies are not tamper-proof.\n- Responsive export, playback, storage and backup interfaces; separate retention and deleted-record recovery.\n- Saved-record review separated from new recording controls; actual saved audio sources only, device/activity feedback and grouped actions.\n- Apply/Cancel for device changes; permanent toolbar hiding and snooze respected across note actions.\n- Compact Home, contextual recovery, consistent Notewll branding, improved themed tabs/dropdowns, searchable word/snippet forms and explicit correction saving.\n- Standard, Chat, Email and conservative Code styles; user-controlled Practice and guided first-use checks.\n\nVerification: 85 automated checks passed, four live checks excluded. Isolated UI checks preserve original words and preferences. See FIX_REPORT_0.7.0.md for all 38 review findings and remaining acceptance work.\n\nThe installer is unsigned because no code-signing certificate was provided. Published as an unsigned preview. Installation and live desktop acceptance have not been verified in this managed session. Real microphone/call capture, browser/terminal injection, mixed-DPI pointer behavior, Narrator and consented speech-accuracy comparison require a normal desktop session. The managed session denies those operations. No macOS/mobile/cloud sync release is included.\n\n\nOctober 22, 2026 update: renamed the application to Notewll across the UI, setup, shortcuts, exports and documentation. Dictation uses direct typing without reading the target field or an automatic paste retry. Existing LocalDictation data and installation identifiers are retained for upgrades. Shortcut preferences are preserved. The Windows preview installer is unsigned; real cross-app insertion still needs desktop acceptance.\n",
+          "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.7.0",
           "assets": [
             {
-              "name": "LocalDictation-Setup-0.6.1.exe",
-              "url": "https://github.com/sudheer-050/dotflow/releases/download/v0.6.1/LocalDictation-Setup-0.6.1.exe"
+              "name": "Notewll-Setup-0.7.0.exe",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.7.0/Notewll-Setup-0.7.0.exe"
             },
             {
               "name": "SHA256SUMS.txt",
-              "url": "https://github.com/sudheer-050/dotflow/releases/download/v0.6.1/SHA256SUMS.txt"
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.7.0/SHA256SUMS.txt"
+            }
+          ]
+        },
+        {
+          "version": "v0.6.1",
+          "preview": true,
+          "date": "2026-10-21T21:23:12Z",
+          "notes": "\ufeff# Notewll / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. This historical installer appears as Local Dictation. The project and current application are now named Notewll.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
+          "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.6.1",
+          "assets": [
+            {
+              "name": "LocalDictation-Setup-0.6.1.exe",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.6.1/LocalDictation-Setup-0.6.1.exe"
+            },
+            {
+              "name": "SHA256SUMS.txt",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.6.1/SHA256SUMS.txt"
             }
           ]
         }
@@ -150,7 +169,7 @@
       "evidence": [
         {
           "claim": "Source-preview validation notes",
-          "url": "https://github.com/sudheer-050/dotflow",
+          "url": "https://github.com/sudheer-050/notewll",
           "version": "Source preview reviewed October 22, 2026",
           "reviewed": "2026-10-22",
           "scope": "Repository-reported checks; not rerun by this website. Downloaded releases have their own versioned notes."
@@ -277,7 +296,7 @@
     {
       "category": "Conversational assistant",
       "image": "https://myhai.org/project-images/h-ai.png",
-      "summary": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "summary": "HAI\u2019s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
       "tech": [
         "JavaScript",
         "Gemini",
@@ -292,7 +311,7 @@
         ],
         [
           "Hands-free voice mode",
-          "Use the browser’s speech capabilities to talk with H and hear responses aloud."
+          "Use the browser\u2019s speech capabilities to talk with H and hear responses aloud."
         ],
         [
           "No account required",
@@ -300,7 +319,7 @@
         ],
         [
           "Personal glossary",
-          "Teach H unfamiliar terms and keep those glossary entries in the browser’s local storage."
+          "Teach H unfamiliar terms and keep those glossary entries in the browser\u2019s local storage."
         ],
         [
           "Conversation transcript",
@@ -318,8 +337,8 @@
         "Continue the thread while the page retains its conversation context.",
         "Review or download the transcript when finished."
       ],
-      "architecture": "H is a browser-based interface served by the HAI backend. It currently uses Google’s Gemini API as an interim model runtime while migration back to a locally hosted model is in progress. Voice input and playback use browser Web Speech capabilities, and user-taught glossary terms stay in local browser storage.",
-      "trust": "During the current interim configuration, message text is sent to Google’s Gemini API for processing. Browser speech handling can vary by browser and operating system. Glossary entries remain local to the browser, and no HAI account is required to start a conversation.",
+      "architecture": "H is a browser-based interface served by the HAI backend. It currently uses Google\u2019s Gemini API as an interim model runtime while migration back to a locally hosted model is in progress. Voice input and playback use browser Web Speech capabilities, and user-taught glossary terms stay in local browser storage.",
+      "trust": "During the current interim configuration, message text is sent to Google\u2019s Gemini API for processing. Browser speech handling can vary by browser and operating system. Glossary entries remain local to the browser, and no HAI account is required to start a conversation.",
       "status": "Live on myhai.org. Text and voice modes are available now; the model runtime is temporarily Gemini while the locally hosted runtime is being restored.",
       "facts": [
         [
@@ -344,7 +363,7 @@
       "slug": "h",
       "name": "H AI",
       "badge": "Conversational assistant",
-      "description": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "description": "HAI\u2019s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
       "featured": false,
       "featuredOrder": 999,
       "resume": false,
@@ -933,11 +952,11 @@
       "features": [
         [
           "Cinematic presentation",
-          "Scroll-driven sequences, large project imagery, and deliberate motion create a portfolio rather than a résumé grid."
+          "Scroll-driven sequences, large project imagery, and deliberate motion create a portfolio rather than a r\u00e9sum\u00e9 grid."
         ],
         [
           "Multiple views",
-          "Switch between the main cinematic experience, an Iron Man HUD theme, and a print-oriented résumé."
+          "Switch between the main cinematic experience, an Iron Man HUD theme, and a print-oriented r\u00e9sum\u00e9."
         ],
         [
           "Custom CMS",
@@ -958,7 +977,7 @@
       ],
       "workflow": [
         "Open the public portfolio and explore projects through the cinematic or alternate themes.",
-        "Use the résumé view when a compact printable format is preferable.",
+        "Use the r\u00e9sum\u00e9 view when a compact printable format is preferable.",
         "Sign in to the private admin area to update structured content.",
         "Publish changes by rebuilding only the portfolio service."
       ],
@@ -1305,7 +1324,7 @@
       "features": [
         [
           "Local inference",
-          "Run supported Llama models through Ollama on the user’s own machine."
+          "Run supported Llama models through Ollama on the user\u2019s own machine."
         ],
         [
           "Multiple users",
@@ -1331,7 +1350,7 @@
       "workflow": [
         "Install Python dependencies and a compatible Ollama model.",
         "Start the terminal assistant and select or create a user identity.",
-        "Chat locally while the application stores that user’s history.",
+        "Chat locally while the application stores that user\u2019s history.",
         "Monthly keyword summaries condense recurring topics.",
         "Relevant summaries and messages are recalled for future conversations."
       ],
@@ -1448,7 +1467,7 @@
       ],
       "architecture": "The coursework prototype centers on Python-based machine-learning logic and an application concept rather than a hardened production service. Its value is the matching experiment and evaluation process.",
       "trust": "Dating data is sensitive, and matching systems can amplify bias or create false confidence. A production version would require clear consent, data minimization, safety controls, fairness testing, and user control over recommendations.",
-      "status": "Completed as a DePaul “Machine Learning for Managers” team project. There is currently no public repository or live deployment, so no Try Now link is shown.",
+      "status": "Completed as a DePaul \u201cMachine Learning for Managers\u201d team project. There is currently no public repository or live deployment, so no Try Now link is shown.",
       "facts": [
         [
           "Availability",
@@ -1643,10 +1662,10 @@
     }
   ],
   "certifications": [
-    "Deep Learning Specialization — DeepLearning.AI (2026)",
-    "Machine Learning Specialization — Stanford Online (2026)",
-    "Career Essentials in Business Analysis — Microsoft & LinkedIn Learning (2024)",
-    "Career Essentials in Data Analysis — Microsoft & LinkedIn Learning (2024)"
+    "Deep Learning Specialization \u2014 DeepLearning.AI (2026)",
+    "Machine Learning Specialization \u2014 Stanford Online (2026)",
+    "Career Essentials in Business Analysis \u2014 Microsoft & LinkedIn Learning (2024)",
+    "Career Essentials in Data Analysis \u2014 Microsoft & LinkedIn Learning (2024)"
   ],
   "contact": {
     "email": "gsudheer56@gmail.com",
@@ -1665,21 +1684,21 @@
     "education": [
       {
         "title": "Master of Science, Business Analytics",
-        "date": "Sep 2024 — Jun 2026",
-        "organization": "DePaul University, Kellstadt Graduate School of Business — Chicago, IL · GPA 3.925",
+        "date": "Sep 2024 \u2014 Jun 2026",
+        "organization": "DePaul University, Kellstadt Graduate School of Business \u2014 Chicago, IL \u00b7 GPA 3.925",
         "bullets": []
       },
       {
         "title": "B.Tech, Chemical Engineering",
-        "date": "Aug 2016 — Oct 2020",
-        "organization": "Rajiv Gandhi University of Knowledge Technologies — Nuzvid, India",
+        "date": "Aug 2016 \u2014 Oct 2020",
+        "organization": "Rajiv Gandhi University of Knowledge Technologies \u2014 Nuzvid, India",
         "bullets": []
       }
     ],
     "experience": [
       {
         "title": "Data Analytics Intern",
-        "date": "Mar — Jun 2024",
+        "date": "Mar \u2014 Jun 2024",
         "organization": "Unified Mentor",
         "bullets": [
           "Analyzed 100K+ Amazon sales transactions in Power BI and R, driving a 10% increase in targeted customer segment sales.",
@@ -1688,15 +1707,15 @@
       },
       {
         "title": "Independent Business Consultant",
-        "date": "Aug 2023 – Feb 2024",
-        "organization": "Volunteer · self-directed",
+        "date": "Aug 2023 \u2013 Feb 2024",
+        "organization": "Volunteer \u00b7 self-directed",
         "bullets": [
           "Advised two local electronics retailers on inventory, sales trends and business performance."
         ]
       },
       {
         "title": "Junior Engineer",
-        "date": "Feb 2021 — Jul 2023",
+        "date": "Feb 2021 \u2014 Jul 2023",
         "organization": "Hetero Labs Limited (Unit-IX)",
         "bullets": [
           "Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.",

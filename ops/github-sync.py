@@ -5,7 +5,7 @@ from pathlib import Path
 
 STATUS=Path('/home/bigserver/website-catalog-status/status.json')
 BACKUP=Path('/home/bigserver/website-sync-backup-20261022/github')
-ALLOWED={'hagent','dotflow','bizpack','morningstar','hai-messenger','h-ai','job-portal','tabula-rasa','portfolio'}
+ALLOWED={'hagent','notewll','bizpack','morningstar','hai-messenger','h-ai','job-portal','tabula-rasa','portfolio'}
 BEGIN='<!-- BEGIN SHARED CATALOG -->'
 END='<!-- END SHARED CATALOG -->'
 
