@@ -1,7 +1,7 @@
 'use strict';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const samples={
-  dotflow:['Format a sample note','we agreed to review the prototype on friday. please share your feedback before then.'],
+
   hgpt:['Explore project memory','What did we decide about the prototype?'],
   h:['Ask about an application','How can I try Notewll?'],
   hagent:['Move an issue through a board','Review the prototype'],
@@ -24,11 +24,6 @@ function runtime(id){
     const value=input.value.trim();
     if(!value&&!['dating','tabula-rasa'].includes(id)){show('Enter a sample to continue.');return;}
     switch(id){
-      case 'dotflow':{
-        const text=value.replace(/\s+/g,' ').replace(/(^|[.!?]\s+)([a-z])/g,(_,a,b)=>a+b.toUpperCase());
-        const mode=root.querySelector('[data-demo-option]').value;
-        show(mode==='email'?'Hi,\n\n'+text+'\n\nThanks!':mode==='bullets'?text.split(/(?<=[.!?])\s+/).map(s=>'- '+s).join('\n'):text);break;
-      }
       case 'hgpt':{
         const saved=root.querySelector('[data-demo-option]').checked;
         show(saved?'Sample recalled memory: Prototype review is Friday.\n\nScripted response: We decided to review the prototype on Friday.\n\nContext trace: project / confirmed decision.':'Memory is off. The sample question has no saved project context.\n\nTurn on the confirmed memory to compare.');break;
@@ -86,11 +81,54 @@ function runtime(id){
   const steps=[...root.querySelectorAll('[data-demo-step]')];
   steps.forEach(button=>button.addEventListener('click',()=>{steps.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelector('[data-demo-step-text]').textContent=button.getAttribute('data-step-text');}));
 }
+function recorderRuntime(){
+  const root=document.getElementById('project-demo'),record=root.querySelector('[data-record]'),reset=root.querySelector('[data-reset-recording]'),status=root.querySelector('[data-record-status]'),audio=root.querySelector('audio'),download=root.querySelector('[data-record-download]');
+  let recorder=null,stream=null,chunks=[],url='',timer=null,pending=false,generation=0;
+  const say=text=>{status.textContent=text;};
+  const release=()=>{if(stream)stream.getTracks().forEach(track=>track.stop());stream=null;};
+  const clear=()=>{audio.pause();audio.removeAttribute('src');audio.hidden=true;download.hidden=true;download.removeAttribute('href');if(url)URL.revokeObjectURL(url);url='';};
+  function stop(){
+    generation++;pending=false;clearTimeout(timer);record.textContent='Start recording';record.setAttribute('aria-pressed','false');
+    if(recorder&&recorder.state==='recording'){say('Saving your voice note…');recorder.stop();}else{release();say('Ready. Start recording, then speak.');}
+  }
+  async function start(){
+    if(record.disabled||pending||(recorder&&recorder.state==='recording'))return;
+    if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('This browser does not support this recorder. Try a current Chrome, Edge, Firefox or Safari browser.');return;}
+    clear();chunks=[];pending=true;const request=++generation;
+    record.textContent='Cancel microphone request';say('Allow microphone access when asked. Then speak to record your note.');
+    try{
+      const granted=await navigator.mediaDevices.getUserMedia({audio:true});
+      if(request!==generation){granted.getTracks().forEach(track=>track.stop());return;}
+      stream=granted;recorder=new MediaRecorder(stream);const active=recorder;pending=false;
+      active.addEventListener('dataavailable',event=>{if(event.data.size)chunks.push(event.data);});
+      active.addEventListener('stop',()=>{
+        granted.getTracks().forEach(track=>track.stop());if(stream===granted)stream=null;clearTimeout(timer);record.disabled=false;
+        if(active!==recorder)return;
+        if(!chunks.length){say('No audio was captured. Please try again.');return;}
+        const blob=new Blob(chunks,{type:active.mimeType||chunks[0].type});url=URL.createObjectURL(blob);audio.src=url;audio.hidden=false;download.href=url;download.download='notewll-voice-note.'+(blob.type.includes('mp4')?'m4a':blob.type.includes('ogg')?'ogg':'webm');download.hidden=false;
+        say('Your voice note is ready. Play it back or download it.');
+      });
+      active.addEventListener('error',()=>{stop();release();say('Recording failed. Please try again.');});
+      active.start();record.textContent='Stop recording';record.setAttribute('aria-pressed','true');say('Recording — speak now. Release Space or choose Stop recording when finished.');timer=setTimeout(stop,60000);
+    }catch(error){if(request!==generation)return;pending=false;release();record.textContent='Start recording';record.setAttribute('aria-pressed','false');say(error.name==='NotAllowedError'?'Microphone access was not allowed. Enable it in your browser permissions to try recording.':error.name==='NotFoundError'?'No microphone was found. Connect one and try again.':'Could not start recording. Check your microphone and try again.');}
+  }
+  record.addEventListener('click',()=>pending||(recorder&&recorder.state==='recording')?stop():start());
+  record.addEventListener('keydown',event=>{if(event.code==='Space'){event.preventDefault();if(!event.repeat)start();}});
+  record.addEventListener('keyup',event=>{if(event.code==='Space'){event.preventDefault();stop();}});
+  record.addEventListener('blur',()=>{if(pending||(recorder&&recorder.state==='recording'))stop();});
+  reset.addEventListener('click',()=>{stop();recorder=null;release();chunks=[];clear();say('Ready. Start recording, then speak.');});
+  window.addEventListener('pagehide',()=>{stop();release();clear();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(pending||(recorder&&recorder.state==='recording')))stop();});
+}
+function voiceDemo(){
+  return `<section class="detail project-demo" id="project-demo" aria-labelledby="demo-title"><p class="eyebrow">Try voice note-taking</p><h2 id="demo-title">Press. Speak. Keep your note.</h2><p>Notewll is a voice notetaker and shortcut-driven writing tool. In the Windows app, use your shortcut to speak into the active text field — in notes, your browser, an editor or a terminal.</p><p>Try recording a voice note here: focus the recording button, hold <kbd>Space</kbd>, speak, then release to stop. On mobile, tap Start recording and Stop recording.</p><p>This browser demo records audio only. It does not transcribe speech or type into other applications. Your recording stays in this page unless you download it.</p><div class="voice-demo-controls"><button class="button primary" type="button" data-record aria-pressed="false">Start recording</button><button class="button" type="button" data-reset-recording>Reset recording</button></div><p role="status" aria-live="polite" data-record-status>Ready. Start recording, then speak.</p><audio controls hidden aria-label="Your recorded voice note"></audio><a class="button" data-record-download hidden>Download voice note</a><p class="eyebrow">Microphone permission is requested when you start. Each demo recording stops after one minute. The Space shortcut works while the recording button is focused; choose your own shortcut in the Windows app.</p><noscript><p>Enable JavaScript to try the recorder.</p></noscript></section><style>.project-demo{scroll-margin-top:110px}.project-demo audio{display:block;width:100%;margin:24px 0}.project-demo [hidden]{display:none!important}.voice-demo-controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.project-demo button{cursor:pointer}.project-demo kbd{border:1px solid #ffffff60;padding:3px 8px;border-radius:4px}.project-demo [aria-pressed="true"]{background:#ef8795!important;color:#16080a!important}.project-demo [data-record-status]{padding:20px;border:1px solid #ffffff30;margin:24px 0!important}.project-demo button:focus-visible{outline:3px solid #c9b9ff;outline-offset:4px}</style><script>(${recorderRuntime.toString()})();</script>`;
+}
+
 module.exports=function demo(p){
+  if(p.id==='dotflow')return voiceDemo();
   const [title,sample]=samples[p.id]||['Explore the workflow','Sample'];
   const select=(options)=>'<label class="demo-option">Choose a sample <select data-demo-option>'+options.map(([v,t])=>'<option value="'+v+'">'+t+'</option>').join('')+'</select></label>';
   let option='';
-  if(p.id==='dotflow')option=select([['note','Note'],['email','Email'],['bullets','Bullet points']]);
   if(p.id==='hgpt')option='<label class="demo-option"><input type="checkbox" data-demo-option checked> Include confirmed project memory</label>';
   if(p.id==='morningstar')option=select([['software','Software company'],['bank','Bank'],['energy','Energy company']]);
   if(p.id==='portfolio')option=select([['dark','Dark presentation'],['light','Light presentation']]);
