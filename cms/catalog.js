@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const sitePage = require('./site-page');
+const projectDemo = require('./demo');
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const P = 'https://sudheerkumargandiboyana.com';
 const H = 'https://myhai.org';
@@ -89,7 +90,8 @@ const pills = p => p.tech.map(t=>`<span class="pill">${esc(t)}</span>`).join('')
 function projectPage(p,c,revision,domain,templates) {
   const g=p.guide;
   const releases=(items,label)=>items.length?`<section class="detail"><h2>${label}</h2>${items.map(r=>`<article class="release"><h3><a href="${esc(domain===P?guideUrl(p,H):r.url)}">${esc(r.version)}</a>${r.preview?' · Preview':''}</h3><p>${esc(r.date.slice(0,10))}</p><p>${esc(r.notes)}</p>${domain===P&&r.assets.length?`<a class="button" href="${guideUrl(p,H)}">Downloads on myhai.org</a>`:r.assets.length?r.assets.map(a=>`<a class="button" href="${esc(a.url)}">Download ${esc(a.name)}</a>`).join(''):'<p>No installer assets listed for this release. Check release notes for source archives and setup.</p>'}</article>`).join('')}</section>`:'';
-  const body=`<div class="catalog-hero"><div><p class="eyebrow">${esc(p.category)}</p><h1 class="catalog-title">${esc(p.name)}</h1><p class="catalog-summary">${esc(p.summary)}</p><div>${pills(p)}</div><div>${actions(p,domain)}</div></div>${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} project preview" width="960" height="540">`:''}</div>
+  const body=`<div class="catalog-hero"><div><p class="eyebrow">${esc(p.category)}</p><h1 class="catalog-title">${esc(p.name)}</h1><p class="catalog-summary">${esc(p.summary)}</p><div>${pills(p)}</div><div>${actions(p,domain)}${domain===H?'<a class="button" href="#project-demo">Try demo</a>':''}</div></div>${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} project preview" width="960" height="540">`:''}</div>
+    ${domain===H?projectDemo(p):''}
     <section class="detail"><h2>What it is for</h2><p>${esc(p.description)}</p><p>${esc(p.why)}</p>${pairList(g.uses||[])}</section>
     <section class="detail"><h2>${domain===P?'Try this project':'Get started'}</h2><p>${domain===P?'This is the professional showcase. Visit my playground on myhai.org to try the live app, find downloads, or explore the project.':esc(g.start||'Read the linked project documentation.')}</p>${domain===P?'':list(g.requirements||[])}${actions(p,domain)}</section>
     <section class="detail"><h2>Features and workflow</h2>${pairList(p.features)}<ol>${p.workflow.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></section>
@@ -202,7 +204,7 @@ function resume(c,revision,templates) {
 }
 function build(c,templates) {
   validate(c);
-  const revision=crypto.createHash('sha256').update(JSON.stringify(c)).update(fs.readFileSync(__filename)).update(fs.readFileSync(require.resolve('./site-page'))).update(['portfolio.html','hai.html','resume.html'].map(f=>fs.readFileSync(path.join(templates,f),'utf8')).join('\n')).digest('hex').slice(0,16);
+  const revision=crypto.createHash('sha256').update(JSON.stringify(c)).update(fs.readFileSync(__filename)).update(fs.readFileSync(require.resolve('./site-page'))).update(fs.readFileSync(require.resolve('./demo'))).update(['portfolio.html','hai.html','resume.html'].map(f=>fs.readFileSync(path.join(templates,f),'utf8')).join('\n')).digest('hex').slice(0,16);
   const publicContent=JSON.parse(JSON.stringify(c));publicContent.projects=published(publicContent);publicContent.revision=revision;
   const result={
     'portfolio/index.html':portfolio(c,revision,templates),

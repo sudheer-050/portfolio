@@ -22,6 +22,15 @@ check('navigation and guides stay on their own site',()=>{
   assert(original.files['portfolio/index.html'].includes('href="#projects">Project'));
   assert(original.files['hai/landing.html'].includes('href="/projects/">Projects'));
 });
+check('every HAI project has an isolated labeled demo; portfolio remains an exhibition',()=>{
+  for(const p of seed.projects.filter(p=>p.publication==='published')){
+    const demo=original.files['hai/projects/'+p.slug+'/index.html'];
+    assert(demo.includes('id="project-demo"'));
+    assert(demo.includes('browser-only illustration, not the full application'));
+    assert(demo.includes('href="#project-demo">Try demo'));
+    assert(!original.files['portfolio/projects/'+p.slug+'/index.html'].includes('id="project-demo"'));
+  }
+});
 check('a site design change never changes the other site design',()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'site-design-'));
   try{
