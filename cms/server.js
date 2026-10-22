@@ -170,8 +170,10 @@ app.post('/api/restore',requireAdmin,(req,res)=>{
 });
 app.get('/api/publishing-status',requireAdmin,(req,res)=>{
   let github={state:'pending',message:'Waiting for GitHub synchronization'};
+  let publicChecks=null;
   try{github=JSON.parse(fs.readFileSync(process.env.GITHUB_STATUS_PATH||'/github-status/status.json','utf8'));}catch{}
-  res.json({revision:publishing.revision(),snapshots:{portfolio:'generated',hai:'generated'},github});
+  try{publicChecks=JSON.parse(fs.readFileSync('/github-status/public-verification.json','utf8'));}catch{}
+  res.json({revision:publishing.revision(),snapshots:{portfolio:'generated',hai:'generated'},github,publicChecks});
 });
 app.post('/api/releases/:id/refresh',requireAdmin,async(req,res)=>{
   const draft=publishing.draft(),project=draft.content.projects.find(p=>p.id===req.params.id);
