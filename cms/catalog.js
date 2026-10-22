@@ -170,7 +170,7 @@ function hai(c,revision,templates) {
   source=source.replace('<body>','<body><a class="skip-link" href="#apps">Skip to apps</a>');
   source=source.replace("const mobileNav = document.getElementById('mobileNav');",`const mobileNav = document.getElementById('mobileNav');
         document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobileNav.classList.contains('open')){mobileNav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.focus();}});`);
-  return source.replace('</head>','<style>.systems-rail .system-copy h3{overflow-wrap:anywhere}@media(max-width:900px){.systems-rail .system-card{grid-template-columns:minmax(0,1fr);gap:18px}.systems-rail .system-copy,.systems-rail .system-media{min-width:0;max-width:100%;width:auto}.systems-rail .system-copy p{max-width:100%}}</style></head>');
+  return source.replace('</head>','<style>.systems-rail .system-type{color:#b1bac8}.systems-rail .system-copy h3{overflow-wrap:anywhere}@media(max-width:900px){.systems-rail .system-card{grid-template-columns:minmax(0,1fr);gap:18px}.systems-rail .system-copy,.systems-rail .system-media{min-width:0;max-width:100%;width:auto}.systems-rail .system-copy p{max-width:100%}}</style></head>');
 }
 function resume(c,revision,templates) {
   let source=fs.readFileSync(path.join(templates,'resume.html'),'utf8');
