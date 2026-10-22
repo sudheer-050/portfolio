@@ -19,7 +19,7 @@ check('navigation and guides stay on their own site',()=>{
     assert(original.files[site+'/sitemap.xml'].includes(domain+'/projects/'));
   }
   assert(original.files['portfolio/index.html'].includes('href="/projects/">All projects'));
-  assert(original.files['hai/landing.html'].includes('href="/projects/">Projects'));
+  assert(original.files['hai/landing.html'].includes('href="/projects/">Playground'));
 });
 check('a site design change never changes the other site design',()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'site-design-'));
@@ -31,6 +31,23 @@ check('a site design change never changes the other site design',()=>{
     for(const file of ['index.html','projects/index.html','projects/hagent/index.html'])assert(b.files['portfolio/'+file].includes('PORTFOLIO_ONLY_THEME_MARKER'));
     for(const file of ['landing.html','projects/index.html','projects/hagent/index.html'])assert(!b.files['hai/'+file].includes('PORTFOLIO_ONLY_THEME_MARKER'));
   }finally{fs.rmSync(temporary,{recursive:true,force:true});}
+});
+
+check('portfolio exhibits work and playground provides launch actions',()=>{
+  assert(original.files['portfolio/index.html'].includes('href="https://myhai.org/">Playground'));
+  assert(original.files['hai/landing.html'].includes('Professional portfolio'));
+  assert(original.files['hai/landing.html'].includes("HAI | Sudheer's Playground"));
+  for(const p of seed.projects.filter(p=>p.publication==='published')){
+    const showcase=original.files['portfolio/projects/'+p.slug+'/index.html'];
+    assert(showcase.includes(`href="https://myhai.org/projects/${p.slug}/">Try on myhai.org`));
+    assert(showcase.includes('This is the professional showcase.'));
+    for(const r of p.releases)for(const asset of r.assets)assert(!showcase.includes(`href="${asset.url}"`));
+    if(p.tryUrl){
+      const target=p.tryUrl.startsWith('/')?'https://myhai.org'+p.tryUrl:p.tryUrl;
+      assert(original.files['hai/projects/index.html'].includes(`href="${target}"`));
+      assert(original.files['hai/projects/'+p.slug+'/index.html'].includes(`href="${target}"`));
+    }
+  }
 });
 
 const fixture=clone(seed.projects[0]);Object.assign(fixture,{id:'staging-only-fixture',slug:'staging-only-fixture',name:'Staging fixture',publication:'published',sourceAvailability:'private',sourceUrl:'',aliases:[],featured:true,resume:true});

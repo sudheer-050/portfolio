@@ -62,3 +62,6 @@ subdirectory. New published revisions remain available for recovery after rollba
 
 
 Shared information, independent designs (October 22, 2026): each project has one central record. Edit it through /admin on either site (both use this studio), then Publish both sites. Names, summaries, descriptions, features, images and download links update together on both homepages, directories and guides. Each domain serves its own /projects/ and /projects/<slug>/ pages with its own header, fonts, styles and navigation. Project information belongs in the catalog, never in a site template. Layout/style edits belong only in that site template. Drafts stay private until published. No cross-site Projects redirect is used.
+
+
+Site roles (October 22, 2026): sudheerkumargandiboyana.com is the professional exhibition, with experience, resume and case studies. All project try and download actions there lead to the corresponding project on myhai.org. myhai.org is the playground for live apps, downloads, websites and experiments. Source links remain available as engineering evidence. Both presentations use the same central project records.
