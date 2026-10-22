@@ -2,7 +2,9 @@
 // Catalog facts use each site's existing fonts, CSS, header and footer.
 module.exports=function sitePage(source,generated,body,domain,isPortfolio){
   const head=generated.match(/<head>([\s\S]*?)<\/head>/)[1].replace(/<style>[\s\S]*?<\/style>/g,'');
-  const native=source.match(/<head[^>]*>([\s\S]*?)<\/head>/)[1];
+  const nativeHead=source.match(/<head[^>]*>([\s\S]*?)<\/head>/)[1];
+  const fallback=(nativeHead.match(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/g)||[]).join('\n');
+  const native=nativeHead.replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/g,'');
   const styles=[...native.matchAll(/<style\b[^>]*>[\s\S]*?<\/style>|<link\b[^>]*>/g)].map(m=>m[0]).filter(tag=>tag.startsWith('<style')||/rel="(?:stylesheet|preconnect|icon)"/.test(tag)).join('\n');
   const links=html=>html.replace(/\s+onclick="[^"]*"/g,'').replace(/href="#(?:home)?"/g,'href="/"').replace(/href="#([^"]+)"/g,'href="/#$1"').replace(/href="resume.html"/g,'href="/resume.html"').replace(/href="https:\/\/(?:myhai.org|sudheerkumargandiboyana.com)\/projects\/"/g,`href="${domain}/projects/"`).replace(/ class="active"/g,'');
   const header=links(source.match(/<header\b[\s\S]*?<\/header>/)[0]),footer=links(source.match(/<footer\b[\s\S]*?<\/footer>/)[0]);
@@ -36,5 +38,5 @@ module.exports=function sitePage(source,generated,body,domain,isPortfolio){
     @media(max-width:760px){.catalog-main{padding:35px 20px 60px}.catalog-hai .catalog-main{padding-top:110px}.catalog-main .catalog-hero{grid-template-columns:1fr;gap:25px}.catalog-main .detail{padding:20px}.catalog-main .project-grid{grid-template-columns:minmax(0,1fr)!important}}
   </style>`;
   const script=`<script>const menu=document.querySelector('.menu,#menuToggleBtn'),nav=document.querySelector('.navlinks,#mobileNav');if(menu&&nav){function closeMenu(){menu.setAttribute('aria-expanded','false');nav.classList.remove('open')}menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open)});nav.addEventListener('click',e=>{if(e.target.closest('a'))closeMenu()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus()}})}</script>`;
-  return `<!doctype html><html lang="en"><head>${head}${styles}${css}</head><body class="catalog-${isPortfolio?'portfolio':'hai'}"><a class="skip-link" href="#main">Skip to content</a>${header}<main class="catalog-main" id="main">${body}</main>${footer}${script}</body></html>`;
+  return `<!doctype html><html lang="en"><head>${head}${styles}${fallback}${css}</head><body class="catalog-${isPortfolio?'portfolio':'hai'}"><a class="skip-link" href="#main">Skip to content</a>${header}<main class="catalog-main" id="main">${body}</main>${footer}${script}</body></html>`;
 };
