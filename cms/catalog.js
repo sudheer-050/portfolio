@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const sitePage = require('./site-page');
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const P = 'https://sudheerkumargandiboyana.com';
 const H = 'https://myhai.org';
@@ -72,7 +73,7 @@ function validate(c) {
   return c;
 }
 
-const guideUrl = p => H+'/projects/'+p.slug+'/';
+const guideUrl = (p,domain=H) => domain+'/projects/'+p.slug+'/';
 function actions(p) {
   return (p.tryUrl?`<a class="button primary" href="${esc(p.tryUrl.startsWith('/')?H+p.tryUrl:p.tryUrl)}">${esc(p.tryLabel||'Open app')} ↗</a>`:'')+
     (p.sourceAvailability==='public'&&p.sourceUrl?`<a class="button" href="${esc(p.sourceUrl)}">View source ↗</a>`:`<span class="availability">${p.sourceAvailability==='private'?'Source is private':'No public source listed'}</span>`);
@@ -84,10 +85,10 @@ function page(title,summary,url,body,c,revision,image=P+'/profile.png') {
 const list = values => `<ul>${values.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>`;
 const pairList = values => `<dl>${values.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('')}</dl>`;
 const pills = p => p.tech.map(t=>`<span class="pill">${esc(t)}</span>`).join('');
-function projectPage(p,c,revision) {
+function projectPage(p,c,revision,domain,templates) {
   const g=p.guide;
   const releases=(items,label)=>items.length?`<section class="detail"><h2>${label}</h2>${items.map(r=>`<article class="release"><h3><a href="${esc(r.url)}">${esc(r.version)}</a>${r.preview?' · Preview':''}</h3><p>${esc(r.date.slice(0,10))}</p><p>${esc(r.notes)}</p>${r.assets.length?r.assets.map(a=>`<a class="button" href="${esc(a.url)}">Download ${esc(a.name)}</a>`).join(''):'<p>No installer assets listed for this release. Check release notes for source archives and setup.</p>'}</article>`).join('')}</section>`:'';
-  const body=`<div class="hero"><div><p class="eyebrow">${esc(p.category)}</p><h1>${esc(p.name)}</h1><p class="summary">${esc(p.summary)}</p><div>${pills(p)}</div><div>${actions(p)}</div></div>${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} project preview" width="960" height="540">`:''}</div>
+  const body=`<div class="catalog-hero"><div><p class="eyebrow">${esc(p.category)}</p><h1 class="catalog-title">${esc(p.name)}</h1><p class="catalog-summary">${esc(p.summary)}</p><div>${pills(p)}</div><div>${actions(p)}</div></div>${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} project preview" width="960" height="540">`:''}</div>
     <section class="detail"><h2>What it is for</h2><p>${esc(p.description)}</p><p>${esc(p.why)}</p>${pairList(g.uses||[])}</section>
     <section class="detail"><h2>Get started</h2><p>${esc(g.start||'Read the linked project documentation.')}</p>${list(g.requirements||[])}${actions(p)}</section>
     <section class="detail"><h2>Features and workflow</h2>${pairList(p.features)}<ol>${p.workflow.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></section>
@@ -95,12 +96,21 @@ function projectPage(p,c,revision) {
     ${(p.evidence||[]).length?`<section class="detail"><h2>Evidence</h2>${p.evidence.map(x=>`<p><a href="${esc(x.url)}">${esc(x.claim)}</a><br>${esc(x.version)} · reviewed ${esc(x.reviewed)}<br>${esc(x.scope)}</p>`).join('')}</section>`:''}
     ${releases(stableReleases(p),'Latest stable releases')}${releases(previewReleases(p),'Previews — separate from stable releases')}
     ${(g.gallery||[]).length?`<section class="detail"><h2>Gallery</h2><div class="grid">${g.gallery.map(([url,caption])=>`<figure><a href="${esc(url)}"><img src="${esc(url)}" alt="${esc(caption)}" loading="lazy"></a><figcaption>${esc(caption)}</figcaption></figure>`).join('')}</div></section>`:''}
-    <section class="detail"><h2>Questions</h2>${(g.faq||[]).map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</section><p><a href="${H}/projects/">Explore all projects →</a></p>`;
-  const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:p.name,description:p.summary,url:guideUrl(p),applicationCategory:p.category,image:p.image||undefined};
-  return page(p.name+' | HAI Projects',p.summary,guideUrl(p),body,c,revision,p.image||undefined).replace('</head>',`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script></head>`);
+    <section class="detail"><h2>Questions</h2>${(g.faq||[]).map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</section><p><a href="${domain}/projects/">Explore all projects →</a></p>`;
+  const schema={'@context':'https://schema.org','@type':'SoftwareApplication',name:p.name,description:p.summary,url:guideUrl(p,domain),applicationCategory:p.category,image:p.image||undefined};
+  return themedPage(p.name+' | '+(domain===P?c.profile.name:'HAI Projects'),p.summary,guideUrl(p,domain),body,c,revision,templates,p.image||undefined).replace('</head>',`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script></head>`);
 }
-function directory(c,revision) {
-  return page('Projects | '+c.profile.name,'All published applications, research and coursework.',H+'/projects/',`<p class="eyebrow">Projects and research</p><h1>All the work.<br>One place to explore.</h1><p class="summary">Live apps, open source, research and coursework. Each guide explains availability, setup and limitations.</p><div class="grid">${published(c).map(p=>`<article class="card" data-project="${p.id}">${p.image?`<a href="${guideUrl(p)}"><img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy" width="800" height="450"></a>`:''}<p class="eyebrow">${esc(p.badge)}</p><h2><a href="${guideUrl(p)}">${esc(p.name)}</a></h2><p>${esc(p.summary)}</p><p>${esc(p.status)}</p><a class="button" href="${guideUrl(p)}">Explore project →</a></article>`).join('')}</div>`,c,revision);
+function themedPage(title,summary,url,body,c,revision,templates,image) {
+  const domain=url.startsWith(P)?P:H;
+  const source=domain===P?portfolio(c,revision,templates):hai(c,revision,templates);
+  return sitePage(source,page(title,summary,url,body,c,revision,image),body,domain,domain===P);
+}
+function directory(c,revision,domain,templates) {
+  const cards=published(c).map(p=>domain===P?
+    `<article class="project" data-project="${p.id}"><div class="project-visual">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy" width="800" height="450">`:''}</div><div class="project-body"><div class="project-kicker"><span>${esc(p.category)}</span><span class="badge">${esc(p.badge)}</span></div><h2>${esc(p.name)}</h2><p class="project-summary">${esc(p.summary)}</p><p class="stack">${esc(p.tech.join(' / '))}</p><div class="project-links"><a href="${guideUrl(p,domain)}">Explore project</a></div></div></article>`:
+    `<article class="project-card" data-project="${p.id}">${p.image?`<img class="project-media" src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy" width="800" height="450">`:''}<p class="eyebrow">${esc(p.badge)}</p><h2>${esc(p.name)}</h2><p class="project-desc">${esc(p.summary)}</p><div class="project-tech">${pills(p)}</div><a class="project-btn primary" href="${guideUrl(p,domain)}">Explore project</a></article>`).join('');
+  const body=`<section ${domain===H?'id="panel-projects"':''}><p class="eyebrow">Projects and research</p><h1 class="catalog-title">All the work.<br>One place to explore.</h1><p class="catalog-summary">Live apps, open source, research and coursework. Each guide explains availability, setup and limitations.</p><div class="${domain===P?'work-grid':'project-grid'}">${cards}</div></section>`;
+  return themedPage('Projects | '+(domain===P?c.profile.name:'HAI'), 'All published applications, research and coursework.',domain+'/projects/',body,c,revision,templates);
 }
 
 // Replace a complete element without parsing or rewriting the site's scripts/styles.
@@ -134,9 +144,9 @@ function portfolio(c,revision,templates) {
   // Facts are generated at publication, including the no-JavaScript experience.
   source=source.replace(/fetch\('api\/content',[\s\S]*?\.catch\([\s\S]*?\}\);/,'');
   const featured=published(c).filter(p=>p.featured).sort((a,b)=>(a.featuredOrder??999)-(b.featuredOrder??999));
-  const cards=featured.map((p,i)=>`<article class="project${i===0?' featured-project':''}" id="project-${p.id}" data-project="${p.id}"><div class="project-visual">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy" width="800" height="450">`:''}</div><div class="project-body"><div class="project-kicker"><span>${esc(p.category)}</span><span class="badge">${esc(p.badge)}</span></div><h3>${esc(p.name)}</h3><p class="project-summary">${esc(p.summary)}</p><p class="stack">${esc(p.tech.join(' / '))}</p><details><summary>Engineering details</summary><p>${esc(p.architecture)}</p><p>${esc(p.status)}</p></details><div class="project-links"><a href="${guideUrl(p)}">Explore project ↗</a>${p.sourceAvailability==='public'&&p.sourceUrl?`<a href="${esc(p.sourceUrl)}">GitHub ↗</a>`:''}</div></div></article>`);
-  source=replaceElement(source,'section','id','projects',`<section class="section wrap" id="projects"><div class="section-head"><div><p class="eyebrow">01 / Selected work</p><h2>Ideas into working systems.</h2></div><p><a class="button" href="${H}/projects/">Browse all ${published(c).length} projects →</a></p></div>${cards[0]||''}<div class="work-grid">${cards.slice(1).join('')}</div></section>`);
-  source=source.replace('<a href="#projects">Selected work</a>',`<a href="#projects">Selected work</a><a href="${H}/projects/">All projects</a>`);
+  const cards=featured.map((p,i)=>`<article class="project${i===0?' featured-project':''}" id="project-${p.id}" data-project="${p.id}"><div class="project-visual">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy" width="800" height="450">`:''}</div><div class="project-body"><div class="project-kicker"><span>${esc(p.category)}</span><span class="badge">${esc(p.badge)}</span></div><h3>${esc(p.name)}</h3><p class="project-summary">${esc(p.summary)}</p><p class="stack">${esc(p.tech.join(' / '))}</p><details><summary>Engineering details</summary><p>${esc(p.architecture)}</p><p>${esc(p.status)}</p></details><div class="project-links"><a href="${guideUrl(p,P)}">Explore project ↗</a>${p.sourceAvailability==='public'&&p.sourceUrl?`<a href="${esc(p.sourceUrl)}">GitHub ↗</a>`:''}</div></div></article>`);
+  source=replaceElement(source,'section','id','projects',`<section class="section wrap" id="projects"><div class="section-head"><div><p class="eyebrow">01 / Selected work</p><h2>Ideas into working systems.</h2></div><p><a class="button" href="/projects/">Browse all ${published(c).length} projects →</a></p></div>${cards[0]||''}<div class="work-grid">${cards.slice(1).join('')}</div></section>`);
+  source=source.replace('<a href="#projects">Selected work</a>',`<a href="#projects">Selected work</a><a href="/projects/">All projects</a>`);
   source=replaceElement(source,'div','class','proof',`<div class="proof" aria-label="Selected projects">${featured.slice(0,3).map(p=>`<a href="#project-${p.id}"><span class="proof-label">${esc(p.category)}</span><strong>${esc(p.name)}</strong><p>${esc(p.badge)} ↗</p></a>`).join('')}</div>`);
   source=replaceElement(source,'div','class','about-copy',`<div class="about-copy"><p>${esc(c.about.intro)}</p>${c.about.paragraphs.map(p=>`<p>${esc(p)}</p>`).join('')}<div class="skill-grid">${c.profile.skills.map(x=>`<div class="skill"><h3>${esc(x.category)}</h3><p>${esc(x.items)}</p></div>`).join('')}</div></div>`);
   source=replaceElement(source,'div','class','education',`<div class="education" id="education">${c.profile.education.map(x=>`<div><p class="eyebrow">Education</p><h3>${esc(x.title)}</h3><p>${esc(x.organization)}</p><p>${esc(x.date)}</p></div>`).join('')}<div><p class="eyebrow">Continued learning</p>${list(c.certifications)}</div></div>`);
@@ -151,7 +161,7 @@ function portfolio(c,revision,templates) {
 }
 function hai(c,revision,templates) {
   let source=fs.readFileSync(path.join(templates,'hai.html'),'utf8');
-  source=source.replaceAll('<a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>', `<a href="${H}/projects/">Projects</a>`);
+  source=source.replaceAll('<a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>', `<a href="/projects/">Projects</a>`);
   source=replaceElement(source,'div','hidden','', '');
   source=replaceElement(source,'div','class','contact-list reveal',`<div class="contact-list reveal"><a class="contact-link" href="mailto:${esc(c.contact.email)}"><span>Email</span><strong>${esc(c.contact.email)}</strong></a><a class="contact-link" href="${esc(c.contact.linkedin)}"><span>LinkedIn</span><strong>${esc(c.profile.name)}</strong></a><a class="contact-link" href="${esc(c.contact.github)}"><span>GitHub</span><strong>Source and experiments</strong></a><div class="contact-link location"><span>Location</span><strong>${esc(c.contact.location)}</strong></div><a class="contact-link" href="${P}/admin"><span>Publishing</span><strong>Content studio ↗</strong></a></div>`);
   const ps=published(c);
@@ -189,20 +199,21 @@ function resume(c,revision,templates) {
 }
 function build(c,templates) {
   validate(c);
-  const revision=crypto.createHash('sha256').update(JSON.stringify(c)).update(fs.readFileSync(__filename)).update(['portfolio.html','hai.html','resume.html'].map(f=>fs.readFileSync(path.join(templates,f),'utf8')).join('\n')).digest('hex').slice(0,16);
+  const revision=crypto.createHash('sha256').update(JSON.stringify(c)).update(fs.readFileSync(__filename)).update(fs.readFileSync(require.resolve('./site-page'))).update(['portfolio.html','hai.html','resume.html'].map(f=>fs.readFileSync(path.join(templates,f),'utf8')).join('\n')).digest('hex').slice(0,16);
   const publicContent=JSON.parse(JSON.stringify(c));publicContent.projects=published(publicContent);publicContent.revision=revision;
   const result={
     'portfolio/index.html':portfolio(c,revision,templates),
     'portfolio/resume.html':resume(c,revision,templates),
+    'portfolio/projects/index.html':directory(c,revision,P,templates),
     'hai/landing.html':hai(c,revision,templates),
-    'hai/projects/index.html':directory(c,revision),
+    'hai/projects/index.html':directory(c,revision,H,templates),
     'content.json':JSON.stringify(publicContent,null,2),
     'revision.json':JSON.stringify({revision,projectCount:published(c).length}),
     'github-profile.md':`<!-- BEGIN SHARED CATALOG -->\n## ${c.profile.name} · ${c.profile.headline}\n\n${c.profile.summary}\n\n${published(c).map(p=>`- [${p.name}](${guideUrl(p)}) — ${p.summary}`).join('\n')}\n\n[Portfolio](${P}/) · [Résumé](${P}/resume.html) · [Apps](${H}/)\n<!-- END SHARED CATALOG -->\n`,
     'github-metadata.json':JSON.stringify(published(c).filter(p=>p.sourceAvailability==='public'&&p.sourceUrl?.startsWith('https://github.com/sudheer-050/')).map(p=>({repository:p.sourceUrl.split('/').slice(3,5).join('/'),description:p.summary.slice(0,350),homepage:guideUrl(p)})),null,2)
   };
-  for(const p of published(c))result['hai/projects/'+p.slug+'/index.html']=projectPage(p,c,revision);
-  for(const [domain,folder,urls] of [[P,'portfolio',['/','/resume.html']],[H,'hai',['/','/projects/',...published(c).map(p=>'/projects/'+p.slug+'/')]]]){
+  for(const p of published(c))for(const [domain,folder] of [[P,'portfolio'],[H,'hai']])result[folder+'/projects/'+p.slug+'/index.html']=projectPage(p,c,revision,domain,templates);
+  for(const [domain,folder,urls] of [[P,'portfolio',['/','/resume.html','/projects/',...published(c).map(p=>'/projects/'+p.slug+'/')]],[H,'hai',['/','/projects/',...published(c).map(p=>'/projects/'+p.slug+'/')]]]){
     result[folder+'/sitemap.xml']='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls.map(u=>`<url><loc>${domain}${u}</loc></url>`).join('')+'</urlset>';
     result[folder+'/robots.txt']=`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /login\nDisallow: /api/\nSitemap: ${domain}/sitemap.xml\n`;
   }

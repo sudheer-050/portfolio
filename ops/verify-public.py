@@ -25,7 +25,7 @@ try:
     projects=portfolio['projects'];ids={p['id'] for p in projects}
     record('same complete inventory',ids=={p['id'] for p in hai['projects']},str(len(ids))+' published projects')
     record('drafts stay private',all(p['publication']=='published' for p in projects))
-    pages=[P+'/',P+'/resume.html',P+'/projects/',H+'/',H+'/projects/']+[H+'/projects/'+p['slug']+'/' for p in projects]
+    pages=[P+'/',P+'/resume.html',P+'/projects/',H+'/',H+'/projects/']+[domain+'/projects/'+p['slug']+'/' for domain in [P,H] for p in projects]
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
         rows=list(pool.map(request,pages))
     for url,(status,final,body) in zip(pages,rows):
@@ -37,7 +37,7 @@ try:
         record('historical conflicts '+url,not re.search(r'\b293[ -](?:passing|automated|test)|\bGICS\b|MS Business Analytics candidate',body))
     for url in [H+'/project.html?project=missing-regression-check',H+'/projects/missing-regression-check/',P+'/missing-regression-check']:
         record('real 404 '+url,request(url)[0]==404)
-    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),(P+'/projects/',H+'/projects/'),(P+'/projects',H+'/projects/'),('http://myhai.org/',H+'/'),('http://myhai.org/jobs/',H+'/jobs/'),('http://myhai.org/analyst/',H+'/analyst/'),('https://www.myhai.org/',H+'/')]:
+    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),(P+'/projects',P+'/projects/'),('http://myhai.org/',H+'/'),('http://myhai.org/jobs/',H+'/jobs/'),('http://myhai.org/analyst/',H+'/analyst/'),('https://www.myhai.org/',H+'/')]:
         status,final,_=request(source)
         record('redirect '+source,status==200 and final.rstrip('/')==target.rstrip('/'),str(status)+' '+final)
     for p in projects:
@@ -51,7 +51,7 @@ try:
         responses=list(pool.map(lambda u:request(u,'HEAD'),urls))
     for url,(status,final,_) in zip(urls,responses):record('asset/download '+url,status==200,str(status))
     for url in [P+'/sitemap.xml',H+'/sitemap.xml']:
-        status,_,body=request(url);record('sitemap '+url,status==200 and ('/resume.html' in body if url.startswith(P) else H+'/projects/' in body));record('no duplicate project sitemap '+url,url.startswith(H) or '/projects/' not in body)
+        status,_,body=request(url);record('sitemap '+url,status==200 and '/projects/' in body)
 except Exception as exc:record('monitor execution',False,str(exc))
 report={'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'passed':all(r['passed'] for r in results),'checks':len(results),'failures':[r for r in results if not r['passed']],'results':results}
 output=Path(sys.argv[1]) if len(sys.argv)>1 else Path('public-verification.json')

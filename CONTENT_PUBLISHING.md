@@ -60,4 +60,5 @@ database or content volume. GitHub originals are preserved in its `github/`
 subdirectory. New published revisions remain available for recovery after rollback.
 
 
-Shared destinations (October 22, 2026): the homepages remain distinct. The single Projects directory is https://myhai.org/projects/ and all individual guides are hosted there. Both homepages link directly to that directory. Portfolio /projects, /projects/ and descendant paths permanently redirect to the matching HAI path, preserving query strings. Only HAI lists the shared directory and guides in its sitemap; no duplicate portfolio directory is generated. Project edits continue through this same editor and published snapshot.
+
+Shared information, independent designs (October 22, 2026): each project has one central record. Edit it through /admin on either site (both use this studio), then Publish both sites. Names, summaries, descriptions, features, images and download links update together on both homepages, directories and guides. Each domain serves its own /projects/ and /projects/<slug>/ pages with its own header, fonts, styles and navigation. Project information belongs in the catalog, never in a site template. Layout/style edits belong only in that site template. Drafts stay private until published. No cross-site Projects redirect is used.
