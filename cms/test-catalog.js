@@ -9,6 +9,7 @@ let checks=0;const check=(name,fn)=>{fn();console.log('PASS',name);checks++;};
 const original=build(seed,templates);
 check('both site designs display the same complete project inventory',()=>{
   for(const p of seed.projects.filter(p=>p.publication==='published'))for(const site of ['portfolio','hai'])assert(original.files[site+'/projects/index.html'].includes(`data-project="${p.id}"`));
+  for(const p of seed.projects.filter(p=>p.publication==='published'))assert(original.files['portfolio/index.html'].includes(`data-project="${p.id}"`));
   assert(original.files['portfolio/projects/index.html'].includes('catalog-portfolio'));
   assert(original.files['hai/projects/index.html'].includes('catalog-hai'));
 });
@@ -18,7 +19,7 @@ check('navigation and guides stay on their own site',()=>{
     assert(original.files[site+'/projects/hagent/index.html'].includes(`href="${domain}/projects/">Explore all projects`));
     assert(original.files[site+'/sitemap.xml'].includes(domain+'/projects/'));
   }
-  assert(original.files['portfolio/index.html'].includes('href="/projects/">All projects'));
+  assert(original.files['portfolio/index.html'].includes('href="#projects">Project'));
   assert(original.files['hai/landing.html'].includes('href="/projects/">Projects'));
 });
 check('a site design change never changes the other site design',()=>{
