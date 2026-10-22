@@ -81,47 +81,71 @@ function runtime(id){
   const steps=[...root.querySelectorAll('[data-demo-step]')];
   steps.forEach(button=>button.addEventListener('click',()=>{steps.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));root.querySelector('[data-demo-step-text]').textContent=button.getAttribute('data-step-text');}));
 }
-function recorderRuntime(){
-  const root=document.getElementById('project-demo'),record=root.querySelector('[data-record]'),reset=root.querySelector('[data-reset-recording]'),status=root.querySelector('[data-record-status]'),audio=root.querySelector('audio'),download=root.querySelector('[data-record-download]');
-  let recorder=null,stream=null,chunks=[],url='',timer=null,pending=false,generation=0;
+function polishNote(value){
+  let text=String(value).trim().replace(/\s+/g,' ').replace(/\bnew paragraph\b/gi,'\n\n').replace(/\bnew sentence\b/gi,'. ').replace(/\bcomma\b/gi,',').replace(/\bquestion mark\b/gi,'?').replace(/\bfull stop\b/gi,'.');
+  text=text.replace(/\s+([,.!?])/g,'$1').replace(/([,.!?])(?=[A-Za-z])/g,'$1 ').replace(/\bi\b/g,'I').replace(/\bim\b/gi,"I'm").replace(/\bi m\b/gi,"I'm").replace(/\bdont\b/gi,"don't").replace(/\bcant\b/gi,"can't");
+  text=text.replace(/\b(hi|hello|hey)\s+(?=[A-Za-z])/gi,'$1, ');
+  text=text.split(/(?<=[.!?])\s+|\n\n/).filter(Boolean).map(sentence=>{
+    sentence=sentence.trim().replace(/^[a-z]/,c=>c.toUpperCase());
+    const question=/^(?:(?:hi|hello|hey),?\s+)?(?:how|what|when|where|why|who|can|could|would|should|is|are|did|do|does|will)\b/i.test(sentence);
+    if(question)sentence=sentence.replace(/[.!]$/,'?');
+    return /[.!?]$/.test(sentence)?sentence:sentence+(question?'?':'.');
+  }).join(' ');
+  return text;
+}
+function recorderRuntime(polish){
+  const root=document.getElementById('project-demo'),record=root.querySelector('[data-record]'),reset=root.querySelector('[data-reset-recording]'),status=root.querySelector('[data-record-status]'),live=root.querySelector('[data-live-words]'),note=root.querySelector('[data-written-note]'),download=root.querySelector('[data-note-download]');
+  const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  let recognition=null,listening=false,timer=null,url='',failed=false;
   const say=text=>{status.textContent=text;};
-  const release=()=>{if(stream)stream.getTracks().forEach(track=>track.stop());stream=null;};
-  const clear=()=>{audio.pause();audio.removeAttribute('src');audio.hidden=true;download.hidden=true;download.removeAttribute('href');if(url)URL.revokeObjectURL(url);url='';};
+  function refresh(){
+    note.value=polish(live.value);
+    if(url)URL.revokeObjectURL(url);
+    url=note.value?URL.createObjectURL(new Blob([note.value+'\n'],{type:'text/plain'})):'';
+    download.hidden=!url;if(url)download.href=url;else download.removeAttribute('href');
+  }
+  function finish(){
+    listening=false;clearTimeout(timer);record.textContent='Start dictation';record.setAttribute('aria-pressed','false');refresh();
+    if(!failed)say(note.value?'Your written note is ready. Edit the words to refine it, or download the note.':'No words were captured. Start dictation and speak after the microphone is ready.');
+  }
   function stop(){
-    generation++;pending=false;clearTimeout(timer);record.textContent='Start recording';record.setAttribute('aria-pressed','false');
-    if(recorder&&recorder.state==='recording'){say('Saving your voice note…');recorder.stop();}else{release();say('Ready. Start recording, then speak.');}
+    if(!recognition||!listening)return;
+    listening=false;clearTimeout(timer);say('Finishing your written note…');
+    try{recognition.stop();}catch{recognition.abort();finish();}
+    record.textContent='Start dictation';record.setAttribute('aria-pressed','false');refresh();
   }
-  async function start(){
-    if(record.disabled||pending||(recorder&&recorder.state==='recording'))return;
-    if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){say('This browser does not support this recorder. Try a current Chrome, Edge, Firefox or Safari browser.');return;}
-    clear();chunks=[];pending=true;const request=++generation;
-    record.textContent='Cancel microphone request';say('Allow microphone access when asked. Then speak to record your note.');
-    try{
-      const granted=await navigator.mediaDevices.getUserMedia({audio:true});
-      if(request!==generation){granted.getTracks().forEach(track=>track.stop());return;}
-      stream=granted;recorder=new MediaRecorder(stream);const active=recorder;pending=false;
-      active.addEventListener('dataavailable',event=>{if(event.data.size)chunks.push(event.data);});
-      active.addEventListener('stop',()=>{
-        granted.getTracks().forEach(track=>track.stop());if(stream===granted)stream=null;clearTimeout(timer);record.disabled=false;
-        if(active!==recorder)return;
-        if(!chunks.length){say('No audio was captured. Please try again.');return;}
-        const blob=new Blob(chunks,{type:active.mimeType||chunks[0].type});url=URL.createObjectURL(blob);audio.src=url;audio.hidden=false;download.href=url;download.download='notewll-voice-note.'+(blob.type.includes('mp4')?'m4a':blob.type.includes('ogg')?'ogg':'webm');download.hidden=false;
-        say('Your voice note is ready. Play it back or download it.');
-      });
-      active.addEventListener('error',()=>{stop();release();say('Recording failed. Please try again.');});
-      active.start();record.textContent='Stop recording';record.setAttribute('aria-pressed','true');say('Recording — speak now. Release Space or choose Stop recording when finished.');timer=setTimeout(stop,60000);
-    }catch(error){if(request!==generation)return;pending=false;release();record.textContent='Start recording';record.setAttribute('aria-pressed','false');say(error.name==='NotAllowedError'?'Microphone access was not allowed. Enable it in your browser permissions to try recording.':error.name==='NotFoundError'?'No microphone was found. Connect one and try again.':'Could not start recording. Check your microphone and try again.');}
+  function start(){
+    if(listening)return;
+    if(!Recognition){say('Live dictation is not supported in this browser. Try Chrome or Edge, or type in Live words to test the sentence cleanup.');return;}
+    if(recognition)recognition.abort();
+    const active=new Recognition();recognition=active;failed=false;live.value='';refresh();
+    active.lang='en-US';active.continuous=true;active.interimResults=true;
+    active.onstart=()=>{if(active===recognition&&listening)say('Listening — speak now. Watch your words appear below.');};
+    active.onresult=event=>{
+      if(active!==recognition)return;
+      live.value=Array.from(event.results,result=>result[0].transcript).join(' ').trim();refresh();
+    };
+    active.onerror=event=>{
+      if(active!==recognition)return;failed=true;
+      say(event.error==='not-allowed'||event.error==='service-not-allowed'?'Microphone or speech recognition access was denied. Allow it in your browser to dictate.':event.error==='no-speech'?'No speech was detected. Try again and speak after the microphone is ready.':event.error==='network'?'The browser speech service could not connect. Check your connection and try again.':'Speech recognition stopped. Try again, or type your words below.');
+      finish();
+    };
+    active.onend=()=>{if(active===recognition)finish();};
+    listening=true;record.textContent='Stop dictation';record.setAttribute('aria-pressed','true');say('Allow microphone access when asked, then speak.');
+    try{active.start();timer=setTimeout(stop,60000);}catch{failed=true;say('Could not start speech recognition. Try again or type your words below.');finish();}
   }
-  record.addEventListener('click',()=>pending||(recorder&&recorder.state==='recording')?stop():start());
+  record.addEventListener('click',()=>listening?stop():start());
   record.addEventListener('keydown',event=>{if(event.code==='Space'){event.preventDefault();if(!event.repeat)start();}});
   record.addEventListener('keyup',event=>{if(event.code==='Space'){event.preventDefault();stop();}});
-  record.addEventListener('blur',()=>{if(pending||(recorder&&recorder.state==='recording'))stop();});
-  reset.addEventListener('click',()=>{stop();recorder=null;release();chunks=[];clear();say('Ready. Start recording, then speak.');});
-  window.addEventListener('pagehide',()=>{stop();release();clear();});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(pending||(recorder&&recorder.state==='recording')))stop();});
+  record.addEventListener('blur',stop);
+  live.addEventListener('input',refresh);
+  reset.addEventListener('click',()=>{const old=recognition;recognition=null;if(old)old.abort();listening=false;clearTimeout(timer);record.textContent='Start dictation';record.setAttribute('aria-pressed','false');live.value='';refresh();say('Ready. Start dictation and speak to write your note.');});
+  root.querySelector('[data-note-example]').addEventListener('click',()=>{stop();const old=recognition;recognition=null;if(old)old.abort();live.value='hi how are you';refresh();say('Example: spoken words become a written sentence. Start dictation to use your own voice.');});
+  window.addEventListener('pagehide',()=>{if(recognition)recognition.abort();clearTimeout(timer);if(url)URL.revokeObjectURL(url);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
 }
 function voiceDemo(){
-  return `<section class="detail project-demo" id="project-demo" aria-labelledby="demo-title"><p class="eyebrow">Try voice note-taking</p><h2 id="demo-title">Press. Speak. Keep your note.</h2><p>Notewll is a voice notetaker and shortcut-driven writing tool. In the Windows app, use your shortcut to speak into the active text field — in notes, your browser, an editor or a terminal.</p><p>Try recording a voice note here: focus the recording button, hold <kbd>Space</kbd>, speak, then release to stop. On mobile, tap Start recording and Stop recording.</p><p>This browser demo records audio only. It does not transcribe speech or type into other applications. Your recording stays in this page unless you download it.</p><div class="voice-demo-controls"><button class="button primary" type="button" data-record aria-pressed="false">Start recording</button><button class="button" type="button" data-reset-recording>Reset recording</button></div><p role="status" aria-live="polite" data-record-status>Ready. Start recording, then speak.</p><audio controls hidden aria-label="Your recorded voice note"></audio><a class="button" data-record-download hidden>Download voice note</a><p class="eyebrow">Microphone permission is requested when you start. Each demo recording stops after one minute. The Space shortcut works while the recording button is focused; choose your own shortcut in the Windows app.</p><noscript><p>Enable JavaScript to try the recorder.</p></noscript></section><style>.project-demo{scroll-margin-top:110px}.project-demo audio{display:block;width:100%;margin:24px 0}.project-demo [hidden]{display:none!important}.voice-demo-controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.project-demo button{cursor:pointer}.project-demo kbd{border:1px solid #ffffff60;padding:3px 8px;border-radius:4px}.project-demo [aria-pressed="true"]{background:#ef8795!important;color:#16080a!important}.project-demo [data-record-status]{padding:20px;border:1px solid #ffffff30;margin:24px 0!important}.project-demo button:focus-visible{outline:3px solid #c9b9ff;outline-offset:4px}</style><script>(${recorderRuntime.toString()})();</script>`;
+  return `<section class="detail project-demo" id="project-demo" aria-labelledby="demo-title"><p class="eyebrow">Try live voice notes</p><h2 id="demo-title">Speak. Watch your note appear.</h2><p>Notewll turns speech into written notes. In the Windows app, use your shortcut to write in notes, browser text fields, editors and terminals.</p><p>Choose Start dictation and speak. Or focus the button, hold <kbd>Space</kbd>, speak, and release. Words appear here as you speak; the note gets sentence capitalization and punctuation.</p><div class="voice-demo-controls"><button class="button primary" type="button" data-record aria-pressed="false">Start dictation</button><button class="button" type="button" data-reset-recording>Clear note</button><button class="button" type="button" data-note-example>Try “hi how are you”</button></div><p role="status" aria-live="polite" data-record-status>Ready. Start dictation and speak to write your note.</p><div class="note-columns"><label>Live words<textarea data-live-words rows="5" placeholder="Your words will appear here as you speak. You can also type here." maxlength="10000"></textarea></label><label>Your written note<textarea data-written-note rows="5" readonly placeholder="Your cleaned-up sentence will appear here."></textarea></label></div><a class="button" data-note-download download="notewll-note.txt" hidden>Download written note</a><p class="eyebrow">English dictation uses your browser's speech service, which may send audio to its provider. Browser support varies; Chrome or Edge is recommended for this demo. Sentence cleanup fixes basic casing and punctuation; review the words for recognition mistakes. This page does not type into other applications. Each session stops after one minute.</p><noscript><p>Enable JavaScript to try live dictation.</p></noscript></section><style>.project-demo{scroll-margin-top:110px}.project-demo [hidden]{display:none!important}.voice-demo-controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.project-demo button{cursor:pointer}.project-demo kbd{border:1px solid #ffffff60;padding:3px 8px;border-radius:4px}.project-demo [aria-pressed="true"]{background:#ef8795!important;color:#16080a!important}.project-demo [data-record-status]{padding:20px;border:1px solid #ffffff30;margin:24px 0!important}.note-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}.note-columns label{display:block}.note-columns textarea{display:block;width:100%;padding:18px;margin:12px 0 22px;background:#0c1016;color:#f3f3f7;border:1px solid #ffffff50;font:inherit;line-height:1.7;resize:vertical}.project-demo :focus-visible{outline:3px solid #c9b9ff;outline-offset:4px}@media(max-width:760px){.note-columns{grid-template-columns:minmax(0,1fr)}}</style><script>(${recorderRuntime.toString()})(${polishNote.toString()});</script>`;
 }
 
 module.exports=function demo(p){

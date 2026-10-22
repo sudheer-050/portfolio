@@ -26,7 +26,7 @@ check('every HAI project has an isolated labeled demo; portfolio remains an exhi
   for(const p of seed.projects.filter(p=>p.publication==='published')){
     const demo=original.files['hai/projects/'+p.slug+'/index.html'];
     assert(demo.includes('id="project-demo"'));
-    assert(demo.includes(p.id==='dotflow'?'This browser demo records audio only':'browser-only illustration, not the full application'));
+    assert(demo.includes(p.id==='dotflow'?'Words appear here as you speak':'browser-only illustration, not the full application'));
     assert(demo.includes('href="#project-demo">Try demo'));
     assert(!original.files['portfolio/projects/'+p.slug+'/index.html'].includes('id="project-demo"'));
   }
