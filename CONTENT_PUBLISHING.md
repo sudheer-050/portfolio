@@ -58,3 +58,6 @@ It includes deployed source, CMS data/uploads, frontend pages and old Docker
 image tags. `rollback.sh` there restores the old images without deleting either
 database or content volume. GitHub originals are preserved in its `github/`
 subdirectory. New published revisions remain available for recovery after rollback.
+
+
+Shared destinations (October 22, 2026): the homepages remain distinct. The single Projects directory is https://myhai.org/projects/ and all individual guides are hosted there. Both homepages link directly to that directory. Portfolio /projects, /projects/ and descendant paths permanently redirect to the matching HAI path, preserving query strings. Only HAI lists the shared directory and guides in its sitemap; no duplicate portfolio directory is generated. Project edits continue through this same editor and published snapshot.

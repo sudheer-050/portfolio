@@ -37,7 +37,7 @@ try:
         record('historical conflicts '+url,not re.search(r'\b293[ -](?:passing|automated|test)|\bGICS\b|MS Business Analytics candidate',body))
     for url in [H+'/project.html?project=missing-regression-check',H+'/projects/missing-regression-check/',P+'/missing-regression-check']:
         record('real 404 '+url,request(url)[0]==404)
-    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),('http://myhai.org/',H+'/'),('http://myhai.org/jobs/',H+'/jobs/'),('http://myhai.org/analyst/',H+'/analyst/'),('https://www.myhai.org/',H+'/')]:
+    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),(P+'/projects/',H+'/projects/'),(P+'/projects',H+'/projects/'),('http://myhai.org/',H+'/'),('http://myhai.org/jobs/',H+'/jobs/'),('http://myhai.org/analyst/',H+'/analyst/'),('https://www.myhai.org/',H+'/')]:
         status,final,_=request(source)
         record('redirect '+source,status==200 and final.rstrip('/')==target.rstrip('/'),str(status)+' '+final)
     for p in projects:
@@ -51,7 +51,7 @@ try:
         responses=list(pool.map(lambda u:request(u,'HEAD'),urls))
     for url,(status,final,_) in zip(urls,responses):record('asset/download '+url,status==200,str(status))
     for url in [P+'/sitemap.xml',H+'/sitemap.xml']:
-        status,_,body=request(url);record('sitemap '+url,status==200 and '/projects/' in body)
+        status,_,body=request(url);record('sitemap '+url,status==200 and ('/resume.html' in body if url.startswith(P) else H+'/projects/' in body));record('no duplicate project sitemap '+url,url.startswith(H) or '/projects/' not in body)
 except Exception as exc:record('monitor execution',False,str(exc))
 report={'checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'passed':all(r['passed'] for r in results),'checks':len(results),'failures':[r for r in results if not r['passed']],'results':results}
 output=Path(sys.argv[1]) if len(sys.argv)>1 else Path('public-verification.json')
