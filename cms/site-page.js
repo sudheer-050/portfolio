@@ -27,6 +27,11 @@ module.exports=function sitePage(source,generated,body,domain,isPortfolio){
     .catalog-main .project-grid{margin-top:35px!important}.catalog-main .project-card img{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
     .catalog-main .project-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch;gap:1px}
     .catalog-main .project-card{position:relative!important;opacity:1!important;transform:none!important;min-height:0!important;height:auto!important;width:auto!important;margin:0!important;will-change:auto}
+    .catalog-main .project-card .project-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+    .catalog-main #panel-projects .project-actions .project-btn{display:inline-flex;align-items:center;justify-content:center;flex:1 1 120px;min-height:46px;margin:0;padding:12px 16px;border:1px solid #ffffff55;background:transparent;color:#f3f0ff;text-align:center;line-height:1.5;text-decoration:none}
+    .catalog-main #panel-projects .project-actions .project-btn.primary{background:#a893ff;border-color:#a893ff;color:#090909}
+    .catalog-main #panel-projects .project-actions .project-btn:hover{border-color:#d7ccff;background:#ffffff12}
+    .catalog-main #panel-projects .project-actions .project-btn.primary:hover{background:#b9a8ff;color:#090909}
     .catalog-main .project-card h2{font-size:2.5rem;line-height:1.1;margin:20px 0}.catalog-main .project-card .project-desc{line-height:1.7}
     .catalog-hai .catalog-main{padding-top:130px}
     .catalog-hai .catalog-main h1,.catalog-hai .catalog-main h2,.catalog-hai .catalog-main h3{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase}
