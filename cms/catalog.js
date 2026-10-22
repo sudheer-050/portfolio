@@ -162,7 +162,7 @@ function portfolio(c,revision,templates) {
 }
 function hai(c,revision,templates) {
   let source=fs.readFileSync(path.join(templates,'hai.html'),'utf8');
-  source=source.replaceAll('<a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>', `<a href="/projects/">Playground</a><a href="${P}/">Professional portfolio</a>`);
+  source=source.replaceAll('<a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>', `<a href="/projects/">Projects</a><a href="${P}/">Professional portfolio</a>`);
   source=replaceElement(source,'div','hidden','', '');
   source=replaceElement(source,'div','class','contact-list reveal',`<div class="contact-list reveal"><a class="contact-link" href="mailto:${esc(c.contact.email)}"><span>Email</span><strong>${esc(c.contact.email)}</strong></a><a class="contact-link" href="${esc(c.contact.linkedin)}"><span>LinkedIn</span><strong>${esc(c.profile.name)}</strong></a><a class="contact-link" href="${esc(c.contact.github)}"><span>GitHub</span><strong>Source and experiments</strong></a><div class="contact-link location"><span>Location</span><strong>${esc(c.contact.location)}</strong></div><a class="contact-link" href="${P}/admin"><span>Publishing</span><strong>Content studio ↗</strong></a></div>`);
   const ps=published(c);

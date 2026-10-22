@@ -19,7 +19,7 @@ check('navigation and guides stay on their own site',()=>{
     assert(original.files[site+'/sitemap.xml'].includes(domain+'/projects/'));
   }
   assert(original.files['portfolio/index.html'].includes('href="/projects/">All projects'));
-  assert(original.files['hai/landing.html'].includes('href="/projects/">Playground'));
+  assert(original.files['hai/landing.html'].includes('href="/projects/">Projects'));
 });
 check('a site design change never changes the other site design',()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'site-design-'));
