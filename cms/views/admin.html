@@ -176,13 +176,13 @@
         <div class="stat-grid">
           <div class="stat"><div class="num" id="statProjects">0</div><div class="label">Projects</div></div>
           <div class="stat"><div class="num" id="statCerts">0</div><div class="label">Certifications</div></div>
-          <div class="stat"><div class="num">3</div><div class="label">Live themes</div></div>
+          <div class="stat"><div class="num">1</div><div class="label">Site design</div></div>
         </div>
         <div class="card">
           <h2>Quick edit</h2>
           <p class="card-hint">Jump straight to a section.</p>
           <div class="quick-links">
-            <div class="quick-link" data-goto="theme"><div class="ql-title">Theme</div><div class="ql-desc">Choose the one theme visitors see</div></div>
+            <div class="quick-link" data-goto="theme"><div class="ql-title">Theme</div><div class="ql-desc">Professional site design</div></div>
             <div class="quick-link" data-goto="hero"><div class="ql-title">Hero</div><div class="ql-desc">Status badge &amp; intro paragraph</div></div>
             <div class="quick-link" data-goto="about"><div class="ql-title">About</div><div class="ql-desc">Intro line &amp; paragraphs</div></div>
             <div class="quick-link" data-goto="photo"><div class="ql-title">Profile Photo</div><div class="ql-desc">Replace your hero photo</div></div>
@@ -197,16 +197,11 @@
       <div class="view" data-view="theme">
         <div class="card">
           <h2>Site theme</h2>
-          <p class="card-hint">Visitors only ever see one theme — whichever you pick here.</p>
+          <p class="card-hint">The professional design is used across the portfolio. Legacy theme URLs return to the main site.</p>
           <div class="theme-grid">
-            <div class="theme-option" data-theme="cinematic">
-              <div class="theme-name">Cinematic Reel</div>
-              <div class="theme-desc">Scroll-driven, GSAP-animated default theme.</div>
-              <div class="theme-check">&#10003; Selected</div>
-            </div>
-            <div class="theme-option" data-theme="ironman">
-              <div class="theme-name">Iron Man HUD</div>
-              <div class="theme-desc">Dark sci-fi heads-up-display theme.</div>
+            <div class="theme-option selected" data-theme="professional">
+              <div class="theme-name">Professional portfolio</div>
+              <div class="theme-desc">Project-led, responsive design with clear navigation, resume and contact links.</div>
               <div class="theme-check">&#10003; Selected</div>
             </div>
           </div>
@@ -396,7 +391,7 @@ function renderCerts() {
 
 function renderTheme() {
   document.querySelectorAll('.theme-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.theme === (state.theme || 'cinematic'));
+    el.classList.toggle('selected', el.dataset.theme === (state.theme || 'professional'));
   });
 }
 
