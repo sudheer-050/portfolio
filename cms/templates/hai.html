@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>HAI — Private AI, Messaging &amp; Data Tools</title>
+    <meta name="description" content="Explore HAI Messenger, H AI, Hgpt, Auto Data Analyst, and the HAI Job Board — a growing suite of useful, privacy-minded applications.">
+    <link rel="canonical" href="https://myhai.org/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://myhai.org/">
+    <meta property="og:title" content="HAI — Private AI, Messaging &amp; Data Tools">
+    <meta property="og:description" content="Explore five live HAI applications for private messaging, conversational AI, research memory, data analysis, and job discovery.">
+    <meta property="og:image" content="https://myhai.org/icons/logo.png">
+    <meta property="og:site_name" content="HAI">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HAI — Private AI, Messaging &amp; Data Tools">
+    <meta name="twitter:description" content="Explore five live HAI applications for private messaging, conversational AI, research memory, data analysis, and job discovery.">
+    <meta name="twitter:image" content="https://myhai.org/icons/logo.png">
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "HAI",
+      "url": "https://myhai.org/",
+      "description": "A growing suite of applications for private messaging, conversational AI, research memory, data analysis, and job discovery."
+    }
+    </script>
+
+    <link rel="icon" href="/icons/favicon-32.png">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* #09090b -- the near-black background referenced in the original
+               component's Tailwind theme (--bg-0). Applied unconditionally here
+               rather than only under prefers-color-scheme, per request. */
+            --bg-main: #09090b;
+            --bg-sidebar: #18181b;
+            --accent-brand: #9B8AFB;
+            --accent-brand-hover: #8171E8;
+            --text-normal: #fafafa;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --font-stack: 'Inter', system-ui, -apple-system, sans-serif;
+            --glass-blur: blur(20px) saturate(180%);
+            --glass-weak: rgba(255, 255, 255, 0.06);
+            --glass-strong: rgba(255, 255, 255, 0.09);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-stack);
+            background: var(--bg-main);
+            color: var(--text-normal);
+            overflow-x: hidden;
+        }
+
+        .hero { position: relative; min-height: 100vh; overflow: hidden; }
+
+        header { position: relative; z-index: 10; }
+        .header-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 20px 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+        .brand img { width: 34px; height: 34px; border-radius: 8px; }
+        .brand span { font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+
+        nav.app-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            padding: 6px;
+        }
+        nav.app-nav a {
+            padding: 9px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 999px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        nav.app-nav a:hover { color: var(--text-normal); }
+        nav.app-nav a.active {
+            background: var(--accent-brand);
+            color: #fff;
+        }
+        nav.app-nav a.placeholder { opacity: 0.55; }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-normal);
+        }
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 68px;
+            right: 24px;
+            left: 24px;
+            z-index: 20;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--glass-strong);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav a {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-normal);
+            text-decoration: none;
+        }
+        .mobile-nav a.active { background: rgba(155, 138, 251, 0.16); color: var(--accent-brand); }
+        .mobile-nav a.placeholder { opacity: 0.55; }
+
+        @media (max-width: 1100px) {
+            nav.app-nav { display: none; }
+            .menu-toggle { display: flex; }
+        }
+
+        main { position: relative; z-index: 5; max-width: 900px; margin: 0 auto; padding: 96px 24px 40px; text-align: center; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            padding: 6px 6px 6px 14px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .badge b {
+            background: var(--accent-brand);
+            color: #fff;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 999px;
+            padding: 4px 10px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            font-weight: 800;
+            margin: 24px 0 0;
+        }
+        h1 .accent { color: var(--accent-brand); }
+
+        .subtitle {
+            font-size: clamp(16px, 2vw, 19px);
+            color: var(--text-muted);
+            max-width: 620px;
+            margin: 20px auto 0;
+            line-height: 1.55;
+        }
+
+        .cta-row { display: flex; gap: 14px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: var(--accent-brand); color: #fff; }
+        .btn-primary:hover { background: var(--accent-brand-hover); }
+        .btn-secondary {
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            color: var(--text-normal);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            position: relative;
+            z-index: 5;
+        }
+        .feature-card {
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px;
+            text-align: left;
+        }
+        .feature-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .feature-icon {
+            flex: 0 0 auto;
+            width: 30px; height: 30px; border-radius: 9px;
+            background: var(--glass-weak); border: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .feature-icon svg { width: 15px; height: 15px; color: var(--accent-brand); }
+        .feature-card h3 { margin: 0; font-size: 14px; font-weight: 700; }
+        .feature-card p { margin: 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+
+        /* SECTION FRAMING -- every thematic block (pillars, steps, features, security
+           table, screenshots, FAQ) gets wrapped in one of these instead of just
+           floating on the same flat black background with nothing but a margin
+           between it and the next block -- that read as one undifferentiated wall
+           of text. A bordered, tinted panel + an eyebrow/heading pair gives each
+           section a clear boundary and a reason for being there. */
+        .section-block {
+            max-width: 900px;
+            margin: 96px auto 0;
+            padding: 48px clamp(20px, 5vw, 48px);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            text-align: center;
+        }
+        .section-eyebrow {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-brand);
+            margin: 0 0 10px;
+        }
+        .section-heading {
+            font-size: clamp(21px, 3vw, 27px);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin: 0 0 12px;
+        }
+        .section-subheading {
+            font-size: 14px;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto 36px;
+            line-height: 1.6;
+        }
+        @media (max-width: 640px) {
+            .section-block { margin-top: 56px; padding: 32px 20px; border-radius: 20px; }
+        }
+
+        /* WHY HAI -- three pillars, Home panel */
+        .pillar-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;
+            text-align: left;
+        }
+        .pillar-card .pillar-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: var(--glass-weak); border: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+        }
+        .pillar-card .pillar-icon svg { width: 19px; height: 19px; color: var(--accent-brand); }
+        .pillar-card h3 { margin: 0 0 6px; font-size: 15.5px; font-weight: 700; }
+        .pillar-card p { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+
+        /* HOW IT WORKS -- numbered steps, per-app panels */
+        .steps-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+            text-align: left;
+        }
+        .step-card { position: relative; padding-left: 6px; }
+        .step-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 50%; background: var(--accent-brand); color: #fff;
+            font-size: 12px; font-weight: 800; margin-bottom: 10px;
+        }
+        .step-card h4 { margin: 0 0 5px; font-size: 14px; font-weight: 700; }
+        .step-card p { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+        /* SCREENSHOT -- real app screenshots, framed consistently. Supports a single
+           centered shot or a multi-shot gallery (several frames side by side). */
+        .screenshot-showcase {
+            display: flex; justify-content: center; align-items: flex-end; gap: 24px; flex-wrap: wrap;
+        }
+        .screenshot-frame {
+            border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); max-width: 300px; width: 100%;
+        }
+        .screenshot-frame img { display: block; width: 100%; height: auto; }
+        .screenshot-caption { text-align: center; font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
+
+        /* COLLAGE MARQUEE -- a continuously scrolling strip of real screenshots
+           (left to right) with a centered text card layered on top. The track is
+           the shot list duplicated once so the loop point is invisible; animation
+           is paused on hover so a visitor can actually look at a frame. */
+        .shot-marquee {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+        .shot-marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: max-content;
+            animation: shot-marquee-scroll 34s linear infinite;
+        }
+        .shot-marquee:hover .shot-marquee-track { animation-play-state: paused; }
+        .shot-marquee-frame {
+            flex: 0 0 auto;
+            width: 220px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
+        .shot-marquee-frame img { display: block; width: 100%; height: auto; }
+        @keyframes shot-marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .shot-marquee-overlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(420px, 86%);
+            text-align: center;
+            padding: 26px 28px;
+            border-radius: 20px;
+            background: rgba(9, 9, 11, 0.72);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+        }
+        .shot-marquee-overlay h3 { margin: 0 0 8px; font-size: 19px; font-weight: 800; }
+        .shot-marquee-overlay p { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+        @media (max-width: 640px) {
+            .shot-marquee-overlay { padding: 20px; }
+            .shot-marquee-frame { width: 170px; }
+        }
+
+        /* DETAIL LIST -- labeled spec rows, per-app panels */
+        .detail-section { text-align: left; }
+        .detail-list { display: flex; flex-direction: column; gap: 4px; }
+        .detail-row {
+            display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border-color);
+        }
+        .detail-row:first-child { border-top: 1px solid var(--border-color); }
+        .detail-row dt { flex: 0 0 150px; font-size: 13px; font-weight: 700; color: var(--text-normal); }
+        .detail-row dd { margin: 0; flex: 1; font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+
+        /* FAQ -- Home panel */
+        .faq-section { text-align: left; }
+        .faq-item { border-bottom: 1px solid var(--border-color); padding: 16px 0; }
+        .faq-item:first-child { border-top: 1px solid var(--border-color); }
+        .faq-item h4 { margin: 0 0 6px; font-size: 14.5px; font-weight: 700; }
+        .faq-item p { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+
+        /* FOOTER */
+        .site-footer {
+            border-top: 1px solid var(--border-color); margin-top: 72px; padding: 28px 24px 40px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            text-align: center; font-size: 12.5px; color: var(--text-muted); position: relative; z-index: 5;
+        }
+        .site-footer .footer-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-normal); font-size: 13.5px; margin-bottom: 4px; }
+        .site-footer .footer-brand img { width: 20px; height: 20px; border-radius: 5px; }
+
+        /* HOME PANEL -- overview of all apps, each a clickable summary card that
+           swaps to that app's own panel (no page navigation involved). */
+        .app-panel { display: none; }
+        .app-panel.visible { display: block; }
+
+        .app-summary-grid {
+            max-width: 900px;
+            margin: 56px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            text-align: left;
+        }
+        .app-summary-card {
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 22px;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .app-summary-card:hover { transform: translateY(-2px); border-color: var(--accent-brand); }
+        .app-summary-card.disabled { cursor: default; opacity: 0.55; }
+        .app-summary-card.disabled:hover { transform: none; border-color: var(--glass-border); }
+        .app-summary-icon {
+            width: 40px; height: 40px; border-radius: 12px; background: var(--accent-brand);
+            display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 16px;
+            margin-bottom: 14px;
+        }
+        .app-summary-card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+        .app-summary-card p { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+        .app-summary-tag { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 700; color: var(--accent-brand); }
+
+        .panel-back-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: none; border: none; color: var(--text-muted);
+            font-family: var(--font-stack); font-size: 13.5px; font-weight: 500; cursor: pointer;
+            margin-bottom: 20px; padding: 0;
+        }
+        .panel-back-btn:hover { color: var(--text-normal); }
+        .panel-back-btn svg { width: 15px; height: 15px; }
+
+        /* PROJECTS -- portfolio grid, own panel */
+        .project-grid {
+            max-width: 900px;
+            margin: 40px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            text-align: left;
+        }
+        .project-card {
+            background: var(--glass-weak);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 22px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .project-card:hover, .project-card:focus-visible { transform: translateY(-2px); border-color: var(--accent-brand); outline: none; }
+        .project-media {
+            display: block; width: 100%; aspect-ratio: 16 / 9;
+            object-fit: contain; margin: 0 0 22px; border-radius: 0;
+            border: 0; background: transparent;
+        }
+        .project-card h3 { margin: 0 0 6px; font-size: 16px; font-weight: 700; }
+        .project-card p.project-desc { margin: 0; font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+        .project-impact {
+            margin-top: 12px; padding-left: 10px; border-left: 2px solid var(--accent-brand);
+            color: var(--text-normal); font-size: 12.5px; line-height: 1.5;
+        }
+        .project-impact strong { color: var(--accent-brand); }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; }
+        .tech-pill {
+            font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+            background: rgba(155, 138, 251, 0.14); color: var(--accent-brand);
+        }
+        .project-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .project-btn {
+            padding: 9px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+            text-decoration: none; cursor: pointer; border: 1px solid var(--glass-border);
+            background: var(--glass-weak); color: var(--text-normal);
+            font-family: var(--font-stack); transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .project-btn:hover { transform: translateY(-1px); }
+        .project-btn.primary { background: var(--accent-brand); color: #fff; border-color: transparent; }
+        .project-btn.primary:hover { background: var(--accent-brand-hover); }
+        .project-btn.disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+        .project-detail {
+            display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color);
+            font-size: 13px; color: var(--text-muted); line-height: 1.6;
+        }
+        .project-detail.open { display: block; }
+
+        /* COSMOS-INSPIRED HOME — editorial scale, technical framing, and cinematic
+           reveals, translated into HAI's own visual language and content. */
+        body { background: #050505; }
+        .hero { background: #050505; overflow: visible; }
+        header {
+            position: absolute; inset: 0 0 auto; z-index: 30;
+            color: #f4f2ed;
+        }
+        .header-inner {
+            width: min(calc(100% - 32px), 1440px); max-width: 1440px; margin: 16px auto 0; padding: 9px 10px 9px 16px;
+            min-height: 64px; border: 1px solid rgba(255,255,255,.18);
+            border-radius: 0; background: rgba(8,8,8,.88);
+            box-shadow: 0 18px 60px rgba(0,0,0,.34);
+            backdrop-filter: blur(22px) saturate(130%); -webkit-backdrop-filter: blur(22px) saturate(130%);
+        }
+        .brand { min-height: 44px; padding-right: 20px; }
+        .brand img { width: 34px; height: 34px; border-radius: 0; filter: none; }
+        .brand span { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; letter-spacing: .12em; }
+        nav.app-nav { gap: 3px; background: transparent; border: 0; padding: 0; backdrop-filter: none; }
+        nav.app-nav a {
+            display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+            color: rgba(255,255,255,.62); border: 1px solid transparent; border-radius: 0;
+            font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+        }
+        nav.app-nav a:hover { color: #fff; border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.05); }
+        nav.app-nav a.active { color: #090909; background: #a893ff; border-color: #a893ff; }
+        nav.app-nav a.active::before, nav.app-nav a.active::after { content: none; }
+        .menu-toggle { width: 44px; height: 44px; border-radius: 0; background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.24); color: #fff; }
+        .mobile-nav {
+            top: 88px; left: max(16px,calc((100% - 1440px)/2)); right: max(16px,calc((100% - 1440px)/2));
+            background: rgba(8,8,8,.98); border-color: rgba(255,255,255,.2);
+            border-radius: 0; padding: 8px; box-shadow: 0 24px 60px rgba(0,0,0,.55);
+        }
+        .mobile-nav a { min-height: 48px; display: flex; align-items: center; border-radius: 0; color: rgba(255,255,255,.72); text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+        .mobile-nav a + a { border-top: 1px solid rgba(255,255,255,.1); }
+        .mobile-nav a.active { background: #a893ff; color: #050505; }
+        main { max-width: none; margin: 0; padding: 0; text-align: left; }
+        img { max-width: 100%; }
+        .app-panel, .cosmos-brand-lockup > *, .hero-bottom > *, .system-card > *, .principles > *, #panel-projects .project-card { min-width: 0; }
+        .system-copy h3, #panel-projects h1, #panel-projects h3 { overflow-wrap: anywhere; }
+        .app-panel:not(#panel-home) { max-width: 900px; margin: 0 auto; padding: 120px 24px 40px; text-align: center; }
+        #panel-projects { max-width: none; padding: 130px 5vw 100px; background: #080808; color: #f4f2ed; text-align: left; }
+        #panel-projects .panel-back-btn { color: rgba(255,255,255,.62); text-transform: uppercase; letter-spacing: .12em; }
+        #panel-projects .badge { margin-top: 48px; border: 0; border-radius: 0; padding: 0; background: transparent; backdrop-filter: none; color: rgba(255,255,255,.56); text-transform: uppercase; letter-spacing: .12em; }
+        #panel-projects .badge b { border-radius: 0; padding: 5px 9px; background: #a893ff; color: #090909; }
+        #panel-projects > h1 { max-width: 1050px; margin-top: 28px; font: 800 clamp(5rem,12vw,12rem)/.74 'Barlow Condensed',sans-serif; letter-spacing: -.05em; text-transform: uppercase; }
+        #panel-projects .subtitle { max-width: 660px; margin: 30px 0 0; color: rgba(255,255,255,.62); }
+        #panel-projects .project-grid { max-width: none; margin-top: 72px; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; padding: 1px; background: rgba(255,255,255,.2); }
+        #panel-projects .project-card { border: 0; border-radius: 0; padding: clamp(22px,3vw,38px); background: #0d0d0d; backdrop-filter: none; transition: background .25s ease; }
+        #panel-projects .project-card:hover, #panel-projects .project-card:focus-visible { transform: none; background: #151515; }
+        #panel-projects .project-card h3 { font: 750 clamp(2rem,3.5vw,3.4rem)/.9 'Barlow Condensed',sans-serif; text-transform: uppercase; letter-spacing: -.025em; }
+        #panel-projects .project-media { border: 0; background: transparent; }
+        #panel-projects .tech-pill, #panel-projects .project-btn { border-radius: 0; }
+        #panel-projects .project-btn { text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+        #panel-projects .project-grid { grid-template-columns: minmax(0,1fr); max-width: 1180px; gap: clamp(54px,9vw,120px); padding: 0; background: transparent; }
+        #panel-projects .project-card {
+            position: relative; min-height: 72svh; display: flex; flex-direction: column; justify-content: center;
+            padding: clamp(28px,5vw,68px); overflow: hidden;
+            border: 1px solid rgba(70,218,255,.55); background:
+                linear-gradient(rgba(34,190,255,.055) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(34,190,255,.055) 1px,transparent 1px),
+                linear-gradient(145deg,rgba(6,34,48,.96),rgba(3,11,18,.98));
+            background-size: 34px 34px,34px 34px,auto;
+            box-shadow: inset 0 0 70px rgba(42,200,255,.06),0 0 45px rgba(37,196,255,.08);
+            clip-path: polygon(0 22px,22px 0,calc(100% - 64px) 0,calc(100% - 46px) 18px,100% 18px,100% calc(100% - 22px),calc(100% - 22px) 100%,54px 100%,38px calc(100% - 16px),0 calc(100% - 16px));
+            opacity: .12; transform: perspective(1200px) translateZ(-240px) translateY(110px) scale(.78);
+            transition: opacity .85s ease, transform 1.05s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+        }
+        #panel-projects .project-card:nth-child(even) {
+            border-color: rgba(76,255,184,.52); background:
+                linear-gradient(rgba(63,255,180,.05) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(63,255,180,.05) 1px,transparent 1px),
+                linear-gradient(145deg,rgba(5,39,34,.96),rgba(3,14,15,.98));
+            background-size: 34px 34px,34px 34px,auto;
+            box-shadow: inset 0 0 70px rgba(59,255,184,.05),0 0 45px rgba(59,255,184,.07);
+        }
+        #panel-projects .project-card::before {
+            content: ""; position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(110deg,transparent 0 46%,rgba(116,228,255,.09) 49%,transparent 52% 100%);
+            transform: translateX(-100%); transition: transform 1.3s ease .25s;
+        }
+        #panel-projects .project-card::after {
+            content: "HUD / PROJECT 0" counter(project); position: absolute; top: 22px; right: 28px;
+            color: rgba(107,226,255,.62); font: 700 9px/1 Inter,sans-serif; letter-spacing: .15em;
+        }
+        #panel-projects .project-grid { counter-reset: project; }
+        #panel-projects .project-card { counter-increment: project; }
+        #panel-projects .project-card:nth-child(even)::after { color: rgba(95,255,190,.62); }
+        #panel-projects .project-card.hud-visible { opacity: 1; transform: perspective(1200px) translateZ(0) translateY(0) scale(1); }
+        #panel-projects .project-card.hud-visible::before { transform: translateX(100%); }
+        #panel-projects .project-card.hud-visible:hover { transform: perspective(1200px) translateZ(20px) scale(1.01); box-shadow: inset 0 0 80px rgba(42,200,255,.08),0 0 80px rgba(37,196,255,.16); }
+        #panel-projects .project-media { max-height: 46svh; margin-bottom: 30px; filter: saturate(.84) contrast(1.04); }
+        #panel-projects .project-card h3 { color: #dbf8ff; text-shadow: 0 0 24px rgba(58,213,255,.22); }
+        #panel-projects .project-card:nth-child(even) h3 { color: #d9ffef; text-shadow: 0 0 24px rgba(70,255,185,.18); }
+
+        #panel-home { color: #f4f2ed; }
+        .cosmos-hero {
+            position: relative; min-height: 100svh; overflow: hidden; isolation: isolate;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 108px 20px 24px; border-bottom: 1px solid rgba(255,255,255,.2);
+            background:
+                radial-gradient(circle at 22% 31%, rgba(168,147,255,.18) 0 1px, transparent 2px),
+                radial-gradient(circle at 74% 25%, rgba(255,255,255,.5) 0 1px, transparent 2px),
+                radial-gradient(circle at 61% 76%, rgba(255,255,255,.28) 0 1px, transparent 2px),
+                #050505;
+            background-size: 173px 173px, 251px 251px, 307px 307px;
+        }
+        .cosmos-hero::before {
+            content: ""; position: absolute; inset: 82px 10px 10px; z-index: -1;
+            border: 1px solid rgba(255,255,255,.16); pointer-events: none;
+        }
+        .hero-meta {
+            position: absolute; top: 88px; left: 22px; right: 22px;
+            display: flex; justify-content: space-between; gap: 20px;
+            color: rgba(255,255,255,.52); font-size: 9px; letter-spacing: .13em; text-transform: uppercase;
+        }
+        .cosmos-brand-lockup {
+            margin: auto 0; display: flex; align-items: center; justify-content: center;
+            gap: clamp(18px, 4vw, 64px);
+        }
+        .cosmos-wordmark {
+            margin: 0; text-align: center; font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(9rem, 26vw, 28rem); line-height: .68; letter-spacing: -.055em;
+            font-weight: 900; text-transform: uppercase; white-space: nowrap;
+        }
+        .cosmos-object {
+            position: relative; flex: 0 0 auto; width: clamp(130px, 19vw, 260px);
+            aspect-ratio: 1; border-radius: 50%;
+            display: grid; place-items: center;
+            background:
+                radial-gradient(circle at 32% 24%, rgba(255,255,255,.95), rgba(255,255,255,.12) 8%, transparent 22%),
+                radial-gradient(circle at 67% 72%, #a893ff, #26222f 42%, #050505 72%);
+            box-shadow: inset -20px -30px 70px #000, 0 30px 100px rgba(0,0,0,.85), 0 0 90px rgba(168,147,255,.16);
+            animation: cosmos-float 6s ease-in-out infinite;
+        }
+        .cosmos-object::before, .cosmos-object::after {
+            content: ""; position: absolute; inset: -16%; border: 1px solid rgba(255,255,255,.28); border-radius: 50%;
+        }
+        .cosmos-object::after { inset: -34%; border-color: rgba(168,147,255,.18); }
+        .cosmos-object img { width: 43%; border-radius: 24%; filter: grayscale(1) contrast(1.3); opacity: .9; }
+        @keyframes cosmos-float { 50% { transform: translateY(-12px) rotate(2deg); } }
+        .hero-bottom {
+            display: grid; grid-template-columns: 1fr minmax(260px, 440px) 1fr; align-items: end; gap: 24px;
+            position: relative; z-index: 4; text-transform: uppercase;
+        }
+        .hero-kicker { font: 700 clamp(18px,2vw,28px)/.9 'Barlow Condensed', sans-serif; letter-spacing: -.02em; }
+        .hero-intro { margin: 0; font-size: clamp(13px,1.3vw,16px); line-height: 1.5; text-transform: none; color: rgba(255,255,255,.68); text-align: center; }
+        .hero-scroll { justify-self: end; font-size: 10px; letter-spacing: .16em; color: rgba(255,255,255,.6); }
+        .hero-scroll::before { content: "↓"; display: inline-grid; place-items: center; width: 38px; height: 38px; margin-right: 9px; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; color: #fff; }
+
+        .cosmos-intro {
+            min-height: 78vh; display: grid; grid-template-columns: minmax(150px,.45fr) 1.55fr;
+            gap: 8vw; align-items: center; padding: 12vw 5vw; background: #f1efe9; color: #090909;
+        }
+        .cosmos-label { align-self: start; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+        .cosmos-statement { margin: 0; max-width: 1050px; font: 700 clamp(3.2rem,7vw,8rem)/.88 'Barlow Condensed', sans-serif; letter-spacing: -.04em; text-transform: uppercase; }
+        .cosmos-statement em { color: #8a72ff; font-style: normal; }
+        .cosmos-statement-small { max-width: 570px; margin: 32px 0 0 auto; font-size: 15px; line-height: 1.65; color: #55514c; }
+
+        .systems { padding: 8vw 2vw 11vw; background: #080808; color: #f4f2ed; }
+        .systems-head { display: flex; justify-content: space-between; align-items: end; padding: 0 1vw 48px; }
+        .systems-head h2 { margin: 0; font: 800 clamp(4.5rem,11vw,11rem)/.75 'Barlow Condensed', sans-serif; letter-spacing: -.045em; text-transform: uppercase; }
+        .systems-head p { max-width: 310px; margin: 0; color: rgba(255,255,255,.55); font-size: 12px; line-height: 1.6; text-align: right; }
+        .system-card {
+            position: relative; display: grid;
+            grid-template-columns: 60px minmax(260px,.75fr) minmax(420px,1.25fr);
+            gap: clamp(24px,4vw,64px); align-items: center; padding: 48px 1vw;
+            min-height: auto; color: inherit; text-decoration: none; overflow: hidden;
+            border-top: 1px solid rgba(255,255,255,.24); transition: background .45s ease;
+        }
+        .system-card:last-child { border-bottom: 1px solid rgba(255,255,255,.24); }
+        .system-card:hover { background: #111; }
+        .system-index { align-self: start; padding-top: 4px; font: 600 12px/1 Inter,sans-serif; color: #a893ff; }
+        .system-copy { align-self: center; padding: 0; position: relative; z-index: 2; }
+        .system-type { display: block; margin-bottom: 14px; color: rgba(255,255,255,.45); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; }
+        .system-copy h3 { margin: 0; font: 800 clamp(3.4rem,6.2vw,7rem)/.8 'Barlow Condensed', sans-serif; letter-spacing: -.035em; text-transform: uppercase; }
+        .system-copy p { max-width: 480px; margin: 20px 0 0; color: rgba(255,255,255,.62); font-size: 14px; line-height: 1.6; }
+        .system-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 22px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+        .system-link::after { content: "↗"; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.32); border-radius: 50%; transition: transform .25s ease, background .25s ease, color .25s ease; }
+        .system-card:hover .system-link::after { transform: rotate(45deg); background: #f4f2ed; color: #080808; }
+        .system-media { align-self: center; position: relative; aspect-ratio: 16/9; overflow: hidden; border: 0; border-radius: 0; background: transparent; }
+        .system-media img { width: 100%; height: 100%; object-fit: contain; filter: saturate(.75) contrast(1.04); transition: filter .5s ease; }
+        .system-card:hover .system-media img { filter: saturate(1) contrast(1.02); }
+        .system-card:nth-child(even) .system-media { border-radius: 0; }
+
+        /* Scroll-driven star corridor: the page scrolls vertically while the app
+           screens travel horizontally and the centered one moves toward the viewer. */
+        .systems { padding: 8vw 0 0; overflow: visible; }
+        .systems-head { padding-inline: 3vw; }
+        .systems-stage { position: relative; height: 780vh; }
+        .systems-viewport {
+            position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate;
+            display: flex; align-items: center; background: #030609;
+        }
+        .systems-stars {
+            position: absolute; inset: -20%; z-index: -2; pointer-events: none;
+            background:
+                radial-gradient(circle, rgba(98,225,255,.95) 0 1px, transparent 1.7px) 0 0/127px 127px,
+                radial-gradient(circle, rgba(255,255,255,.72) 0 1px, transparent 1.6px) 43px 61px/193px 193px,
+                radial-gradient(circle, rgba(91,255,194,.58) 0 1px, transparent 1.6px) 17px 33px/269px 269px,
+                radial-gradient(circle at center, rgba(14,86,116,.24), transparent 58%);
+            transform: scale(1.15); animation: star-drift 18s linear infinite;
+        }
+        .systems-viewport::after {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background: radial-gradient(circle at center, transparent 15%, rgba(3,6,9,.22) 48%, #030609 88%);
+        }
+        @keyframes star-drift { to { transform: scale(1.32) rotate(.01deg); } }
+        .systems-rail {
+            display: flex; align-items: center; gap: 3vw; width: max-content;
+            padding: 0 9vw; will-change: transform; transform: translate3d(0,0,0);
+        }
+        .systems-rail .system-card {
+            --system-focus: 0;
+            flex: 0 0 82vw; width: 82vw; height: min(78svh,760px); min-height: 560px;
+            grid-template-columns: 54px minmax(330px,.9fr) minmax(400px,1.1fr); gap: clamp(22px,3vw,48px);
+            padding: clamp(28px,4vw,58px); border: 4px solid #aeb4bc !important;
+            background: linear-gradient(135deg,rgba(7,27,36,.92),rgba(4,10,15,.84));
+            box-shadow: none;
+            opacity: .28; transform: perspective(1400px) translateZ(-440px) scale(.58); transform-origin: center;
+            transition: opacity .12s linear, transform .12s linear, border-color .2s ease, box-shadow .2s ease;
+            will-change: transform, opacity;
+        }
+        .systems-rail .system-card::before {
+            --system-tracer-angle: 0deg;
+            content: ""; position: absolute; inset: 7px; z-index: 4; pointer-events: none;
+            padding: 1px;
+            background: conic-gradient(from var(--system-tracer-angle),transparent 0 78%,rgba(186,190,198,.3) 83%,#f3f4f6 88%,rgba(196,200,208,.92) 93%,transparent 100%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: calc(.9 - var(--system-focus) * .24);
+            animation: system-border-orbit 3.2s linear infinite;
+        }
+        .systems-rail .system-card::after {
+            content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background:
+                repeating-linear-gradient(0deg,rgba(215,218,224,.065) 0 1px,transparent 1px 5px),
+                radial-gradient(circle at 50% 45%,rgba(210,214,222,.1),transparent 58%);
+            opacity: calc((1 - var(--system-focus)) * .82);
+            mix-blend-mode: screen;
+        }
+        @property --system-tracer-angle {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+        @keyframes system-border-orbit { to { --system-tracer-angle: 1turn; } }
+        .systems-rail .system-card:nth-child(even) {
+            border-color: #aeb4bc !important;
+            background: linear-gradient(135deg,rgba(5,34,30,.92),rgba(4,12,13,.84));
+        }
+        .systems-rail .system-card.is-focused,
+        .systems-rail .system-card:nth-child(even).is-focused { border-color: #d2d6db !important; box-shadow: none; }
+        .systems-rail .system-media { height: 100%; aspect-ratio: auto; }
+        .systems-rail .system-media img {
+            filter:
+                invert(calc((1 - var(--system-focus)) * .88))
+                grayscale(calc(1 - var(--system-focus)))
+                hue-rotate(calc((1 - var(--system-focus)) * 155deg))
+                saturate(calc(.14 + var(--system-focus) * .86))
+                brightness(calc(.62 + var(--system-focus) * .38))
+                contrast(calc(1.28 - var(--system-focus) * .24));
+            transition: filter .12s linear;
+        }
+        .systems-rail .system-copy, .systems-rail .system-index {
+            opacity: calc(.5 + var(--system-focus) * .5);
+            filter: saturate(calc(.25 + var(--system-focus) * .75));
+            transition: opacity .12s linear, filter .12s linear;
+        }
+        .systems-rail .system-copy h3 { font-size: clamp(3.4rem,5.5vw,6.2rem); overflow-wrap: normal; word-break: normal; }
+
+        .principles {
+            display: grid; grid-template-columns: 1fr 1.25fr; min-height: 80vh; background: #a893ff; color: #090909;
+            border-top: 1px solid #090909;
+        }
+        .principles-title { padding: 7vw 5vw; border-right: 1px solid rgba(0,0,0,.35); }
+        .principles-title h2 { margin: 0; font: 800 clamp(5rem,12vw,12rem)/.72 'Barlow Condensed',sans-serif; letter-spacing: -.05em; text-transform: uppercase; }
+        .principles-list { display: flex; flex-direction: column; justify-content: center; padding: 5vw; }
+        .principle { display: grid; grid-template-columns: 60px 1fr; gap: 20px; padding: 30px 0; border-top: 1px solid rgba(0,0,0,.35); }
+        .principle:last-child { border-bottom: 1px solid rgba(0,0,0,.35); }
+        .principle span { font-size: 11px; }
+        .principle h3 { margin: 0 0 8px; font: 700 clamp(2rem,4vw,4rem)/.9 'Barlow Condensed',sans-serif; text-transform: uppercase; }
+        .principle p { margin: 0; max-width: 520px; font-size: 13px; line-height: 1.6; }
+
+        .cosmos-faq { padding: 10vw 5vw; background: #f1efe9; color: #090909; }
+        .cosmos-faq h2 { margin: 0 0 60px; font: 800 clamp(5rem,12vw,12rem)/.72 'Barlow Condensed',sans-serif; letter-spacing: -.05em; text-transform: uppercase; }
+        .cosmos-faq details { border-top: 1px solid rgba(0,0,0,.35); padding: 22px 0; }
+        .cosmos-faq details:last-child { border-bottom: 1px solid rgba(0,0,0,.35); }
+        .cosmos-faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; font: 600 clamp(1.4rem,2.5vw,2.5rem)/1 'Barlow Condensed',sans-serif; text-transform: uppercase; }
+        .cosmos-faq summary::-webkit-details-marker { display: none; }
+        .cosmos-faq summary::after { content: "+"; }
+        .cosmos-faq details[open] summary::after { content: "−"; }
+        .cosmos-faq details p { max-width: 720px; margin: 18px 0 0; color: #57534e; line-height: 1.7; font-size: 14px; }
+        .contact-section {
+            display: grid; grid-template-columns: minmax(0,.85fr) minmax(360px,1.15fr);
+            gap: clamp(48px,9vw,140px); padding: 9vw 5vw; background: #a893ff; color: #090909;
+        }
+        .contact-section h2 { margin: 0; font: 850 clamp(5rem,12vw,12rem)/.72 'Barlow Condensed',sans-serif; letter-spacing: -.05em; text-transform: uppercase; }
+        .contact-intro { align-self: end; max-width: 480px; margin: 28px 0 0; font-size: 15px; line-height: 1.65; }
+        .contact-list { align-self: center; border-top: 1px solid rgba(0,0,0,.38); }
+        .contact-link {
+            display: grid; grid-template-columns: 110px minmax(0,1fr) auto; align-items: center; gap: 18px;
+            min-height: 82px; border-bottom: 1px solid rgba(0,0,0,.38); color: inherit; text-decoration: none;
+        }
+        .contact-link span { font-size: 10px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+        .contact-link strong { min-width: 0; font: 650 clamp(1.45rem,2.7vw,2.7rem)/1 'Barlow Condensed',sans-serif; overflow-wrap: anywhere; }
+        .contact-link::after { content: "↗"; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgba(0,0,0,.45); border-radius: 50%; }
+        .contact-link:hover::after { background: #090909; color: #a893ff; }
+        .contact-link.location::after { content: "•"; }
+        .site-footer { margin-top: 0; background: #080808; }
+
+        .reveal { opacity: 0; transform: translateY(44px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.75,.2,1); }
+        .reveal.in-view { opacity: 1; transform: translateY(0); }
+        @media (max-width: 900px) {
+            .header-inner { width: calc(100% - 24px); max-width: none; margin-top: 12px; padding: 7px 8px 7px 12px; min-height: 60px; }
+            .cosmos-hero { min-height: 820px; padding: 100px 18px 20px; }
+            .cosmos-wordmark { font-size: clamp(7rem,23vw,13rem); }
+            .cosmos-object { width: clamp(110px,24vw,200px); }
+            .hero-bottom { grid-template-columns: 1fr 1fr; }
+            .hero-intro { grid-column: 1/-1; grid-row: 1; max-width: 560px; margin: 0 auto 28px; }
+            .cosmos-intro { grid-template-columns: 1fr; gap: 48px; padding: 110px 7vw; }
+            .cosmos-label { align-self: auto; }
+            .system-card { grid-template-columns: 42px 1fr; gap: 0 18px; min-height: auto; padding: 36px 0 44px; }
+            .system-media { grid-column: 2; width: 100%; max-height: none; margin-top: 24px; border-radius: 0 !important; aspect-ratio: 16/9; }
+            .system-copy { padding: 0; }
+            .systems { padding: 90px 0; }
+            .systems-head { padding-inline: 18px; }
+            .systems-stage { height: auto !important; }
+            .systems-viewport { position: relative; height: auto; min-height: 0; overflow-x: auto; overflow-y: hidden; padding: 44px 0; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+            .systems-stars { position: fixed; opacity: .45; animation: none; }
+            .systems-rail { gap: 18px; padding: 0 18px; transform: none !important; }
+            .systems-rail .system-card { flex-basis: min(86vw,660px); width: min(86vw,660px); height: auto; min-height: 0; scroll-snap-align: center; opacity: 1 !important; transform: none !important; padding: 28px 24px 34px; border-left: 0 !important; border-right: 0 !important; background: rgba(4,14,19,.92); }
+            .systems-rail .system-card::before, .systems-rail .system-card::after { display: none; }
+            .systems-rail .system-media img, .systems-rail .system-copy, .systems-rail .system-index { filter: none; opacity: 1; }
+            .systems-rail .system-media { height: auto; aspect-ratio: 16/9; }
+            .systems-rail .system-copy h3 { font-size: clamp(3.4rem,12vw,6rem); }
+            #panel-projects .project-grid { grid-template-columns: 1fr; margin-top: 48px; }
+            .principles { grid-template-columns: 1fr; }
+            .principles-title { border-right: 0; border-bottom: 1px solid rgba(0,0,0,.35); }
+            .contact-section { grid-template-columns: 1fr; padding: 100px 7vw; }
+        }
+        @media (max-width: 600px) {
+            .hero-meta span:last-child { display: none; }
+            .cosmos-hero { min-height: 720px; }
+            .cosmos-brand-lockup { gap: 14px; }
+            .cosmos-wordmark { font-size: clamp(6rem,31vw,9rem); }
+            .cosmos-object { width: clamp(88px,27vw,124px); }
+            .hero-bottom { grid-template-columns: 1fr; gap: 18px; }
+            .hero-kicker { font-size: 20px; }
+            .hero-scroll { justify-self: start; }
+            .systems { padding: 90px 18px; }
+            .systems-head { display: block; padding-bottom: 34px; }
+            .systems-head p { margin-top: 24px; text-align: left; }
+            .system-card { grid-template-columns: 30px 1fr; gap: 0 14px; padding: 32px 0 38px; }
+            .system-copy h3 { font-size: 17vw; }
+            .system-copy p { font-size: 13px; }
+            #panel-projects { padding: 104px 18px 72px; }
+            #panel-projects > h1 { font-size: 20vw; }
+            #panel-projects .project-card { min-height: 0; padding: 38px 22px; clip-path: polygon(0 14px,14px 0,calc(100% - 36px) 0,calc(100% - 24px) 12px,100% 12px,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%); }
+            .principle { grid-template-columns: 36px 1fr; }
+            .cosmos-faq { padding: 100px 7vw; }
+            .contact-link { grid-template-columns: 76px minmax(0,1fr) 38px; gap: 10px; min-height: 72px; }
+            .contact-link::after { width: 36px; height: 36px; }
+        }
+        @media (max-width: 390px) {
+            .cosmos-hero { padding-inline: 14px; }
+            .cosmos-brand-lockup { gap: 10px; }
+            .cosmos-wordmark { font-size: 29vw; }
+            .cosmos-object { width: 25vw; }
+            .systems { padding-inline: 14px; }
+            .system-card { grid-template-columns: 24px minmax(0,1fr); gap: 0 10px; }
+            #panel-projects { padding-inline: 14px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .cosmos-object { animation: none; }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .system-media img, .system-link::after { transition: none; }
+            .systems-stars { animation: none; }
+            .systems-rail .system-card::before { animation: none; }
+            .systems-stage { height: auto !important; }
+            .systems-viewport { position: relative; height: auto; overflow-x: auto; padding: 44px 0; }
+            .systems-rail { transform: none !important; }
+            .systems-rail .system-card { opacity: 1 !important; transform: none !important; }
+        }
+
+        /* Unified HAI future system */
+        :root {
+            --future-bg: #02070b;
+            --future-panel: rgba(7,18,25,.88);
+            --future-cyan: #86e8ff;
+            --future-cyan-soft: rgba(134,232,255,.22);
+            --future-silver: #c9ced5;
+            --future-line: rgba(201,206,213,.24);
+        }
+        body { background: var(--future-bg); }
+        .header-inner {
+            border-color: rgba(201,206,213,.38);
+            border-bottom-color: rgba(134,232,255,.7);
+            border-radius: 0;
+            background: rgba(3,10,15,.78);
+            box-shadow: 0 18px 50px rgba(0,0,0,.38);
+            clip-path: polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));
+        }
+        .brand span { color: var(--future-cyan); }
+        nav.app-nav a.active, .mobile-nav a.active {
+            color: var(--future-cyan);
+            background: rgba(134,232,255,.1);
+            border-color: rgba(134,232,255,.38);
+        }
+        .app-nav a:hover, .mobile-nav a:hover { color: #fff; }
+        .cosmos-hero {
+            background:
+                linear-gradient(rgba(134,232,255,.045) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(134,232,255,.045) 1px,transparent 1px),
+                radial-gradient(circle at 50% 42%,rgba(39,143,184,.22),transparent 30%),
+                radial-gradient(circle at 16% 20%,rgba(201,206,213,.11),transparent 24%),
+                #02070b;
+            background-size: 56px 56px,56px 56px,auto,auto,auto;
+        }
+        .hero-meta, .hero-scroll { color: rgba(134,232,255,.72); }
+        .cosmos-wordmark {
+            color: transparent;
+            background: linear-gradient(180deg,#fff 8%,#c6cbd2 48%,#79dff7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 18px 45px rgba(80,197,229,.12));
+        }
+        .cosmos-object::before { border-color: rgba(201,206,213,.55); }
+        .cosmos-object::after { border-color: rgba(134,232,255,.28); }
+        .cosmos-object {
+            background:
+                radial-gradient(circle at 34% 28%,rgba(255,255,255,.9),transparent 4%),
+                radial-gradient(circle at 46% 42%,rgba(134,232,255,.28),rgba(7,20,28,.9) 56%,#02070b 78%);
+            box-shadow: inset -20px -30px 70px #000,0 30px 100px rgba(0,0,0,.85),0 0 90px rgba(134,232,255,.14);
+        }
+        .cosmos-intro {
+            color: #eef5f7;
+            background:
+                linear-gradient(90deg,rgba(134,232,255,.05) 1px,transparent 1px),
+                linear-gradient(#07131a,#03090e);
+            background-size: 80px 100%,auto;
+            border-block: 1px solid var(--future-line);
+        }
+        .cosmos-label { color: var(--future-cyan); }
+        .cosmos-statement em { color: var(--future-cyan); text-shadow: 0 0 34px rgba(134,232,255,.16); }
+        .cosmos-statement-small { color: rgba(226,235,239,.66); }
+        .systems-head p { color: rgba(225,235,239,.62); }
+        .principles {
+            color: #edf4f6;
+            background:
+                linear-gradient(rgba(201,206,213,.035) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(201,206,213,.035) 1px,transparent 1px),
+                #061017;
+            background-size: 54px 54px;
+            border-color: var(--future-line);
+        }
+        .principles-title { border-color: var(--future-line); }
+        .principles-title h2 { color: #eef3f5; }
+        .principle { border-color: var(--future-line); }
+        .principle:last-child { border-color: var(--future-line); }
+        .principle span { color: var(--future-cyan); }
+        .principle p { color: rgba(226,235,239,.64); }
+        .cosmos-faq {
+            color: #edf4f6;
+            background: radial-gradient(circle at 90% 15%,rgba(134,232,255,.09),transparent 24%),#02070b;
+        }
+        .cosmos-faq details { border-color: var(--future-line); }
+        .cosmos-faq details:last-child { border-color: var(--future-line); }
+        .cosmos-faq summary { color: #edf4f6; }
+        .cosmos-faq summary::after { color: var(--future-cyan); }
+        .cosmos-faq details p { color: rgba(226,235,239,.64); }
+        .contact-section {
+            color: #edf4f6;
+            background:
+                radial-gradient(circle at 8% 78%,rgba(134,232,255,.12),transparent 28%),
+                linear-gradient(135deg,#07151d,#02070b 64%);
+            border-top: 1px solid var(--future-line);
+        }
+        .contact-intro { color: rgba(226,235,239,.64); }
+        .contact-list, .contact-link { border-color: var(--future-line); }
+        .contact-link::after { border-color: rgba(201,206,213,.55); color: var(--future-cyan); }
+        .contact-link:hover { color: var(--future-cyan); }
+        .contact-link:hover::after { background: var(--future-silver); color: #02070b; }
+        .site-footer { border-top: 1px solid var(--future-line); background: #010407; }
+        #panel-projects { background: #02070b; }
+        #panel-projects .project-card {
+            border: 1px solid rgba(201,206,213,.34);
+            background: linear-gradient(135deg,rgba(9,23,31,.96),rgba(3,9,13,.98));
+            box-shadow: none;
+        }
+        #panel-projects .project-card.hud-visible:hover { border-color: rgba(134,232,255,.7); box-shadow: none; }
+        #panel-projects .badge b { background: var(--future-cyan); color: #021015; }
+        #panel-projects .project-card h3,
+        #panel-projects .project-card:nth-child(even) h3 { color: #edf4f6; text-shadow: none; }
+        @media (max-width: 900px) {
+            .principles-title { border-color: var(--future-line); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .cosmos-wordmark { filter: none; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+
+        <header>
+            <div class="header-inner">
+                <a href="/" class="brand" onclick="event.preventDefault(); showPanel('home');">
+                    <img src="/icons/logo.png" alt="HAI">
+                    <span>HAI</span>
+                </a>
+
+                <nav class="app-nav">
+                    <a href="#" class="active" data-panel="home" onclick="event.preventDefault(); showPanel('home');">Home</a>
+                    <a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>
+                    <a href="/#contact">Contact</a>
+                </nav>
+
+                <button class="menu-toggle" id="menuToggleBtn" aria-label="Toggle menu" aria-expanded="false">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="mobile-nav" id="mobileNav">
+                <a href="#" class="active" data-panel="home" onclick="event.preventDefault(); showPanel('home'); mobileNav.classList.remove('open');">Home</a>
+                <a href="#apps" data-panel="projects" onclick="event.preventDefault(); scrollToApps();">Projects</a>
+                <a href="/#contact">Contact</a>
+            </div>
+        </header>
+
+        <main>
+            <!-- HOME -->
+            <div class="app-panel visible" id="panel-home">
+                <section class="cosmos-hero" aria-labelledby="home-title">
+                    <div class="hero-meta"><span>MYHAI.ORG / SYSTEM 2026</span><span>PRIVATE TOOLS / PUBLIC ACCESS</span></div>
+                    <div class="cosmos-brand-lockup">
+                        <div class="cosmos-object" aria-hidden="true"><img src="/icons/logo.png" alt=""></div>
+                        <h1 class="cosmos-wordmark" id="home-title">HAI</h1>
+                    </div>
+                    <div class="hero-bottom">
+                        <div class="hero-kicker">Human tools.<br>Intelligent systems.</div>
+                        <p class="hero-intro">A family of useful applications built around privacy, clear ownership, and direct access. Explore the complete story of each app before you launch it.</p>
+                        <div class="hero-scroll">Scroll to explore</div>
+                    </div>
+                </section>
+
+                <section class="cosmos-intro">
+                    <span class="cosmos-label reveal">[ The HAI approach ]</span>
+                    <div>
+                        <p class="cosmos-statement reveal">One home for tools that help you <em>communicate, think, analyze,</em> and move forward.</p>
+                        <p class="cosmos-statement-small reveal">HAI brings messaging, conversational AI, research memory, data analysis, and job discovery into one growing suite. Every application has a full information page so you can understand what it does, how it works, and what it uses before choosing Try Now.</p>
+                    </div>
+                </section>
+
+                <section class="systems" id="apps" aria-labelledby="systems-title">
+                    <div class="systems-head reveal">
+                        <h2 id="systems-title">All<br>apps</h2>
+                        <p>Every HAI application and public project in one place. Select any item to open its complete information page.</p>
+                    </div>
+
+                    <div class="systems-stage">
+                    <div class="systems-viewport">
+                    <div class="systems-stars" aria-hidden="true"></div>
+                    <div class="systems-rail">
+                    <a class="system-card" href="/project.html?project=hai">
+                        <span class="system-index">01</span>
+                        <div class="system-copy"><span class="system-type">Encrypted communication</span><h3>HAI<br>Messenger</h3><p>Self-hosted, end-to-end encrypted chat with real-time messaging, voice notes, media sharing, mini-games, and anonymous Nearby chat.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/hai-messenger.png" alt="HAI Messenger interface" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=h">
+                        <span class="system-index">02</span>
+                        <div class="system-copy"><span class="system-type">Conversational assistant</span><h3>H AI</h3><p>Talk by text or voice without creating an account. H currently uses Gemini while its locally hosted model is being restored.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/h-ai.png" alt="H AI assistant interface" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=hgpt">
+                        <span class="system-index">03</span>
+                        <div class="system-copy"><span class="system-type">Private AI workspace</span><h3>Hgpt</h3><p>A direct-access AI workspace for conversations, projects, decisions, and shared memory across local and remote models.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/hgpt.png" alt="Hgpt workspace" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=analyst">
+                        <span class="system-index">04</span>
+                        <div class="system-copy"><span class="system-type">Data exploration</span><h3>Auto Data<br>Analyst</h3><p>Ask questions about your data in plain English and get guided exploration, analysis, and charts without manually building each step.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/auto-data-analyst.png" alt="Auto Data Analyst interface" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=jobs">
+                        <span class="system-index">05</span>
+                        <div class="system-copy"><span class="system-type">Personal job discovery</span><h3>Job<br>Board</h3><p>Create an account, describe the roles you want, and optionally upload a resume to rank real postings by their match to you.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/job-portal.png" alt="HAI Job Board interface" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=hagent">
+                        <span class="system-index">06</span>
+                        <div class="system-copy"><span class="system-type">Agent orchestration</span><h3>Hagent</h3><p>A self-hosted multi-agent platform with projects, agents, squads, scheduled autopilots, approvals, and inspectable run history.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/hagent-dashboard.png" alt="Hagent orchestration dashboard" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=dotflow">
+                        <span class="system-index">07</span>
+                        <div class="system-copy"><span class="system-type">Private voice workspace</span><h3>Dotflow</h3><p>Speak into your apps, capture personal notes and keep meeting transcripts on your Windows PC.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/dotflow-banner.svg" alt="Dotflow Windows voice workspace" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=bizpack">
+                        <span class="system-index">08</span>
+                        <div class="system-copy"><span class="system-type">Business data toolkit</span><h3>BizPack</h3><p>An open-source Python package for turning inconsistent corporate spreadsheets into clean, audit-ready pandas data.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/bizpack-banner.png" alt="BizPack data toolkit" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=morningstar">
+                        <span class="system-index">09</span>
+                        <div class="system-copy"><span class="system-type">Machine learning</span><h3>MorningStar<br>NLP</h3><p>A natural-language pipeline that classifies company descriptions into a detailed hierarchical industry taxonomy.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/morningstar-nlp.png" alt="MorningStar NLP classifier" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=portfolio">
+                        <span class="system-index">10</span>
+                        <div class="system-copy"><span class="system-type">Web experience</span><h3>Portfolio</h3><p>A cinematic personal portfolio with animated project stories, multiple visual modes, and a private content-management backend.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/developer-portfolio.png" alt="Developer portfolio website" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=agent">
+                        <span class="system-index">11</span>
+                        <div class="system-copy"><span class="system-type">Local AI assistant</span><h3>Personal AI<br>Agent</h3><p>A local, memory-aware assistant built with Python and Ollama for personal conversation and continuity across sessions.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/h-ai.png" alt="Personal AI agent" loading="lazy"></div>
+                    </a>
+                    <a class="system-card" href="/project.html?project=dating">
+                        <span class="system-index">12</span>
+                        <div class="system-copy"><span class="system-type">Machine learning coursework</span><h3>Dating<br>Application</h3><p>A graduate team project exploring responsible AI-assisted compatibility matching and model evaluation.</p><span class="system-link">View full information</span></div>
+                        <div class="system-media"><img src="/project-images/dating-ai-matching.png" alt="AI compatibility matching application" loading="lazy"></div>
+                    </a>
+                    </div>
+                    </div>
+                    </div>
+                </section>
+
+                <section class="principles" aria-labelledby="principles-title">
+                    <div class="principles-title reveal"><h2 id="principles-title">Built<br>with<br>intent</h2></div>
+                    <div class="principles-list">
+                        <div class="principle reveal"><span>01</span><div><h3>Privacy where it matters</h3><p>HAI Messenger encrypts message content end to end, and each app documents its own data and model boundaries on its information page.</p></div></div>
+                        <div class="principle reveal"><span>02</span><div><h3>Direct, useful access</h3><p>No ads and no confusing detours. You learn about an application first, then launch it from a single, clearly labeled Try Now action.</p></div></div>
+                        <div class="principle reveal"><span>03</span><div><h3>One growing system</h3><p>Every application, open-source tool, experiment, and live service sits under one HAI identity with a clear information page.</p></div></div>
+                    </div>
+                </section>
+
+                <section class="cosmos-faq" aria-labelledby="faq-title">
+                    <h2 id="faq-title" class="reveal">Field notes</h2>
+                    <details class="reveal"><summary>Why does every app open an information page first?</summary><p>So you can see the purpose, features, workflow, technology, data handling, limitations, and screenshots before entering the application. The information page is the only place that contains the Try Now button.</p></details>
+                    <details class="reveal"><summary>Is HAI free?</summary><p>There is no paid tier, subscription, or advertising layer. The applications are operated on HAI's own server infrastructure.</p></details>
+                    <details class="reveal"><summary>What does self-hosted mean here?</summary><p>The applications run on infrastructure controlled by the project rather than being assembled entirely from third-party hosted frontends. Individual information pages explain where external services or models are currently used.</p></details>
+                    <details class="reveal"><summary>Where can I see every project?</summary><p>Choose Projects in the top navigation. Every project card opens a detailed information page, and none of those cards launches an application directly.</p></details>
+                </section>
+
+                <section class="contact-section" id="contact" aria-labelledby="contact-title">
+                    <div>
+                        <h2 id="contact-title" class="reveal">Contact<br>me</h2>
+                        <p class="contact-intro reveal">For work, collaboration, questions, or feedback, reach me through any of the public channels here.</p>
+                    </div>
+                    <div class="contact-list reveal">
+                        <a class="contact-link" href="mailto:gsudheer56@gmail.com"><span>Email</span><strong>gsudheer56@gmail.com</strong></a>
+                        <a class="contact-link" href="https://linkedin.com/in/sudheergsk" target="_blank" rel="noopener"><span>LinkedIn</span><strong>/in/sudheergsk</strong></a>
+                        <a class="contact-link" href="https://github.com/sudheer-050" target="_blank" rel="noopener"><span>GitHub</span><strong>@sudheer-050</strong></a>
+                        <div class="contact-link location"><span>Location</span><strong>Chicago, IL</strong></div>
+                    </div>
+                </section>
+
+                <div hidden>
+                <div class="badge"><b>Free</b> A growing family of self-hosted, privacy-first apps</div>
+                <h1>One place.<br><span class="accent">Every HAI app.</span></h1>
+                <p class="subtitle">HAI is a small suite of self-hosted, privacy-first tools — starting with an
+                    end-to-end encrypted messenger and a conversational AI assistant, with more on the way.
+                    Pick an app below to learn more.</p>
+
+                <div class="app-summary-grid">
+                    <div class="app-summary-card" onclick="window.location.href='/project.html?project=hai'">
+                        <div class="app-summary-icon">H</div>
+                        <h3>HAI Messenger</h3>
+                        <p>A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes,
+                            media sharing, mini-games, and anonymous Nearby chat.</p>
+                        <span class="app-summary-tag">Live &amp; ready →</span>
+                    </div>
+                    <div class="app-summary-card" onclick="window.location.href='/project.html?project=h'">
+                        <div class="app-summary-icon">H</div>
+                        <h3>H AI</h3>
+                        <p>HAI's assistant — talk by text or voice with no account required. It currently uses
+                            Gemini while the locally hosted model is being restored.</p>
+                        <span class="app-summary-tag">Live &amp; ready →</span>
+                    </div>
+                    <div class="app-summary-card" onclick="window.location.href='/project.html?project=hgpt'">
+                        <div class="app-summary-icon">H</div>
+                        <h3>Hgpt</h3>
+                        <p>A private AI workspace with conversations, projects, decisions, and shared memory across
+                            local and remote models. Opens directly with no login required.</p>
+                        <span class="app-summary-tag">Live &amp; ready →</span>
+                    </div>
+                    <div class="app-summary-card" onclick="window.location.href='/project.html?project=analyst'">
+                        <div class="app-summary-icon">A</div>
+                        <h3>Auto Data Analyst</h3>
+                        <p>Point it at your data and ask questions in plain English — it explores, analyzes,
+                            and charts the answers for you.</p>
+                        <span class="app-summary-tag">Live &amp; ready →</span>
+                    </div>
+                    <div class="app-summary-card" onclick="window.location.href='/project.html?project=jobs'">
+                        <div class="app-summary-icon">J</div>
+                        <h3>Job Board</h3>
+                        <p>Create your own account, tell it which roles you're after, and optionally upload your
+                            resume — it ranks real postings by how well they match you.</p>
+                        <span class="app-summary-tag">Live &amp; ready →</span>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">Why HAI</span>
+                    <h2 class="section-heading">Built differently</h2>
+                    <p class="section-subheading">Three things every app in this suite has in common.</p>
+                    <div class="pillar-grid">
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.35 8.95a1 1 0 0 1-1.3 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+                            <h3>Private by design</h3>
+                            <p>The server sees as little as possible — E2E encryption in the messenger and local browser storage for H's personal glossary.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg></div>
+                            <h3>Self-hosted &amp; free</h3>
+                            <p>No subscriptions, no ads, no data broker model. You run it, you own it.</p>
+                        </div>
+                        <div class="pillar-card">
+                            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
+                            <h3>Growing suite</h3>
+                            <p>HAI Messenger, H AI, Hgpt, Auto Data Analyst, and the Job Board are live today — more apps are coming under the same roof.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">FAQ</span>
+                    <h2 class="section-heading">Frequently asked</h2>
+                    <div class="faq-section">
+                        <div class="faq-item">
+                            <h4>Is HAI actually free?</h4>
+                            <p>Yes. There's no paid tier, no subscription, no ads. It's self-hosted software — you (or whoever runs the server) covers hosting, there's no separate cost to use it.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What does "self-hosted" mean here?</h4>
+                            <p>The app runs on its own server rather than a shared corporate cloud. That server is what you're talking to right now — no third party sits in the middle of your messages.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can HAI Messenger really not read my messages?</h4>
+                            <p>Correct — it uses hybrid RSA-OAEP-2048 + AES-256-GCM envelope encryption. The server only ever relays ciphertext; it doesn't hold the keys needed to decrypt it.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>How does H process my messages?</h4>
+                            <p>H currently sends message text to Google's Gemini API while the locally hosted model is being restored. The full model and privacy details are shown before you open the app.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What's Auto Data Analyst?</h4>
+                            <p>A free tool that lets you ask questions about your data in plain English — it explores, analyzes, and charts the answers for you.</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- HAI MESSENGER -->
+            <div class="app-panel" id="panel-hai">
+                <button type="button" class="panel-back-btn" onclick="showPanel('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    All apps
+                </button>
+                <div class="badge"><b>Free</b> Self-hosted &amp; end-to-end encrypted</div>
+                <h1>Message freely.<br><span class="accent">Privately yours.</span></h1>
+                <p class="subtitle">HAI Messenger is a free, self-hosted, end-to-end encrypted chat app —
+                    real-time messaging, voice notes, photo and document sharing, mini-games, and anonymous
+                    Nearby chat. The server only ever relays ciphertext.</p>
+                <div class="cta-row">
+                    <a href="/index.html" class="btn btn-primary">
+                        Open HAI Messenger
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">See it in action</span>
+                    <h2 class="section-heading">Real screens, don't just take our word for it</h2>
+                    <p class="section-subheading">Sign-in, sign-up, and an actual end-to-end encrypted conversation between two accounts — pulled from a real running instance.</p>
+                    <div class="shot-marquee">
+                        <div class="shot-marquee-track">
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-login.png" alt="HAI Messenger sign-in screen" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-chat.png" alt="HAI Messenger encrypted conversation" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-chat-desktop.png" alt="HAI Messenger desktop chat view" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-signup.png" alt="HAI Messenger account creation screen" loading="lazy"></div>
+                            <!-- duplicated once so the loop point is seamless -->
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-login.png" alt="" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-chat.png" alt="" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-chat-desktop.png" alt="" loading="lazy"></div>
+                            <div class="shot-marquee-frame"><img src="/screenshots/hai-messenger-signup.png" alt="" loading="lazy"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">How it works</span>
+                    <h2 class="section-heading">Three steps to private messaging</h2>
+                    <div class="steps-row">
+                        <div class="step-card">
+                            <span class="step-number">1</span>
+                            <h4>Create an account</h4>
+                            <p>Sign up with a username and password — your encryption keypair is generated on your device, not the server.</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-number">2</span>
+                            <h4>Add friends</h4>
+                            <p>Search for people or share an invite link. A chat only opens once a friend request is accepted both ways.</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-number">3</span>
+                            <h4>Chat privately</h4>
+                            <p>Every message is encrypted on your device before it ever leaves — text, voice notes, photos, and documents alike.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                <span class="section-eyebrow">Features</span>
+                <h2 class="section-heading">Everything included</h2>
+                <p class="section-subheading">No premium tier, no feature paywall — this is all of it.</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                            <h3>End-to-end encrypted</h3>
+                        </div>
+                        <p>RSA-OAEP-2048 + AES-256-GCM. The server only ever sees ciphertext.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                            <h3>Real-time messaging</h3>
+                        </div>
+                        <p>Read receipts, typing indicators, edits, reactions, replies, pinning.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></div>
+                            <h3>Rich media</h3>
+                        </div>
+                        <p>Photos, voice notes with a live waveform, documents, live location.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+                            <h3>Nearby</h3>
+                        </div>
+                        <p>Anonymous, self-destructing chats with whoever's online nearby.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><rect width="20" height="12" x="2" y="6" rx="6"/></svg></div>
+                            <h3>Mini-games</h3>
+                        </div>
+                        <p>Tic Tac Toe, Stone Paper Scissors, Truth or Dare — live.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div>
+                            <h3>Installable PWA</h3>
+                        </div>
+                        <p>Add to your home screen for a native, offline-ready app.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></div>
+                            <h3>Friend-gated by default</h3>
+                        </div>
+                        <p>Chats only open once a request's accepted on both sides.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></div>
+                            <h3>AI Voice Mode</h3>
+                        </div>
+                        <p>Have any chat read aloud and reply back hands-free.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+                            <h3>Local topic search</h3>
+                        </div>
+                        <p>Searches by meaning, not keywords — fully on-device, nothing leaves your phone.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
+                            <h3>Admin insights</h3>
+                        </div>
+                        <p>Growth, retention, and usage metrics for self-hosters — metadata only.</p>
+                    </div>
+                </div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">Security</span>
+                    <h2 class="section-heading">How the encryption actually works</h2>
+                    <div class="detail-section">
+                    <dl class="detail-list">
+                        <div class="detail-row">
+                            <dt>Key generation</dt>
+                            <dd>Your RSA-2048 keypair is generated in your browser when you sign up. The private key never leaves your device in plaintext.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Per-message encryption</dt>
+                            <dd>Each message gets a fresh AES-256-GCM key. That key is then wrapped with the recipient's RSA public key (RSA-OAEP), so only their private key can unwrap it.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>What the server sees</dt>
+                            <dd>Ciphertext only — plus routing metadata it needs to deliver the message (who it's for, when it arrived). It cannot decrypt message content.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Media &amp; voice notes</dt>
+                            <dd>Photos, documents, and voice notes are encrypted the same way as text before upload — the server stores encrypted blobs, not viewable files.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Nearby chat</dt>
+                            <dd>Ephemeral and anonymous — no account identity is attached, and the thread self-destructs after 24 hours.</dd>
+                        </div>
+                    </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- H AI -->
+            <div class="app-panel" id="panel-h">
+                <button type="button" class="panel-back-btn" onclick="showPanel('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    All apps
+                </button>
+                <div class="badge"><b>Free</b> Text and voice, no account required</div>
+                <h1>Meet <span class="accent">H.</span></h1>
+                <p class="subtitle">H is HAI's assistant — chat by text or have a hands-free voice
+                    conversation. H currently uses Google's Gemini API while the locally hosted model is being
+                    restored, so message text is sent to Google for processing.</p>
+                <div class="cta-row">
+                    <a href="/h.html" class="btn btn-primary">
+                        Chat with H
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">See it in action</span>
+                    <h2 class="section-heading">Talk to H your way</h2>
+                    <div class="screenshot-showcase">
+                        <div>
+                            <div class="screenshot-frame"><img src="/screenshots/h-ai-chat.png" alt="H AI text chat interface" loading="lazy"></div>
+                            <div class="screenshot-caption">Text mode</div>
+                        </div>
+                        <div>
+                            <div class="screenshot-frame"><img src="/screenshots/h-ai-voice.png" alt="H AI voice mode with listening orb" loading="lazy"></div>
+                            <div class="screenshot-caption">Voice mode</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                <span class="section-eyebrow">Features</span>
+                <h2 class="section-heading">What H can do</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                            <h3>Text mode</h3>
+                        </div>
+                        <p>Type, get a reply, keep the conversation going.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></div>
+                            <h3>Voice mode</h3>
+                        </div>
+                        <p>Tap once and just talk — H listens and replies out loud.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.35 8.95a1 1 0 0 1-1.3 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+                            <h3>Clear privacy details</h3>
+                        </div>
+                        <p>See the active model and data boundary before opening the assistant.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></svg></div>
+                            <h3>No account needed</h3>
+                        </div>
+                        <p>Chat right from this page — no sign-up required.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.92a1 1 0 0 0-.02-1.83L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.9a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
+                            <h3>Learns as you go</h3>
+                        </div>
+                        <p>Doesn't know a word? Teach it once, remembered next time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-head">
+                            <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></div>
+                            <h3>Conversation history</h3>
+                        </div>
+                        <p>Pull up the transcript anytime, download it as a text file.</p>
+                    </div>
+                </div>
+                </div>
+
+                <div class="section-block">
+                    <span class="section-eyebrow">Under the hood</span>
+                    <h2 class="section-heading">How H actually works</h2>
+                    <div class="detail-section">
+                    <dl class="detail-list">
+                        <div class="detail-row">
+                            <dt>Model</dt>
+                            <dd>H currently runs on Google's Gemini API (interim, while migrating back to a locally-hosted model) — your message text is sent to Google for processing.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Voice</dt>
+                            <dd>Speech-to-text and text-to-speech both run through your browser's built-in Web Speech engine — audio never has to leave your device to be transcribed.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Glossary</dt>
+                            <dd>Terms you teach H are saved to your browser's local storage only — never synced to a server or shared with other visitors.</dd>
+                        </div>
+                        <div class="detail-row">
+                            <dt>Knowledge</dt>
+                            <dd>H can accurately explain HAI Messenger's own features, plus give straight answers about other AI platforms like Claude, Gemini, Grok, and Ollama itself.</dd>
+                        </div>
+                    </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AUTO DATA ANALYST -->
+            <div class="app-panel" id="panel-app-three">
+                <button type="button" class="panel-back-btn" onclick="showPanel('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    All apps
+                </button>
+                <div class="badge"><b>Free</b> Ask questions, get analysis</div>
+                <h1>Meet <span class="accent">Auto Data Analyst.</span></h1>
+                <p class="subtitle">Upload your data and ask questions in plain English — Auto Data Analyst
+                    explores it, runs the analysis, and charts the answers for you.</p>
+                <div class="cta-row">
+                    <a href="https://myhai.org/analyst/" class="btn btn-primary">
+                        Open Auto Data Analyst
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- JOB BOARD -->
+            <div class="app-panel" id="panel-app-four">
+                <button type="button" class="panel-back-btn" onclick="showPanel('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    All apps
+                </button>
+                <div class="badge"><b>Free</b> Your own personalized job feed</div>
+                <h1>Meet the <span class="accent">Job Board.</span></h1>
+                <p class="subtitle">Create an account, add the roles you're interested in, and upload your resume
+                    for better matches — it pulls real postings and ranks them by how well they fit your profile.</p>
+                <div class="cta-row">
+                    <a href="https://myhai.org/jobs/" class="btn btn-primary">
+                        Open Job Board
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div class="app-panel" id="panel-projects">
+                <button type="button" class="panel-back-btn" onclick="showPanel('home')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    All apps
+                </button>
+                <div class="badge"><b>Portfolio</b> Everything Sudheer's built</div>
+                <h1>Projects.<br><span class="accent">All in one place.</span></h1>
+                <p class="subtitle">A running list of things Sudheer has built and worked on — from live apps to
+                    coursework and hardware. Open the live ones, or dig into how the rest work.</p>
+
+                <div class="project-grid">
+                    <div class="project-card" data-project="hgpt">
+                        <img class="project-media" src="/project-images/hgpt.png"
+                            alt="Hgpt self-hosted AI assistant connected to private memory and local services"
+                            loading="lazy" decoding="async">
+                        <h3>Hgpt</h3>
+                        <p class="project-desc">A self-hosted AI workspace with durable conversations, projects,
+                            decisions, and shared memory across Ollama and OpenAI-compatible models.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Node.js</span>
+                            <span class="tech-pill">PostgreSQL</span>
+                            <span class="tech-pill">Ollama</span>
+                            <span class="tech-pill">Docker</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=hgpt" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-hgpt">
+                            Keeps each visitor's workspace private through an isolated guest session, with no login
+                            required. Conversations can share explicit memories, project context, and decisions while
+                            the model layer remains replaceable between local and compatible remote providers.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="hagent">
+                        <img class="project-media" src="/project-images/hagent-dashboard.png"
+                            alt="Hagent dashboard showing projects, agents, autopilots, issues, and recent runs"
+                            loading="lazy" decoding="async">
+                        <h3>Hagent</h3>
+                        <p class="project-desc">A self-hosted multi-agent orchestration platform with a CLI and web
+                            dashboard for projects, issues, agents, squads, skills, and scheduled autopilots.</p>
+                        <p class="project-impact"><strong>Impact:</strong> Makes autonomous AI work inspectable and
+                            provider-neutral, with approvals, recovery, delegation, and auditable run history.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">FastAPI</span>
+                            <span class="tech-pill">SQLAlchemy</span>
+                            <span class="tech-pill">Ollama</span>
+                            <span class="tech-pill">Multi-agent</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=hagent" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-hagent">
+                            Supports pluggable cloud, local, and installed CLI runtimes behind one adapter boundary.
+                            Agents can work from kanban issues, delegate to squad specialists, recover interrupted
+                            runs, use isolated worktrees, and share provider-neutral memory. The current release has
+                            293 passing tests and is designed for local or trusted small-team use.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="jobs">
+                        <img class="project-media" src="/project-images/job-portal.png"
+                            alt="Illustration of explainable job matching, application preparation, and interview planning"
+                            loading="lazy" decoding="async">
+                        <h3>Job Portal</h3>
+                        <p class="project-desc">A private career-search command center that collects jobs from public
+                            APIs and employer systems, ranks matches, and organizes the application journey.</p>
+                        <p class="project-impact"><strong>Impact:</strong> Helps candidates spend less time searching
+                            and more time acting on explainable, high-fit opportunities.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Node.js</span>
+                            <span class="tech-pill">PostgreSQL</span>
+                            <span class="tech-pill">Docker</span>
+                            <span class="tech-pill">Hagent</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=jobs" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-jobs">
+                            Combines multi-source job ingestion, normalization, deduplication, freshness tracking,
+                            explainable match scoring, private resume storage, application tracking, follow-up plans,
+                            and interview preparation. Hagent can tailor documents and run an independent
+                            truthfulness review while unsupported or uncertain submission steps stop for user action.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="dotflow">
+                        <img class="project-media" src="/project-images/dotflow-banner.svg" alt="Dotflow: private Windows voice typing and meeting notes" loading="lazy" decoding="async">
+                        <h3>Dotflow</h3>
+                        <p class="project-desc">Private voice typing, personal notes and meeting transcripts. English speech runs on your Windows PC after setup.</p>
+                        <p class="project-impact"><strong>Built for:</strong> Writing by voice and keeping the original conversation beside your own notes, with microphone, computer audio or both.</p>
+                        <div class="project-tech"><span class="tech-pill">C#</span><span class="tech-pill">Vosk</span><span class="tech-pill">WASAPI</span><span class="tech-pill">Windows</span></div>
+                        <div class="project-actions"><a href="/project.html?project=dotflow" class="project-btn primary">View details</a></div>
+                    </div>
+
+                    <div class="project-card" data-project="bizpack">
+                        <img class="project-media" src="/project-images/bizpack-banner.png"
+                            alt="BizPack business data engine banner with spreadsheets, Python, and international currencies"
+                            loading="lazy" decoding="async">
+                        <h3>BizPack</h3>
+                        <p class="project-desc">An open-source Python library that turns messy, multi-currency
+                            corporate spreadsheets into clean, audit-ready pandas DataFrames.</p>
+                        <p class="project-impact"><strong>Impact:</strong> Prevents silent finance and analytics errors
+                            while replacing repetitive spreadsheet-cleaning code with one-line workflows.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">pandas</span>
+                            <span class="tech-pill">NumPy</span>
+                            <span class="tech-pill">PyPI</span>
+                            <span class="tech-pill">Streamlit</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=bizpack" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-bizpack">
+                            Handles mixed international currencies, ambiguous global dates, accounting negatives,
+                            leading-zero identifiers, totals rows, and spreadsheet errors without overwriting source
+                            files. It preserves an audit trail and adds familiar business functions including XLOOKUP,
+                            Pareto analysis, period growth, and run-rate forecasting.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="morningstar">
+                        <img class="project-media" src="/project-images/morningstar-nlp.png"
+                            alt="Illustration of documents becoming TF-IDF features and hierarchical industry classifications"
+                            loading="lazy" decoding="async">
+                        <h3>MorningStar NLP Classifier</h3>
+                        <p class="project-desc">A DePaul capstone NLP pipeline that classifies corporate business
+                            descriptions into 145 hierarchical GECS industry categories.</p>
+                        <p class="project-impact"><strong>Impact:</strong> Turns unstructured company descriptions into
+                            consistent industry intelligence for research, screening, and portfolio analysis.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">TF-IDF</span>
+                            <span class="tech-pill">LinearSVC</span>
+                            <span class="tech-pill">scikit-learn</span>
+                            <span class="tech-pill">NLP</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=morningstar" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-morningstar">
+                            Uses domain-aware text imputation, 1-to-3-gram TF-IDF features, class-balanced linear SVM
+                            models, and hierarchical evaluation. The strongest documented experiment reached about
+                            0.83 macro F1 and the interactive mode returns the three most likely industries for a new
+                            business description.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="portfolio">
+                        <img class="project-media" src="/project-images/developer-portfolio.png"
+                            alt="Portfolio website with cinematic project layouts and a content management dashboard"
+                            loading="lazy" decoding="async">
+                        <h3>Portfolio Website</h3>
+                        <p class="project-desc">My personal portfolio — a cinematic, data-driven showcase of my
+                            projects, experience, and education, with a self-built CMS backend so I can update
+                            everything without touching code.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Node.js</span>
+                            <span class="tech-pill">Express</span>
+                            <span class="tech-pill">Docker</span>
+                            <span class="tech-pill">nginx</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=portfolio" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-portfolio">
+                            GSAP-animated, scroll-driven portfolio with three themes (cinematic, Iron Man HUD, and a
+                            print-style resume). Content is served from a self-built single-admin CMS with bcrypt
+                            auth and session cookies, so every project, certification, and contact link is editable
+                            from a backend UI instead of the source code.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="analyst">
+                        <img class="project-media" src="/project-images/auto-data-analyst.png"
+                            alt="Auto Data Analyst workflow turning a CSV into cleaned data, charts, model comparisons, and recommendations"
+                            loading="lazy" decoding="async">
+                        <h3>Auto Data Analyst</h3>
+                        <p class="project-desc">Upload a CSV and get automated cleaning, exploratory analysis, and model
+                            comparison in minutes — no data science background required.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Flask</span>
+                            <span class="tech-pill">pandas</span>
+                            <span class="tech-pill">scikit-learn</span>
+                            <span class="tech-pill">XGBoost</span>
+                            <span class="tech-pill">LightGBM</span>
+                            <span class="tech-pill">CatBoost</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=analyst" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-analyst">
+                            Auto-cleans uploaded CSVs, runs exploratory data analysis, and trains/compares 15+ ML
+                            models — including XGBoost, LightGBM, and CatBoost — with cross-validation and
+                            ensembling. Generates plain-English recommendations, includes a guided editable pipeline
+                            and a Q&amp;A chat over your data, and can automatically join multiple related datasets.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="hai">
+                        <img class="project-media" src="/project-images/hai-messenger.png"
+                            alt="HAI Messenger desktop chat interface"
+                            loading="lazy" decoding="async">
+                        <h3>HAI Messenger</h3>
+                        <p class="project-desc">This site itself — a free, self-hosted, end-to-end encrypted chat app
+                            with real-time messaging, mini-games, and anonymous Nearby chat.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Node.js</span>
+                            <span class="tech-pill">Express</span>
+                            <span class="tech-pill">Socket.IO</span>
+                            <span class="tech-pill">Redis</span>
+                            <span class="tech-pill">Docker</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=hai" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-hai">
+                            Hybrid RSA-OAEP-2048 + AES-256-GCM envelope encryption, so the server only ever relays
+                            ciphertext. Also includes voice notes, photo and document sharing, in-chat mini-games,
+                            and an ephemeral anonymous "Nearby" chat mode. Open source:
+                            <a href="https://github.com/sudheer-050/HAI-messenger" style="color: var(--accent-brand);">github.com/sudheer-050/HAI-messenger</a>.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="agent">
+                        <img class="project-media" src="/project-images/h-ai.png"
+                            alt="H-AI personal assistant conversation interface"
+                            loading="lazy" decoding="async">
+                        <h3>Personal AI Agent</h3>
+                        <p class="project-desc">A self-directed, locally-run AI agent for decision-support and
+                            companionship — ongoing work is adding text-to-speech and emotion-aware voice.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Ollama</span>
+                            <span class="tech-pill">Llama 3</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=agent" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-agent">
+                            A terminal-based assistant that supports multiple users with unique IDs, stores
+                            conversation history and monthly keyword summaries, and recalls relevant past context to
+                            keep chats personal and consistent over time. No live deployment yet — run it locally
+                            from the repo.
+                        </div>
+                    </div>
+
+                    <div class="project-card" data-project="dating">
+                        <img class="project-media" src="/project-images/dating-ai-matching.png"
+                            alt="Illustration of an AI-assisted compatibility matching system"
+                            loading="lazy" decoding="async">
+                        <h3>Dating-Website Application</h3>
+                        <p class="project-desc">A team project for DePaul's "Machine Learning for Managers" course,
+                            incorporating AI-driven matching logic.</p>
+                        <div class="project-tech">
+                            <span class="tech-pill">Python</span>
+                            <span class="tech-pill">Machine Learning</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="/project.html?project=dating" class="project-btn primary">View details</a>
+                        </div>
+                        <div class="project-detail" id="detail-dating">
+                            Built as a team for a graduate machine learning course; the focus was designing and
+                            evaluating a matching algorithm rather than shipping a production app. No live
+                            deployment or public repo.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-brand"><img src="/icons/logo.png" alt="HAI"> HAI</div>
+        <div>Self-hosted, privacy-first apps. Free, no ads, no tracking.</div>
+        <div>&copy; 2026 HAI &middot; <a href="/index.html" style="color:inherit;">HAI Messenger</a> &middot; <a href="/h.html" style="color:inherit;">H AI</a></div>
+        <div><a href="/terms.html" style="color:inherit;">Terms of Service</a> &middot; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuToggleBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        menuBtn.addEventListener('click', () => {
+            const isOpen = mobileNav.classList.toggle('open');
+            menuBtn.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        function showPanel(name) {
+            document.querySelectorAll('.app-panel').forEach(el => {
+                el.classList.toggle('visible', el.id === 'panel-' + name);
+            });
+            document.querySelectorAll('[data-panel]').forEach(el => {
+                el.classList.toggle('active', el.dataset.panel === name);
+            });
+            // Instant, not smooth -- this swaps to fundamentally different content
+            // (a full panel change, not a scroll within one page), so animating
+            // the scroll position reads as a glitch rather than a transition.
+            window.scrollTo({ top: 0, behavior: 'auto' });
+            requestAnimationFrame(() => typeof queueSystemsCorridor === 'function' && queueSystemsCorridor());
+        }
+
+        function scrollToApps() {
+            document.querySelectorAll('.app-panel').forEach(el => {
+                el.classList.toggle('visible', el.id === 'panel-home');
+            });
+            document.querySelectorAll('[data-panel]').forEach(el => {
+                el.classList.toggle('active', el.dataset.panel === 'projects');
+            });
+            mobileNav.classList.remove('open');
+            menuBtn.setAttribute('aria-expanded', 'false');
+            requestAnimationFrame(() => {
+                history.replaceState(null, '', '#apps');
+                document.getElementById('apps')?.scrollIntoView({
+                    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+                    block: 'start'
+                });
+            });
+        }
+
+        document.querySelectorAll('.project-card[data-project]').forEach(card => {
+            const openProject = () => {
+                window.location.href = '/project.html?project=' + encodeURIComponent(card.dataset.project);
+            };
+            card.addEventListener('click', event => {
+                if (event.target.closest('a, button')) return;
+                openProject();
+            });
+        });
+
+        const revealObserver = 'IntersectionObserver' in window
+            ? new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+            : null;
+        document.querySelectorAll('.reveal').forEach(element => {
+            if (revealObserver) revealObserver.observe(element);
+            else element.classList.add('in-view');
+        });
+
+        const systemsStage = document.querySelector('.systems-stage');
+        const systemsViewport = document.querySelector('.systems-viewport');
+        const systemsRail = document.querySelector('.systems-rail');
+        const systemSlides = [...document.querySelectorAll('.systems-rail .system-card')];
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let systemsFrame = 0;
+        let systemsSettleTimer = 0;
+        let systemsSettleFrame = 0;
+        let systemsScrollDirection = 0;
+        let systemsLastScrollY = window.scrollY;
+        let systemsIsSettling = false;
+        let systemsSettleCooldownUntil = 0;
+
+        function updateSystemsCorridor() {
+            systemsFrame = 0;
+            if (!systemsStage || innerWidth <= 900 || reduceMotion.matches || !document.getElementById('panel-home').classList.contains('visible')) {
+                if (systemsRail) systemsRail.style.transform = '';
+                systemSlides.forEach(slide => {
+                    slide.style.opacity = '';
+                    slide.style.transform = '';
+                    slide.style.removeProperty('--system-focus');
+                    slide.classList.remove('is-focused');
+                });
+                return;
+            }
+            const rect = systemsStage.getBoundingClientRect();
+            const scrollRange = Math.max(1, systemsStage.offsetHeight - innerHeight);
+            const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
+            const travel = Math.max(0, systemsRail.scrollWidth - systemsViewport.clientWidth);
+            systemsRail.style.transform = `translate3d(${-progress * travel}px,0,0)`;
+            const activePosition = progress * Math.max(1, systemSlides.length - 1);
+            systemSlides.forEach((slide, index) => {
+                const focus = Math.max(0, 1 - Math.abs(index - activePosition));
+                const signedDistance = Math.max(-1, Math.min(1, index - activePosition));
+                slide.style.setProperty('--system-focus', focus.toFixed(4));
+                slide.style.opacity = String(.28 + focus * .72);
+                slide.style.transform = `perspective(1400px) translateZ(${-440 + focus * 440}px) scale(${.58 + focus * .42}) rotateY(${signedDistance * -7}deg)`;
+                slide.classList.toggle('is-focused', focus > .55);
+            });
+        }
+
+        function queueSystemsCorridor() {
+            if (!systemsFrame) systemsFrame = requestAnimationFrame(updateSystemsCorridor);
+        }
+
+        function systemsProgress() {
+            const rect = systemsStage.getBoundingClientRect();
+            const range = Math.max(1, systemsStage.offsetHeight - innerHeight);
+            return {
+                progress: Math.max(0, Math.min(1, -rect.top / range)),
+                rawProgress: -rect.top / range,
+                range,
+                stageTop: window.scrollY + rect.top
+            };
+        }
+
+        function cancelSystemsSettle() {
+            clearTimeout(systemsSettleTimer);
+            systemsSettleTimer = 0;
+            if (systemsSettleFrame) cancelAnimationFrame(systemsSettleFrame);
+            systemsSettleFrame = 0;
+            systemsIsSettling = false;
+            systemsSettleCooldownUntil = 0;
+            systemsLastScrollY = window.scrollY;
+        }
+
+        function handleSystemsWheel(event) {
+            cancelSystemsSettle();
+            if (Math.abs(event.deltaY) > .1) systemsScrollDirection = Math.sign(event.deltaY);
+        }
+
+        function settleSystemsCorridor() {
+            systemsSettleTimer = 0;
+            if (innerWidth <= 900 || reduceMotion.matches || systemsIsSettling || !systemsScrollDirection ||
+                !document.getElementById('panel-home').classList.contains('visible')) return;
+
+            const state = systemsProgress();
+            if (state.rawProgress <= 0 || state.rawProgress >= 1 || systemSlides.length < 2) return;
+
+            const position = state.progress * (systemSlides.length - 1);
+            const nearest = Math.round(position);
+            if (Math.abs(position - nearest) < .015) return;
+
+            const targetIndex = systemsScrollDirection > 0
+                ? Math.ceil(position - .001)
+                : Math.floor(position + .001);
+            const targetY = state.stageTop + (targetIndex / (systemSlides.length - 1)) * state.range;
+            const startY = window.scrollY;
+            const distance = targetY - startY;
+            const duration = Math.min(1200, Math.max(700, Math.abs(distance) * .4));
+            const startedAt = performance.now();
+
+            systemsIsSettling = true;
+            const step = now => {
+                const elapsed = Math.min(1, (now - startedAt) / duration);
+                const eased = elapsed < .5
+                    ? 4 * elapsed * elapsed * elapsed
+                    : 1 - Math.pow(-2 * elapsed + 2, 3) / 2;
+                window.scrollTo(0, startY + distance * eased);
+                queueSystemsCorridor();
+                if (elapsed < 1 && systemsIsSettling) {
+                    systemsSettleFrame = requestAnimationFrame(step);
+                } else {
+                    systemsSettleFrame = 0;
+                    systemsIsSettling = false;
+                    systemsLastScrollY = window.scrollY;
+                    systemsSettleCooldownUntil = performance.now() + 180;
+                }
+            };
+            systemsSettleFrame = requestAnimationFrame(step);
+        }
+
+        function handleSystemsScroll() {
+            queueSystemsCorridor();
+            const currentY = window.scrollY;
+            if (systemsIsSettling || performance.now() < systemsSettleCooldownUntil) {
+                systemsLastScrollY = currentY;
+                return;
+            }
+            const delta = currentY - systemsLastScrollY;
+            if (Math.abs(delta) > .1) systemsScrollDirection = Math.sign(delta);
+            systemsLastScrollY = currentY;
+            clearTimeout(systemsSettleTimer);
+            systemsSettleTimer = setTimeout(settleSystemsCorridor, 180);
+        }
+
+        if (systemsStage) {
+            systemsStage.style.height = `${100 + Math.max(0, systemSlides.length - 1) * 150}vh`;
+            addEventListener('scroll', handleSystemsScroll, { passive: true });
+            addEventListener('resize', queueSystemsCorridor, { passive: true });
+            reduceMotion.addEventListener?.('change', queueSystemsCorridor);
+            addEventListener('wheel', handleSystemsWheel, { passive: true });
+            ['touchstart', 'pointerdown'].forEach(type => addEventListener(type, cancelSystemsSettle, { passive: true }));
+            addEventListener('keydown', event => {
+                if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
+                    cancelSystemsSettle();
+                    if (['ArrowDown', 'PageDown', 'End'].includes(event.key) || (event.key === ' ' && !event.shiftKey)) {
+                        systemsScrollDirection = 1;
+                    } else if (['ArrowUp', 'PageUp', 'Home'].includes(event.key) || (event.key === ' ' && event.shiftKey)) {
+                        systemsScrollDirection = -1;
+                    }
+                }
+            });
+            queueSystemsCorridor();
+        }
+
+        const projectScreens = [...document.querySelectorAll('#panel-projects .project-card')];
+        if (reduceMotion.matches || !('IntersectionObserver' in window)) {
+            projectScreens.forEach(card => card.classList.add('hud-visible'));
+        } else {
+            const hudObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('hud-visible');
+                        hudObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: .3, rootMargin: '0px 0px -10% 0px' });
+            projectScreens.forEach(card => hudObserver.observe(card));
+        }
+
+        const initialPanel = new URLSearchParams(window.location.search).get('panel');
+        if (initialPanel && document.getElementById('panel-' + initialPanel)) showPanel(initialPanel);
+    </script>
+</body>
+</html>

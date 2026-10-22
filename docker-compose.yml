@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     depends_on:
       - cms
+    volumes:
+      - published:/published:ro
     networks:
       ingress:
         aliases:
@@ -23,6 +25,8 @@ services:
       - NODE_ENV=production
     volumes:
       - cms-data:/data
+      - published:/published
+      - /home/bigserver/website-catalog-status:/github-status:ro
     networks:
       ingress:
         aliases:
@@ -35,6 +39,8 @@ services:
 
 volumes:
   cms-data:
+  published:
+    name: website-catalog-published
 
 networks:
   ingress:

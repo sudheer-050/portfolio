@@ -1,5 +1,4 @@
 {
-  "theme": "professional",
   "hero": {
     "badge": "Open to ML & AI engineering roles",
     "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products — from the first experiment to a working deployment."
@@ -14,53 +13,1633 @@
   },
   "projects": [
     {
-      "id": "hai-messenger",
-      "name": "HAI Messenger",
-      "badge": "Live in Production",
-      "description": "A free, self-hosted, end-to-end encrypted chat app — real-time messaging, voice notes, photo/document sharing, live location, in-chat mini-games, and an anonymous 24-hour \"Nearby\" chat mode, plus a built-in local-LLM AI assistant. Deployed on a self-managed Docker + Cloudflare Tunnel stack with a GitHub Actions self-hosted runner for zero-touch CI/CD, running live for real users on its own domain.",
-      "image": "screenshots/hai-messenger.jpg"
-    },
-    {
+      "category": "Private desktop voice workspace",
+      "image": "https://myhai.org/project-images/dotflow-banner.svg",
+      "summary": "Private voice typing, personal notes and meeting transcripts for Windows, with local English speech recognition and selectable microphone or computer audio.",
+      "tech": [
+        "C#",
+        "WinForms",
+        ".NET Framework 4.8",
+        "Vosk",
+        "WASAPI"
+      ],
+      "why": "Typing a message, capturing an idea and remembering a meeting should not require three disconnected tools. Dotflow combines shortcut-driven writing with local notes and source-aware meeting transcripts, keeping the original conversation separate from editable personal notes.",
+      "features": [
+        [
+          "Hold to write",
+          "Choose your shortcut, speak into a text field and release to refine. Standard, Chat, Email and Code presets give explicit formatting control."
+        ],
+        [
+          "Three audio choices",
+          "Capture your microphone, computer output or both. Pause/resume meetings and keep separate source tracks for playback."
+        ],
+        [
+          "A quiet edge toolbar",
+          "An icon-only controller opens on hover, snaps to a screen edge and follows its orientation. Notes can start and stop without opening the main window."
+        ],
+        [
+          "Local notebook",
+          "Search transcripts, names and tags, edit inferred details, and label speaker blocks without rewriting the original words."
+        ],
+        [
+          "Read-only conversation, PDF sharing",
+          "Review timestamps, play saved source audio and preview a PDF snapshot. Exported copies are not tamper-proof and spoken names are not redacted."
+        ],
+        [
+          "Practical data controls",
+          "Back up active notes, restore recently deleted records, choose retention, and inspect local storage."
+        ]
+      ],
+      "workflow": [
+        "Build the Windows installer from GitHub source, or check Releases for available installer assets.",
+        "Run setup online once to obtain the pinned runtime and small English model, then open Dotflow.",
+        "Use Practice to test your microphone and recognition, then confirm typing into another app.",
+        "Hold your dictation shortcut, or start a personal note/meeting with the chosen audio source.",
+        "Review the original conversation, add personal notes, play audio and export a PDF snapshot."
+      ],
+      "architecture": "A native C# WinForms application captures Windows microphone and WASAPI output audio and runs a small English Vosk model locally. Dictation uses conservative cleanup and explicit styles; note recording saves timestamped text and source WAV tracks. A Windows bootstrapper verifies pinned component hashes. No Docker, Python installation or cloud account is required to use the app.",
+      "trust": "Speech runs locally after setup. Dictation audio stays in memory; recorded notes deliberately save text and audio locally. Computer-output capture includes all applications using the selected device: record only with appropriate consent. Conversation words are read-only inside the app, while metadata and personal notes remain editable. PDF copies can be changed externally and are not signed evidence.",
+      "status": "The reviewed source describes a 0.7.0 Windows x64 English-only preview. Published installer versions are listed separately below; source-preview and download versions can differ. The installer is unsigned. Real call capture, cross-app insertion, accessibility and speech accuracy require normal desktop acceptance.",
+      "facts": [
+        [
+          "Availability",
+          "Windows source / preview"
+        ],
+        [
+          "Speech",
+          "English, offline after setup"
+        ],
+        [
+          "Account",
+          "Not required"
+        ],
+        [
+          "Verification",
+          "84 automated checks passed"
+        ]
+      ],
+      "tryUrl": "https://github.com/sudheer-050/dotflow#get-started",
+      "tryLabel": "Build for Windows",
+      "sourceUrl": "https://github.com/sudheer-050/dotflow",
       "id": "dotflow",
+      "slug": "dotflow",
       "name": "Dotflow",
       "badge": "Windows Preview",
-      "description": "Native Windows voice typing and meeting notes with local English speech recognition. Choose microphone, computer output or both; keep original conversations read-only, add personal notes and export PDF snapshots. Configurable shortcuts, an edge toolbar and 84 automated checks.",
-      "image": "screenshots/dotflow-banner.svg"
+      "description": "Private voice typing, personal notes and meeting transcripts for Windows, with local English speech recognition and selectable microphone or computer audio.",
+      "featured": true,
+      "featuredOrder": 3,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Write into another app",
+            "Hold a shortcut, dictate, and use an explicit formatting preset for messages, email, or code."
+          ],
+          [
+            "Capture a meeting",
+            "Choose microphone, computer output, or both, then review source audio and timestamped text."
+          ],
+          [
+            "Keep a personal notebook",
+            "Add editable notes alongside the original conversation and export a PDF snapshot."
+          ]
+        ],
+        "requirements": [
+          "Windows x64 and a microphone for dictation.",
+          "Online first setup for the pinned runtime and English Vosk model.",
+          "Appropriate recording permission when capturing other people or computer audio."
+        ],
+        "start": "Check GitHub Releases for an available installer or follow the source build instructions. Complete the initial download, open Practice, and test your microphone before dictating into another app.",
+        "faq": [
+          [
+            "Does speech leave my computer?",
+            "Recognition runs locally after setup. Dictation audio remains in memory; deliberately recorded notes save text and source audio locally."
+          ],
+          [
+            "Which languages and platforms are supported?",
+            "The current source preview targets Windows x64 and English speech. Check the release notes for the exact version you download."
+          ],
+          [
+            "Is an exported PDF signed evidence?",
+            "No. The original conversation is read-only inside the app, but exported PDFs can be edited outside it and are not cryptographically signed."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [
+        {
+          "version": "v0.6.1",
+          "preview": true,
+          "date": "2026-10-21T21:23:12Z",
+          "notes": "﻿# Dotflow / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. The application currently appears as Local Dictation; Dotflow is its public repository name.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
+          "url": "https://github.com/sudheer-050/dotflow/releases/tag/v0.6.1",
+          "assets": [
+            {
+              "name": "LocalDictation-Setup-0.6.1.exe",
+              "url": "https://github.com/sudheer-050/dotflow/releases/download/v0.6.1/LocalDictation-Setup-0.6.1.exe"
+            },
+            {
+              "name": "SHA256SUMS.txt",
+              "url": "https://github.com/sudheer-050/dotflow/releases/download/v0.6.1/SHA256SUMS.txt"
+            }
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "claim": "Source-preview validation notes",
+          "url": "https://github.com/sudheer-050/dotflow",
+          "version": "Source preview reviewed October 22, 2026",
+          "reviewed": "2026-10-22",
+          "scope": "Repository-reported checks; not rerun by this website. Downloaded releases have their own versioned notes."
+        }
+      ]
     },
     {
-      "id": "bizpack",
-      "name": "bizpack",
-      "badge": "PyPI Package",
-      "description": "Published open-source Python library that cleans messy corporate spreadsheets for pandas — accounting negatives, multi-currency columns, mixed date formats, summary-footer inflation, and leading-zero IDs. 43 unit tests, 100% pass rate. Ships with a Streamlit demo UI and full PyPI packaging, versioning, and docs.",
-      "image": ""
+      "category": "AI workspace",
+      "image": "https://myhai.org/project-images/hgpt.png",
+      "summary": "A self-hosted AI workspace where conversations, projects, decisions, and explicit memory remain available even when the selected model changes.",
+      "tech": [
+        "Node.js",
+        "PostgreSQL",
+        "Redis",
+        "Ollama",
+        "Docker"
+      ],
+      "why": "AI conversations are usually trapped inside one provider and important context disappears into old threads. HGPT keeps the durable parts in a database you control, then supplies relevant context to whichever supported runtime you choose.",
+      "features": [
+        [
+          "One workspace, many runtimes",
+          "Use local Ollama, installed Codex or Claude CLIs, or a configured OpenAI-compatible API without moving the conversation."
+        ],
+        [
+          "Durable memory",
+          "Save confirmed facts explicitly and connect them to projects, topics, conversations, and decisions."
+        ],
+        [
+          "Inspectable recall",
+          "See which memories, earlier messages, topics, and provider were used for an answer."
+        ],
+        [
+          "Project and decision records",
+          "Give long-running work persistent instructions and record choices with rationale, evidence, alternatives, and status."
+        ],
+        [
+          "Private guest access",
+          "A signed random guest identity creates an isolated workspace without requiring an account."
+        ],
+        [
+          "Provider controls",
+          "Add compatible providers, validate their model catalogs, and keep saved API keys encrypted."
+        ]
+      ],
+      "workflow": [
+        "Open HGPT and start an isolated guest workspace.",
+        "Choose a local, CLI, or API-backed model.",
+        "Create a project or conversation and add durable instructions when needed.",
+        "Save only the facts and decisions that should persist.",
+        "HGPT retrieves relevant context, sends it to the selected runtime, and records the trace with the response."
+      ],
+      "architecture": "The interface is vanilla HTML, CSS, and JavaScript. Express assembles context and streams responses; PostgreSQL is the authority for conversations and memory; local embeddings and topic relationships support recall; Redis serves only ephemeral HAI state. Host-authenticated CLI runtimes are reached through a Unix-domain socket rather than copying their credentials into the application container.",
+      "trust": "Every query is scoped to its signed-in or guest owner. Guest cookies are HTTP-only and SameSite=Strict. Saved provider keys use AES-256-GCM encryption, compatible provider URLs are screened against private-network and credential-bearing targets, and recalled text is labeled as untrusted context rather than executable instruction.",
+      "status": "Live on myhai.org and under active development. HGPT is a personal knowledge workspace, not an autonomous truth engine: the user decides what becomes confirmed memory, and model output still needs normal review.",
+      "facts": [
+        [
+          "Availability",
+          "Live web app"
+        ],
+        [
+          "Best for",
+          "Long-running AI work"
+        ],
+        [
+          "Data model",
+          "User-owned PostgreSQL"
+        ],
+        [
+          "Interface",
+          "Responsive web workspace"
+        ]
+      ],
+      "tryUrl": "/hgpt",
+      "id": "hgpt",
+      "slug": "hgpt",
+      "name": "HGPT",
+      "badge": "AI workspace",
+      "description": "A self-hosted AI workspace where conversations, projects, decisions, and explicit memory remain available even when the selected model changes.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Keep a long-running project",
+            "Carry project instructions, confirmed facts, and decisions across conversations and model changes."
+          ],
+          [
+            "Inspect an answer",
+            "Review the recalled context and provider trace rather than treating memory as an unexplained black box."
+          ],
+          [
+            "Try without registering",
+            "Start an isolated guest workspace and select an available runtime."
+          ]
+        ],
+        "requirements": [
+          "A modern browser and a selected available model runtime.",
+          "For self-hosting: Node.js, PostgreSQL, and the repository deployment configuration.",
+          "An API-backed runtime needs credentials; a local runtime needs its model installed."
+        ],
+        "start": "Open the live workspace, create a conversation, and select an available model. Add a project when you want instructions and decisions to persist beyond one chat.",
+        "faq": [
+          [
+            "Do I need an account?",
+            "You can start in a private guest workspace. Keep the same browser identity to return to that workspace."
+          ],
+          [
+            "Does changing models erase my project?",
+            "Conversations, explicit memories, and decisions belong to HGPT rather than to one provider. The selected runtime receives relevant context for the next response."
+          ],
+          [
+            "What should I save as memory?",
+            "Save facts you have confirmed and want to reuse. Model output and retrieved context can be wrong, so review them before making them durable."
+          ]
+        ]
+      },
+      "sourceAvailability": "private",
+      "releases": [],
+      "evidence": []
     },
     {
+      "category": "Conversational assistant",
+      "image": "https://myhai.org/project-images/h-ai.png",
+      "summary": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "tech": [
+        "JavaScript",
+        "Gemini",
+        "Web Speech API",
+        "Browser storage"
+      ],
+      "why": "H provides a simple conversational space for quick questions and voice interaction without requiring a separate account or a complicated workspace. The interface is designed to feel direct: open the page, type or speak, and continue the conversation.",
+      "features": [
+        [
+          "Text conversation",
+          "Ask a question, receive a response, and keep the current conversation moving in a focused chat interface."
+        ],
+        [
+          "Hands-free voice mode",
+          "Use the browser’s speech capabilities to talk with H and hear responses aloud."
+        ],
+        [
+          "No account required",
+          "Open the assistant directly without registration or a saved HAI Messenger identity."
+        ],
+        [
+          "Personal glossary",
+          "Teach H unfamiliar terms and keep those glossary entries in the browser’s local storage."
+        ],
+        [
+          "Conversation transcript",
+          "Review the current history and download the transcript as a text file."
+        ],
+        [
+          "HAI product knowledge",
+          "Ask about HAI Messenger features and receive guidance about the wider HAI application suite."
+        ]
+      ],
+      "workflow": [
+        "Open H AI directly from its information page.",
+        "Choose text mode or start a voice conversation.",
+        "Ask a question or speak naturally.",
+        "Continue the thread while the page retains its conversation context.",
+        "Review or download the transcript when finished."
+      ],
+      "architecture": "H is a browser-based interface served by the HAI backend. It currently uses Google’s Gemini API as an interim model runtime while migration back to a locally hosted model is in progress. Voice input and playback use browser Web Speech capabilities, and user-taught glossary terms stay in local browser storage.",
+      "trust": "During the current interim configuration, message text is sent to Google’s Gemini API for processing. Browser speech handling can vary by browser and operating system. Glossary entries remain local to the browser, and no HAI account is required to start a conversation.",
+      "status": "Live on myhai.org. Text and voice modes are available now; the model runtime is temporarily Gemini while the locally hosted runtime is being restored.",
+      "facts": [
+        [
+          "Availability",
+          "Live web app"
+        ],
+        [
+          "Account",
+          "Not required"
+        ],
+        [
+          "Interaction",
+          "Text and voice"
+        ],
+        [
+          "Current model",
+          "Gemini, interim"
+        ]
+      ],
+      "tryUrl": "/h.html",
+      "id": "h",
+      "slug": "h",
+      "name": "H AI",
+      "badge": "Conversational assistant",
+      "description": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Ask a quick question",
+            "Open a focused conversation without creating an account or setting up a project."
+          ],
+          [
+            "Talk hands-free",
+            "Use supported browser speech input and spoken responses for a voice conversation."
+          ],
+          [
+            "Keep your terminology",
+            "Add unfamiliar terms to the personal glossary and export the conversation transcript."
+          ]
+        ],
+        "requirements": [
+          "A modern browser for text chat.",
+          "Microphone permission and browser speech support for voice mode.",
+          "An internet connection for the current Gemini-backed runtime."
+        ],
+        "start": "Open H AI and type a question. For voice, start the voice conversation and grant microphone permission when the browser asks.",
+        "faq": [
+          [
+            "Is H AI the same as Hagent?",
+            "H AI is a conversational text and voice assistant. Hagent manages projects, issues, specialized agents, and scheduled work."
+          ],
+          [
+            "Is the model running locally?",
+            "The current hosted configuration uses Gemini as an interim runtime. Message text is sent to that provider for processing."
+          ],
+          [
+            "Why might voice differ between browsers?",
+            "Speech input, voices, and permission handling depend on the browser and operating system. Text chat remains the alternative when speech support is unavailable."
+          ]
+        ],
+        "gallery": [
+          [
+            "https://myhai.org/screenshots/h-ai-chat.png",
+            "Text conversation"
+          ],
+          [
+            "https://myhai.org/screenshots/h-ai-voice.png",
+            "Voice conversation"
+          ]
+        ]
+      },
+      "sourceAvailability": "unavailable",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "category": "Multi-agent orchestration",
+      "image": "https://myhai.org/project-images/hagent-dashboard.png",
+      "summary": "A self-hosted control plane for projects, issues, AI agents, squads, skills, and scheduled autopilots, available through a CLI and a web dashboard.",
+      "tech": [
+        "Python",
+        "FastAPI",
+        "SQLAlchemy",
+        "SQLite",
+        "Ollama"
+      ],
+      "why": "Autonomous work becomes hard to trust when tasks, prompts, provider choices, approvals, and failures are spread across tools. Hagent keeps the work visible as issues and records how every agent run was started, routed, delegated, and completed.",
+      "features": [
+        [
+          "New in 0.2.3",
+          "Gmail and Google Drive read-only connectors, direct APIs and MCP connections, per-agent account access, smoother Google sign-in, and workflow reliability fixes. Full release details are on the download page."
+        ],
+        [
+          "Issue-driven work",
+          "Kanban projects support priorities, labels, sub-issues, comments, due dates, run history, and per-workspace issue keys."
+        ],
+        [
+          "Pluggable runtimes",
+          "Cloud APIs, OpenAI-compatible services, local Ollama or LM Studio, and installed AI CLIs share one adapter boundary."
+        ],
+        [
+          "Squad delegation",
+          "Supervisors can call specialist agents as bounded tools while preserving the delegation trail."
+        ],
+        [
+          "Autopilots",
+          "Cron or webhook triggers can assign matching issues or create recurring work automatically."
+        ],
+        [
+          "Recovery and approvals",
+          "Interrupted runs continue with existing work; optional approval pauses a run before it starts."
+        ],
+        [
+          "Auditable memory",
+          "Provider-neutral memory, learned skill lessons, usage data, routing decisions, and runtime failover stay inspectable."
+        ]
+      ],
+      "workflow": [
+        "Install Hagent locally and start the dashboard.",
+        "Configure a local, API, or installed-CLI runtime.",
+        "Create a project, agent, and issue.",
+        "Assign the issue directly or let an autopilot select it.",
+        "Review the timeline, agent output, tool calls, delegations, and any approval request."
+      ],
+      "architecture": "FastAPI serves the dashboard and API, SQLAlchemy stores local state in SQLite, APScheduler handles autopilots, and a runtime adapter exposes a consistent run interface. The CLI mirrors the same project and issue model, so web and terminal workflows operate on the same records.",
+      "trust": "Terminal access is optional and disabled by default. When enabled, it uses the operating-system permissions of the Hagent process; a configured working directory is not a security sandbox. Remote access should use accounts plus HTTPS or a private network, and untrusted autonomous work belongs in an OS account, container, virtual machine, or isolated worker.",
+      "status": "Open-source, self-hosted agent orchestration. Consult the linked release and CI history for version-specific validation; historical test totals are not current guarantees.",
+      "facts": [
+        [
+          "Availability",
+          "Run locally"
+        ],
+        [
+          "Release",
+          "0.2.3"
+        ],
+        [
+          "Primary host",
+          "Windows"
+        ],
+        [
+          "License",
+          "MIT"
+        ]
+      ],
+      "tryUrl": "https://github.com/sudheer-050/hagent/releases",
+      "tryLabel": "Releases and downloads",
+      "sourceUrl": "https://github.com/sudheer-050/hagent",
       "id": "hagent",
+      "slug": "hagent",
       "name": "Hagent",
       "badge": "Open Source",
-      "description": "Self-hosted multi-agent orchestration platform — CLI + web dashboard with pluggable AI runtimes (Claude, OpenAI, local Ollama), cron-triggered autopilots that rebalance workload and fail over between runtimes automatically, and a full Kanban issue tracker for managing agent-driven work. ~11,500 lines of Python, 293 passing tests, built solo in about a month.",
-      "image": "screenshots/hagent.png"
+      "description": "A self-hosted control plane for projects, issues, AI agents, squads, skills, and scheduled autopilots, available through a CLI and a web dashboard.",
+      "featured": true,
+      "featuredOrder": 0,
+      "resume": true,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Coordinate specialist agents",
+            "Assign bounded work to agents and inspect their run history and verification."
+          ],
+          [
+            "Schedule recurring operations",
+            "Use autopilots to create or assign work while keeping approval and review visible."
+          ],
+          [
+            "Connect your own tools",
+            "Give selected agents read-only Gmail, Drive, direct API, or MCP access."
+          ]
+        ],
+        "requirements": [
+          "Python 3.10 or newer; Python 3.11+ is recommended.",
+          "A configured local model, API provider, or installed AI CLI.",
+          "Google OAuth app setup once per installation for Gmail and Drive sign-in."
+        ],
+        "start": "Download a version, install Hagent in a virtual environment, start the local dashboard, and configure a runtime before assigning the first issue.",
+        "faq": [
+          [
+            "Can I run Hagent from this website?",
+            "This site provides the product guide and downloads. Install Hagent on your own computer or trusted server to run agents."
+          ],
+          [
+            "How do agents get account access?",
+            "Connect the account in Connections, then select the agents allowed to use it. Gmail and Drive tools are read-only."
+          ],
+          [
+            "Can I download an older version?",
+            "The Hagent download page lists the latest five stable versions with change notes and available files. Older tags remain on GitHub."
+          ]
+        ],
+        "gallery": [
+          [
+            "https://myhai.org/hagent/screenshots/dashboard.png",
+            "Dashboard"
+          ],
+          [
+            "https://myhai.org/hagent/screenshots/board.png",
+            "Issue board"
+          ],
+          [
+            "https://myhai.org/hagent/screenshots/agents.png",
+            "Agent roster"
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [
+        {
+          "version": "v0.2.3",
+          "preview": false,
+          "date": "2026-10-22T17:23:21Z",
+          "notes": "Hagent 0.2.3 adds direct Gmail and Google Drive connectors, a unified Connections page, and simpler read-only API setup. Google accounts, APIs, and MCP tools can be assigned to individual agents.\r\n\r\n### What's new\r\n- Gmail search/read and Drive search/read, including Google Docs text export.\r\n- Google sign-in after one-time installation setup, encrypted credentials, automatic token refresh, and single-use OAuth state with PKCE.\r\n- API setup with name, endpoint, and key; custom authentication under Advanced.\r\n- Account status and per-agent access management, plus connection tests.\r\n- MCP local commands, remote HTTP/SSE connections, and protected credentials.\r\n- Restart helper that checks for running tasks first.\r\n\r\n### Fixes\r\n- Preserve Hagent login when Google redirects back.\r\n- Avoid repeated review/completed tasks in default autopilot matching.\r\n- Keep internal maintenance projects off the main board.\r\n- Improve reassignment, issue discussion context, parent/child verification, and failure reporting.\r\n\r\n### Setup notes\r\nGoogle sign-in requires registering an OAuth app once per installation and enabling Gmail and Drive APIs. Google connectors are read-only. Direct APIs support fixed JSON GET endpoints. Access to connected accounts is explicitly assigned to agents; personal account tokens and local data are not part of this release.\r\n\r\nSee [connection setup](https://github.com/sudheer-050/hagent/blob/v0.2.3/docs/CONNECTIONS.md) and [the changelog](https://github.com/sudheer-050/hagent/blob/v0.2.3/CHANGELOG.md).\r\n\r\nValidation: 358 tests passed, 1 native stdio MCP test skipped because of Windows sandbox pipe restrictions. Wheel and source distribution built successfully.\r\n",
+          "url": "https://github.com/sudheer-050/hagent/releases/tag/v0.2.3",
+          "assets": [
+            {
+              "name": "hagent-0.2.3-py3-none-any.whl",
+              "url": "https://github.com/sudheer-050/hagent/releases/download/v0.2.3/hagent-0.2.3-py3-none-any.whl"
+            },
+            {
+              "name": "hagent-0.2.3.tar.gz",
+              "url": "https://github.com/sudheer-050/hagent/releases/download/v0.2.3/hagent-0.2.3.tar.gz"
+            }
+          ]
+        }
+      ],
+      "evidence": []
     },
     {
+      "category": "Career search",
+      "image": "https://myhai.org/project-images/job-portal.png",
+      "summary": "A private career-search command center that gathers real openings, explains their fit, and keeps applications, follow-ups, and preparation in one workflow.",
+      "tech": [
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+        "Hagent"
+      ],
+      "why": "Job searches lose time to duplicate listings, expired roles, vague match scores, scattered notes, and repeated document work. The portal turns that fragmented process into a private, explainable queue of opportunities and next actions.",
+      "features": [
+        [
+          "Multi-source collection",
+          "Normalize openings from public job APIs and employer career systems into one consistent feed."
+        ],
+        [
+          "Freshness and deduplication",
+          "Track source identity and posting freshness so repeated or stale listings do not crowd the queue."
+        ],
+        [
+          "Explainable matching",
+          "Rank roles against saved preferences and resume evidence while showing why a position fits."
+        ],
+        [
+          "Application tracking",
+          "Keep status, follow-up plans, notes, and the source posting together."
+        ],
+        [
+          "Preparation workspace",
+          "Organize role research, interview planning, and truthful document tailoring around a specific opening."
+        ],
+        [
+          "Human checkpoints",
+          "Unsupported, uncertain, or consequential submission steps stop for user review."
+        ]
+      ],
+      "workflow": [
+        "Create an account and save the roles, locations, and work preferences that matter.",
+        "Upload a resume privately for evidence-based matching.",
+        "Review normalized recommendations and the reasons behind each score.",
+        "Track selected roles through preparation, application, interview, and follow-up.",
+        "Use Hagent-assisted preparation where available, with user confirmation for uncertain steps."
+      ],
+      "architecture": "The production application uses Node.js and PostgreSQL behind the same Docker and Cloudflare ingress stack as HAI. Collection adapters convert different source formats into a canonical job record before matching and workflow state are applied.",
+      "trust": "Resume and preference data are private account data. The system is designed to assist research and preparation, not to invent qualifications or silently complete uncertain external submissions.",
+      "status": "Live. Job availability and application links come from external sources and can change after collection, so each opportunity should be confirmed at the employer destination before applying.",
+      "facts": [
+        [
+          "Availability",
+          "Live web app"
+        ],
+        [
+          "Best for",
+          "Personalized job search"
+        ],
+        [
+          "Account",
+          "Required"
+        ],
+        [
+          "Automation",
+          "Human-reviewed"
+        ]
+      ],
+      "tryUrl": "/jobs/",
+      "sourceUrl": "https://github.com/sudheer-050/job-portal",
+      "id": "jobs",
+      "slug": "jobs",
+      "name": "Job Portal",
+      "badge": "Career search",
+      "description": "A private career-search command center that gathers real openings, explains their fit, and keeps applications, follow-ups, and preparation in one workflow.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Build a shortlist",
+            "Collect roles from supported sources and review fit against saved preferences and resume evidence."
+          ],
+          [
+            "Keep applications organized",
+            "Track the posting, preparation notes, application status, and follow-up together."
+          ],
+          [
+            "Prepare with context",
+            "Use the actual role description and truthful experience when planning interviews and documents."
+          ]
+        ],
+        "requirements": [
+          "An account for private preferences and application tracking.",
+          "A current resume when you want evidence-based matching.",
+          "Access to the employer destination to verify availability and submit an application."
+        ],
+        "start": "Open the portal, create or sign in to your account, and set role and location preferences. Add your resume, review match explanations, and shortlist an opening before preparing an application.",
+        "faq": [
+          [
+            "Does a match score guarantee a suitable job?",
+            "No. The score helps prioritize research. Review requirements, location, eligibility, and the employer posting yourself."
+          ],
+          [
+            "Are applications submitted automatically?",
+            "The workflow uses human checkpoints for uncertain or consequential steps. Treat preparation and submission as separate actions."
+          ],
+          [
+            "Why can a listing become unavailable?",
+            "Openings come from external sources and can close or change after collection. Confirm the final destination before applying."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "category": "Business data toolkit",
+      "image": "https://myhai.org/project-images/bizpack-banner.png",
+      "summary": "An open-source Python library that converts messy, internationally formatted corporate spreadsheets into clean, auditable pandas DataFrames.",
+      "tech": [
+        "Python",
+        "pandas",
+        "NumPy",
+        "PyPI",
+        "Streamlit"
+      ],
+      "why": "Business spreadsheets routinely mix currencies, date conventions, accounting negatives, totals, identifiers, and error cells. One silent conversion can invalidate an analysis. BizPack centralizes those repairs and records what changed.",
+      "features": [
+        [
+          "Spreadsheet cleanup",
+          "Normalize columns, totals rows, blank structures, spreadsheet error values, and common export artifacts."
+        ],
+        [
+          "International numbers",
+          "Parse currency symbols, thousands and decimal conventions, percentages, and accounting negatives."
+        ],
+        [
+          "Safer identifiers",
+          "Protect leading-zero values such as account codes from accidental numeric conversion."
+        ],
+        [
+          "Date handling",
+          "Resolve mixed and ambiguous date formats with explicit controls instead of silent guesses."
+        ],
+        [
+          "Business analysis helpers",
+          "Use XLOOKUP-style joins, Pareto analysis, period growth, run-rate forecasting, and related workflows."
+        ],
+        [
+          "Audit trail",
+          "Preserve source files and report transformations so a cleaned dataset remains reviewable."
+        ]
+      ],
+      "workflow": [
+        "Install the package from PyPI.",
+        "Load an Excel or CSV export into the BizPack workflow.",
+        "Inspect detected types and choose any needed locale or date assumptions.",
+        "Clean and validate the DataFrame without overwriting the source.",
+        "Use the result in pandas or continue with the included business-analysis helpers."
+      ],
+      "architecture": "BizPack is a Python package built around pandas and NumPy with an optional Streamlit interface. The package exposes focused cleaning and analysis operations so it can fit into notebooks, scripts, or repeatable data pipelines.",
+      "trust": "The library favors explicit, auditable transformation over destructive in-place editing. Ambiguous dates and identifiers need domain context, so results should be reviewed before financial or operational decisions.",
+      "status": "Published on PyPI as an open-source package. The repository contains installation instructions, usage examples, tests, and the detailed feature reference.",
+      "facts": [
+        [
+          "Availability",
+          "PyPI package"
+        ],
+        [
+          "Input",
+          "Excel and CSV"
+        ],
+        [
+          "Output",
+          "pandas DataFrame"
+        ],
+        [
+          "Use",
+          "Local Python workflow"
+        ]
+      ],
+      "tryUrl": "https://pypi.org/project/bizpack/",
+      "tryLabel": "Install and try",
+      "sourceUrl": "https://github.com/sudheer-050/bizpack",
+      "id": "bizpack",
+      "slug": "bizpack",
+      "name": "BizPack",
+      "badge": "PyPI Package",
+      "description": "An open-source Python library that converts messy, internationally formatted corporate spreadsheets into clean, auditable pandas DataFrames.",
+      "featured": true,
+      "featuredOrder": 2,
+      "resume": true,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Clean international exports",
+            "Review currencies, separators, percentages, and accounting negatives before comparing business data."
+          ],
+          [
+            "Protect identifiers",
+            "Keep leading-zero codes and ambiguous date columns from being silently converted."
+          ],
+          [
+            "Repeat a business analysis",
+            "Reuse auditable cleaning and analysis steps in a notebook or Python pipeline."
+          ]
+        ],
+        "requirements": [
+          "A Python environment compatible with the published package.",
+          "An Excel or CSV export and knowledge of its locale and identifier columns.",
+          "pandas-based workflows; Streamlit is optional for the interface."
+        ],
+        "start": "Open the PyPI package and follow its installation instructions. Work on a copy of a representative export, inspect inferred types, and choose locale and date assumptions before cleaning.",
+        "faq": [
+          [
+            "Does it replace pandas?",
+            "No. BizPack provides focused cleaning and business-analysis helpers around pandas DataFrames."
+          ],
+          [
+            "Can it resolve every ambiguous date automatically?",
+            "No. A value can have more than one valid interpretation. Supply the right locale or date assumptions and review the result."
+          ],
+          [
+            "Will it overwrite my source file?",
+            "The workflow is designed around preserved inputs and auditable transformations. Keep the original export and review the cleaned output separately."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "category": "Machine learning capstone",
+      "image": "https://myhai.org/project-images/morningstar-nlp.png",
+      "summary": "A natural-language classification pipeline that maps corporate business descriptions into a 145-category hierarchical industry taxonomy.",
+      "tech": [
+        "Python",
+        "TF-IDF",
+        "LinearSVC",
+        "scikit-learn",
+        "NLP"
+      ],
+      "why": "Company descriptions are unstructured and inconsistent, while investment research needs stable industry categories. This capstone tests whether a transparent classical NLP pipeline can turn those descriptions into useful hierarchical labels.",
+      "features": [
+        [
+          "Domain-aware preparation",
+          "Clean descriptions and fill missing text using business-domain signals."
+        ],
+        [
+          "Rich text features",
+          "Represent descriptions with word and phrase TF-IDF features spanning one to three grams."
+        ],
+        [
+          "Balanced classification",
+          "Use class-weighted linear support-vector models for uneven industry categories."
+        ],
+        [
+          "Hierarchical evaluation",
+          "Measure performance across the taxonomy rather than treating every label as unrelated."
+        ],
+        [
+          "Top-three predictions",
+          "Return several likely industries for a new description instead of hiding uncertainty."
+        ],
+        [
+          "Reproducible experiments",
+          "Keep preprocessing, training, and documented evaluation together in the project."
+        ]
+      ],
+      "workflow": [
+        "Prepare labeled company descriptions and the GECS hierarchy.",
+        "Normalize and vectorize the text with TF-IDF.",
+        "Train class-balanced linear classifiers.",
+        "Evaluate macro-level and hierarchical performance.",
+        "Enter a new business description to inspect its three most likely categories."
+      ],
+      "architecture": "The project uses a scikit-learn text pipeline: domain-specific preprocessing, 1-to-3-gram TF-IDF features, and LinearSVC classification. The classical approach keeps training practical and makes feature behavior easier to inspect than a large opaque model.",
+      "trust": "Industry predictions support research and screening; they are not authoritative classifications. Sparse descriptions, mixed business models, and underrepresented categories can produce uncertain results, which is why multiple candidate labels are exposed.",
+      "status": "Completed as a DePaul capstone. The strongest documented experiment reached approximately 0.83 macro F1; repository materials provide the implementation and project context rather than a hosted production service.",
+      "facts": [
+        [
+          "Availability",
+          "Research repository"
+        ],
+        [
+          "Classes",
+          "145 industries"
+        ],
+        [
+          "Best result",
+          "About 0.83 macro F1"
+        ],
+        [
+          "Model family",
+          "Linear SVM"
+        ]
+      ],
+      "tryUrl": "https://github.com/sudheer-050/MorningStar",
+      "tryLabel": "Open project",
+      "sourceUrl": "https://github.com/sudheer-050/MorningStar",
       "id": "morningstar",
-      "name": "MorningStar NLP",
+      "slug": "morningstar",
+      "name": "MorningStar NLP Classifier",
       "badge": "ML / NLP",
-      "description": "Grew out of my DePaul capstone (MGT 599): an NLP pipeline using TF-IDF and LinearSVC to classify corporate text descriptions into 145 hierarchical GICS industries, reaching macro F1 ≈ 0.83 with custom knowledge-based imputation and class-imbalance tuning.",
-      "image": ""
+      "description": "A natural-language classification pipeline that maps corporate business descriptions into a 145-category hierarchical industry taxonomy.",
+      "featured": true,
+      "featuredOrder": 1,
+      "resume": true,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Classify business descriptions",
+            "Map corporate text to candidate industries in a hierarchical taxonomy."
+          ],
+          [
+            "Study a classical NLP baseline",
+            "Inspect preprocessing, TF-IDF features, and class-balanced linear SVM behavior."
+          ],
+          [
+            "Compare uncertain predictions",
+            "Look at the top three candidate categories instead of relying on one label."
+          ]
+        ],
+        "requirements": [
+          "A Python environment and repository dependencies.",
+          "Labeled business descriptions and the taxonomy for training or reproduction.",
+          "Separate evaluation data when measuring classification performance."
+        ],
+        "start": "Open the project repository and read the experiment materials. Prepare descriptions and labels in the documented format, then follow preprocessing, training, and evaluation in order.",
+        "faq": [
+          [
+            "Is there a hosted classifier?",
+            "No public production service is listed. The repository contains the capstone implementation and experiment context."
+          ],
+          [
+            "What does the reported result mean?",
+            "The strongest documented experiment reached about 0.83 macro F1. That is a historical experiment result, not a guarantee on another dataset."
+          ],
+          [
+            "Why return several labels?",
+            "Descriptions can be sparse or span multiple business models. Candidate labels expose some uncertainty for human review."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": [
+        {
+          "claim": "Historical experiment: approximately 0.83 macro F1 across 145 industry classes",
+          "url": "https://github.com/sudheer-050/MorningStar",
+          "version": "repository experiment",
+          "reviewed": "2026-10-22",
+          "scope": "Reported capstone result; not reproduced by this website audit."
+        }
+      ]
     },
     {
-      "id": "auto-data-analyst",
+      "category": "Web experience",
+      "image": "https://myhai.org/project-images/developer-portfolio.png",
+      "summary": "A cinematic personal portfolio with animated project storytelling, multiple visual modes, and a private content-management backend.",
+      "tech": [
+        "Node.js",
+        "Express",
+        "Docker",
+        "nginx",
+        "GSAP"
+      ],
+      "why": "A portfolio should show the quality and context of the work, while remaining easy to update. This site separates editable content from the presentation so projects, experience, and credentials can evolve without hand-editing every page.",
+      "features": [
+        [
+          "Cinematic presentation",
+          "Scroll-driven sequences, large project imagery, and deliberate motion create a portfolio rather than a résumé grid."
+        ],
+        [
+          "Multiple views",
+          "Switch between the main cinematic experience, an Iron Man HUD theme, and a print-oriented résumé."
+        ],
+        [
+          "Custom CMS",
+          "Edit projects, experience, education, certifications, and contact links from a private admin interface."
+        ],
+        [
+          "Structured content API",
+          "The public pages render from the same managed content rather than duplicating values in markup."
+        ],
+        [
+          "Responsive layouts",
+          "Desktop and mobile presentations preserve the same hierarchy with device-appropriate spacing and motion."
+        ],
+        [
+          "Independent deployment",
+          "The portfolio runs in its own Docker service behind nginx and Cloudflare Tunnel."
+        ]
+      ],
+      "workflow": [
+        "Open the public portfolio and explore projects through the cinematic or alternate themes.",
+        "Use the résumé view when a compact printable format is preferable.",
+        "Sign in to the private admin area to update structured content.",
+        "Publish changes by rebuilding only the portfolio service."
+      ],
+      "architecture": "A static HTML, CSS, and JavaScript frontend uses GSAP for animation. A small Express CMS serves managed JSON content and a protected single-admin editing interface. Docker, nginx, and Cloudflare Tunnel provide the production boundary.",
+      "trust": "The public experience contains portfolio content only. CMS access is protected with bcrypt-backed authentication and session cookies; administrative routes are separate from the public content API.",
+      "status": "Live at the personal apex domain. The legacy myhai.org portfolio routes remain available for compatibility while the personal domain is canonical.",
+      "facts": [
+        [
+          "Availability",
+          "Live website"
+        ],
+        [
+          "Content",
+          "CMS-managed"
+        ],
+        [
+          "Views",
+          "Three visual modes"
+        ],
+        [
+          "Hosting",
+          "Self-hosted Docker"
+        ]
+      ],
+      "tryUrl": "https://sudheerkumargandiboyana.com/",
+      "id": "portfolio",
+      "slug": "portfolio",
+      "name": "Portfolio Website",
+      "badge": "Web experience",
+      "description": "A cinematic personal portfolio with animated project storytelling, multiple visual modes, and a private content-management backend.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Explore the work visually",
+            "Move through cinematic project stories and inspect the context behind each project."
+          ],
+          [
+            "Choose a compact view",
+            "Use the resume-oriented presentation when you need a printable overview."
+          ],
+          [
+            "Maintain content centrally",
+            "Update projects and experience through the private CMS rather than editing each public view."
+          ]
+        ],
+        "requirements": [
+          "A modern browser to view the public portfolio.",
+          "Admin credentials only when editing content.",
+          "For self-hosting: the application source and its Docker/nginx configuration."
+        ],
+        "start": "Open the personal portfolio and choose the cinematic or alternate view. Project details provide the context; use the resume view when a compact format is more useful.",
+        "faq": [
+          [
+            "Where is the canonical portfolio?",
+            "The personal domain is canonical. Legacy myhai.org portfolio routes remain for compatibility."
+          ],
+          [
+            "Do visitors need to sign in?",
+            "No. Authentication is for the private content-management interface."
+          ],
+          [
+            "Can content change without redesigning every page?",
+            "Yes. The public views use structured CMS content so project and experience updates share one source."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": [],
+      "sourceUrl": "https://github.com/sudheer-050/portfolio"
+    },
+    {
+      "category": "Automated data science",
+      "image": "https://myhai.org/project-images/auto-data-analyst.png",
+      "summary": "Upload a CSV and move from raw data to cleaning, exploration, model comparison, and plain-language recommendations through one guided interface.",
+      "tech": [
+        "Flask",
+        "pandas",
+        "scikit-learn",
+        "XGBoost",
+        "LightGBM",
+        "CatBoost",
+        "Gunicorn"
+      ],
+      "why": "Exploratory analysis and baseline modeling require many repetitive decisions before the interesting work begins. Auto Data Analyst makes those steps visible and accessible to people who do not live in notebooks.",
+      "features": [
+        [
+          "Automated cleaning",
+          "Detect common quality problems and prepare an analysis-ready dataset."
+        ],
+        [
+          "Exploratory analysis",
+          "Generate distributions, relationships, summaries, and visual diagnostics from an uploaded CSV."
+        ],
+        [
+          "Model comparison",
+          "Train and compare more than 15 candidate algorithms with cross-validation."
+        ],
+        [
+          "Ensembling",
+          "Evaluate boosted models including XGBoost, LightGBM, and CatBoost alongside standard baselines."
+        ],
+        [
+          "Editable pipeline",
+          "Review and adjust the generated workflow instead of accepting a black-box result."
+        ],
+        [
+          "Data Q&A",
+          "Ask questions over the uploaded data and receive explanations tied to the analysis."
+        ]
+      ],
+      "workflow": [
+        "Upload a CSV or a set of related datasets.",
+        "Review detected columns, quality issues, and proposed cleaning.",
+        "Choose the target and adjust the guided pipeline when needed.",
+        "Run exploratory analysis and cross-validated model comparison.",
+        "Inspect metrics, plots, and plain-language recommendations before exporting results."
+      ],
+      "architecture": "The deployed application uses Flask with Gunicorn, Python data-processing and machine-learning libraries, and Docker. A Streamlit interface belongs to the historical prototype.",
+      "trust": "Uploaded data is processed by the self-hosted service. Automatic cleaning and model ranking are starting points: leakage, target definition, fairness, causal claims, and business consequences still require human review.",
+      "status": "Live as a self-hosted web application. Large or unusually structured datasets may need manual preprocessing beyond the guided defaults.",
+      "facts": [
+        [
+          "Availability",
+          "Live web app"
+        ],
+        [
+          "Input",
+          "CSV datasets"
+        ],
+        [
+          "Models",
+          "15+ candidates"
+        ],
+        [
+          "Audience",
+          "Guided analysis"
+        ]
+      ],
+      "tryUrl": "/analyst/",
+      "id": "analyst",
+      "slug": "analyst",
       "name": "Auto Data Analyst",
       "badge": "Full-Stack ML",
-      "description": "End-to-end ML web app that takes any raw dataset and automates the entire pipeline — cleaning, EDA, and model training across Linear/Ridge/Lasso Regression, Random Forest, Gradient Boosting, XGBoost, and LightGBM — with a Streamlit UI and Docker deployment so a non-technical user gets a trained, evaluated model with zero code.",
-      "image": "screenshots/auto-data-analyst.jpg"
+      "description": "Upload a CSV and move from raw data to cleaning, exploration, model comparison, and plain-language recommendations through one guided interface.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [
+        "auto-data-analyst"
+      ],
+      "guide": {
+        "uses": [
+          [
+            "Understand a new CSV",
+            "Review distributions, column quality, and relationships before choosing a model."
+          ],
+          [
+            "Compare a baseline",
+            "Evaluate candidate algorithms with cross-validation and inspect the resulting metrics."
+          ],
+          [
+            "Explain an analysis",
+            "Connect plots and recommendations to the input data and the pipeline decisions."
+          ]
+        ],
+        "requirements": [
+          "A browser and a CSV dataset you are permitted to upload.",
+          "A clearly defined target when running supervised model comparison.",
+          "Manual review for leakage, sensitive fields, and unusually structured data."
+        ],
+        "start": "Open Auto Data Analyst, upload a representative CSV, and inspect column types and proposed cleaning. Choose the analysis target only after checking the dataset and pipeline.",
+        "faq": [
+          [
+            "What files should I start with?",
+            "Start with a CSV whose columns and intended analysis you understand. Complex or unusual data may need preprocessing."
+          ],
+          [
+            "Is the highest-scoring model always best?",
+            "No. Leakage, the evaluation split, business costs, interpretability, and data quality can matter more than a single score."
+          ],
+          [
+            "Can I review the cleaning?",
+            "The guided workflow exposes preparation and pipeline choices. Review them before accepting the resulting analysis."
+          ]
+        ]
+      },
+      "sourceAvailability": "private",
+      "releases": [],
+      "evidence": []
     },
     {
-      "id": "h-ai",
-      "name": "H-AI Assistant",
+      "category": "Private communication",
+      "image": "https://myhai.org/project-images/hai-messenger.png",
+      "summary": "A free, self-hosted messenger with encrypted real-time chat, media sharing, voice notes, in-chat games, groups, and ephemeral Nearby conversations.",
+      "tech": [
+        "Node.js",
+        "Express",
+        "Socket.IO",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "why": "Everyday messaging should not require advertising profiles or surrender of conversation content. HAI explores a privacy-first communication stack that can be hosted and operated independently.",
+      "features": [
+        [
+          "Encrypted direct messages",
+          "Hybrid RSA-OAEP and AES-256-GCM envelopes keep message bodies as ciphertext while passing through the server."
+        ],
+        [
+          "Real-time communication",
+          "Socket.IO delivers messages, typing state, presence, read state, and live interaction updates."
+        ],
+        [
+          "Media and voice",
+          "Send photos, documents, voice notes, camera captures, and view-once media."
+        ],
+        [
+          "In-chat games",
+          "Invite the active contact into Tic Tac Toe, Connect Four, Hangman, trivia, and other live games."
+        ],
+        [
+          "Nearby chat",
+          "Enter an anonymous, time-limited conversation mode without adding the other person as a contact."
+        ],
+        [
+          "Installable experience",
+          "Use the responsive web client as an installable PWA on desktop or mobile."
+        ]
+      ],
+      "workflow": [
+        "Create and verify an account, then sign in.",
+        "Add a contact, join a group, or enter Nearby mode.",
+        "The browser encrypts supported direct-message content for the recipient.",
+        "The server relays real-time ciphertext and short-lived interaction events.",
+        "The recipient decrypts the content in their authenticated browser session."
+      ],
+      "architecture": "Express serves the web application and account APIs, Socket.IO handles live events, PostgreSQL stores durable account and message records, and Redis supports ephemeral coordination. Docker Compose runs the supporting services, while Cloudflare Tunnel provides public HTTPS without opening inbound ports.",
+      "trust": "Direct messages use browser-side hybrid encryption, but transport and application metadata still exist and group behavior has different trust boundaries. HAI is a personal open-source project, not an independently audited high-risk communications product.",
+      "status": "Live and actively developed. Core messaging, groups, media, games, Nearby, and PWA installation are available; security-sensitive use should account for the project status and documented boundaries.",
+      "facts": [
+        [
+          "Availability",
+          "Live web app"
+        ],
+        [
+          "Cost",
+          "Free"
+        ],
+        [
+          "Ads",
+          "None"
+        ],
+        [
+          "Hosting",
+          "Self-hosted"
+        ]
+      ],
+      "tryUrl": "/index.html",
+      "sourceUrl": "https://github.com/sudheer-050/HAI-messenger",
+      "id": "hai",
+      "slug": "hai",
+      "name": "HAI Messenger",
+      "badge": "Live in Production",
+      "description": "A free, self-hosted messenger with encrypted real-time chat, media sharing, voice notes, in-chat games, groups, and ephemeral Nearby conversations.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": true,
+      "publication": "published",
+      "aliases": [
+        "hai-messenger"
+      ],
+      "guide": {
+        "uses": [
+          [
+            "Keep a conversation going",
+            "Use live direct messages with presence, typing state, and read updates."
+          ],
+          [
+            "Share more than text",
+            "Exchange supported media and voice notes, or start an in-chat game."
+          ],
+          [
+            "Use the app on your device",
+            "Open the responsive web client or install the PWA where supported."
+          ]
+        ],
+        "requirements": [
+          "A verified HAI Messenger account.",
+          "A modern browser and an internet connection.",
+          "Microphone or camera permission only for the features you choose to use."
+        ],
+        "start": "Create and verify an account, sign in, and add a contact or join a group. Start with a message, then use the media, voice, or game controls as needed.",
+        "faq": [
+          [
+            "Is HAI Messenger free?",
+            "The current project is free and has no advertising. It is self-hosted and independently developed."
+          ],
+          [
+            "What does encryption cover?",
+            "Supported direct-message bodies use browser-side hybrid encryption. Metadata and group behavior have different trust boundaries; this is not an independently audited high-risk messaging product."
+          ],
+          [
+            "Do I have to install it?",
+            "No. Use the browser client directly. PWA installation is available on supported devices."
+          ]
+        ],
+        "gallery": [
+          [
+            "https://myhai.org/screenshots/hai-messenger-chat-desktop.png",
+            "Desktop conversation"
+          ],
+          [
+            "https://myhai.org/screenshots/hai-messenger-chat.png",
+            "Mobile conversation"
+          ],
+          [
+            "https://myhai.org/screenshots/hai-messenger-login.png",
+            "Account sign-in"
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "category": "Local AI assistant",
+      "image": "https://myhai.org/project-images/h-ai.png",
+      "summary": "A local, memory-aware assistant built with Python and Ollama for personal conversation, decision support, and continuity across sessions.",
+      "tech": [
+        "Python",
+        "Ollama",
+        "Llama 3",
+        "Local storage"
+      ],
+      "why": "A personal assistant feels generic when every session starts from zero. This project experiments with lightweight local memory so the assistant can recognize a user and recover relevant themes without sending the conversation to a hosted application.",
+      "features": [
+        [
+          "Local inference",
+          "Run supported Llama models through Ollama on the user’s own machine."
+        ],
+        [
+          "Multiple users",
+          "Give each person a unique identity and keep histories separated."
+        ],
+        [
+          "Conversation history",
+          "Store prior exchanges so later sessions can build on earlier work."
+        ],
+        [
+          "Keyword summaries",
+          "Create monthly summaries that compress recurring subjects and interests."
+        ],
+        [
+          "Relevant recall",
+          "Retrieve matching earlier context instead of injecting the full history every time."
+        ],
+        [
+          "Voice roadmap",
+          "Text-to-speech and emotion-aware voice behavior are active areas of development."
+        ]
+      ],
+      "workflow": [
+        "Install Python dependencies and a compatible Ollama model.",
+        "Start the terminal assistant and select or create a user identity.",
+        "Chat locally while the application stores that user’s history.",
+        "Monthly keyword summaries condense recurring topics.",
+        "Relevant summaries and messages are recalled for future conversations."
+      ],
+      "architecture": "The project is a Python terminal application connected to a locally running Ollama model. Its memory layer stores per-user conversation records and derived summaries, then retrieves relevant context before a response.",
+      "trust": "Local inference reduces third-party exposure, but privacy still depends on the machine, Ollama configuration, stored history, and any future external integrations. Retrieved memory can be incomplete or misleading and should not replace user judgment.",
+      "status": "Open-source work in progress with no public hosted deployment. Run it locally from the repository; voice and emotion-aware interaction remain ongoing work.",
+      "facts": [
+        [
+          "Availability",
+          "Run locally"
+        ],
+        [
+          "Interface",
+          "Terminal"
+        ],
+        [
+          "Inference",
+          "Ollama"
+        ],
+        [
+          "Status",
+          "Work in progress"
+        ]
+      ],
+      "tryUrl": "https://github.com/sudheer-050/H-AI",
+      "tryLabel": "Run locally",
+      "sourceUrl": "https://github.com/sudheer-050/H-AI",
+      "id": "agent",
+      "slug": "agent",
+      "name": "Personal AI Agent",
       "badge": "Open Source",
-      "description": "A local, memory-aware AI assistant built with Ollama and Llama 3 — multi-user support, persistent conversation history, and monthly keyword summaries for consistent, personal terminal-based chats.",
-      "image": "screenshots/h-ai.jpg"
+      "description": "A local, memory-aware assistant built with Python and Ollama for personal conversation, decision support, and continuity across sessions.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [
+        "h-ai"
+      ],
+      "guide": {
+        "uses": [
+          [
+            "Run a local conversation",
+            "Use an Ollama-backed assistant from a terminal on your own machine."
+          ],
+          [
+            "Separate personal histories",
+            "Choose a user identity before chatting so stored exchanges stay scoped."
+          ],
+          [
+            "Experiment with memory",
+            "Study keyword summaries and retrieval of earlier context across sessions."
+          ]
+        ],
+        "requirements": [
+          "Python and the dependencies listed in the repository.",
+          "A running Ollama installation with a compatible model.",
+          "Local storage for per-user history and summaries."
+        ],
+        "start": "Follow the repository setup, start Ollama with the documented model, then launch the terminal assistant. Select or create a user identity before beginning a conversation.",
+        "faq": [
+          [
+            "Is this a hosted assistant?",
+            "No public deployment is listed. Run the project locally from its repository."
+          ],
+          [
+            "Is voice finished?",
+            "Voice and emotion-aware interaction are ongoing work. The documented core is a terminal-based assistant."
+          ],
+          [
+            "Can memory be wrong?",
+            "Yes. Summaries and keyword matching may omit or misinterpret context, so the assistant should not treat memory as unquestionable fact."
+          ]
+        ]
+      },
+      "sourceAvailability": "public",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "category": "Machine learning coursework",
+      "image": "https://myhai.org/project-images/dating-ai-matching.png",
+      "summary": "A graduate team project focused on designing and evaluating AI-assisted compatibility matching for a dating application.",
+      "tech": [
+        "Python",
+        "Machine learning",
+        "Team project"
+      ],
+      "why": "Compatibility matching is a useful case study in translating subjective preferences into measurable signals while confronting uncertainty, bias, privacy, and the limits of an algorithmic recommendation.",
+      "features": [
+        [
+          "Matching design",
+          "Translate profile and preference information into candidate compatibility features."
+        ],
+        [
+          "Model evaluation",
+          "Compare matching behavior using course-defined machine-learning methods and evaluation criteria."
+        ],
+        [
+          "Team delivery",
+          "Divide research, modeling, application design, and presentation work across a graduate project team."
+        ],
+        [
+          "Responsible framing",
+          "Treat a score as decision support rather than a claim that compatibility can be known with certainty."
+        ]
+      ],
+      "workflow": [
+        "Define the matching question and available profile signals.",
+        "Prepare features and candidate-pair examples.",
+        "Train or apply the selected matching approach.",
+        "Evaluate the results and discuss limitations.",
+        "Present the prototype and findings as a course deliverable."
+      ],
+      "architecture": "The coursework prototype centers on Python-based machine-learning logic and an application concept rather than a hardened production service. Its value is the matching experiment and evaluation process.",
+      "trust": "Dating data is sensitive, and matching systems can amplify bias or create false confidence. A production version would require clear consent, data minimization, safety controls, fairness testing, and user control over recommendations.",
+      "status": "Completed as a DePaul “Machine Learning for Managers” team project. There is currently no public repository or live deployment, so no Try Now link is shown.",
+      "facts": [
+        [
+          "Availability",
+          "Coursework only"
+        ],
+        [
+          "Type",
+          "Team project"
+        ],
+        [
+          "Focus",
+          "Compatibility matching"
+        ],
+        [
+          "Public demo",
+          "Not available"
+        ]
+      ],
+      "id": "dating",
+      "slug": "dating",
+      "name": "Dating-Website Application",
+      "badge": "Machine learning coursework",
+      "description": "A graduate team project focused on designing and evaluating AI-assisted compatibility matching for a dating application.",
+      "featured": false,
+      "featuredOrder": 999,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "guide": {
+        "uses": [
+          [
+            "Study matching design",
+            "Translate profile and preference signals into a compatibility experiment."
+          ],
+          [
+            "Evaluate recommendations",
+            "Discuss how model choices affect uncertainty, fairness, and ranking."
+          ],
+          [
+            "Review a team case study",
+            "Understand the coursework scope without mistaking it for a public dating service."
+          ]
+        ],
+        "requirements": [
+          "This page is a coursework case study, not a downloadable service.",
+          "No public repository, installer, or live demo is currently listed.",
+          "Any future real-data evaluation would need consent and appropriate privacy controls."
+        ],
+        "start": "Read the project goals, matching workflow, and limitations below. There is no public app to sign up for or download at this time.",
+        "faq": [
+          [
+            "Can I try the dating app?",
+            "There is no public live deployment or repository listed for this coursework project."
+          ],
+          [
+            "Does a score establish compatibility?",
+            "No. A matching score is uncertain decision support and cannot establish a relationship outcome."
+          ],
+          [
+            "Why show this project here?",
+            "It documents the design and evaluation work from a graduate team project, including the limitations of applying machine learning to sensitive preferences."
+          ]
+        ]
+      },
+      "sourceAvailability": "unavailable",
+      "releases": [],
+      "evidence": []
+    },
+    {
+      "id": "tabula-rasa",
+      "slug": "tabula-rasa",
+      "name": "tabula-rasa",
+      "category": "ARC-AGI-3 research",
+      "badge": "Research / open source",
+      "summary": "An experimental ARC-AGI-3 agent that explores unfamiliar interactive puzzles, with open experiment traces, a technical paper and reproduction instructions.",
+      "description": "Research on interactive reasoning agents, replay caching, action planning and measured evaluation.",
+      "image": "https://raw.githubusercontent.com/sudheer-050/tabula-rasa/main/assets/game-ar25-early.png",
+      "featured": false,
+      "resume": false,
+      "publication": "published",
+      "aliases": [],
+      "tech": [
+        "Python",
+        "LLM agents",
+        "ARC-AGI-3"
+      ],
+      "why": "Study how agents infer puzzle mechanics from observation and how planning choices affect action efficiency.",
+      "features": [
+        [
+          "Interactive exploration",
+          "Discover game rules through observed outcomes."
+        ],
+        [
+          "Reproducible experiments",
+          "Inspect traces, technical paper and reproduction instructions."
+        ]
+      ],
+      "workflow": [
+        "Read the paper and repository setup.",
+        "Prepare the documented model and game environment.",
+        "Run the reproduction instructions and inspect the resulting traces."
+      ],
+      "architecture": "The repository describes a persistent Python sandbox, game sessions, replay caches and scheduling across games. The technical paper documents a separate cascade-patch experiment; its evidence must be evaluated in its own scope.",
+      "trust": "An experimental research project. Offline completion-ceiling measurements and competition scores use different scales and must not be compared directly. Inherited harnesses and methods are credited in the repository and paper.",
+      "status": "Public research code and paper; no hosted puzzle-solving service is offered. Results are reported experiments, not independently reproduced by this website.",
+      "facts": [
+        [
+          "Availability",
+          "Public source and technical paper"
+        ],
+        [
+          "Status",
+          "Experimental research"
+        ]
+      ],
+      "sourceAvailability": "public",
+      "sourceUrl": "https://github.com/sudheer-050/tabula-rasa",
+      "guide": {
+        "uses": [
+          [
+            "Inspect reasoning experiments",
+            "Study exploration, planning and replay from trace evidence."
+          ]
+        ],
+        "requirements": [
+          "Use the repository environment and model requirements."
+        ],
+        "start": "Read the technical paper and reproduction guide before running the experiments.",
+        "faq": [
+          [
+            "Are the scores interchangeable?",
+            "No. The repository distinguishes competition scores from offline completion-ceiling measurements."
+          ]
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Technical paper and reported experiment evidence",
+          "url": "https://github.com/sudheer-050/tabula-rasa/blob/main/other-projects/cascade-patch-v2/PAPER.md",
+          "version": "Repository paper",
+          "reviewed": "2026-10-22",
+          "scope": "Read the paper for inherited work, measured results and limitations."
+        },
+        {
+          "claim": "PDF paper",
+          "url": "https://github.com/sudheer-050/tabula-rasa/blob/main/other-projects/cascade-patch-v2/paper.pdf",
+          "version": "Repository PDF",
+          "reviewed": "2026-10-22",
+          "scope": "Exported research artifact."
+        },
+        {
+          "claim": "Reproduction instructions",
+          "url": "https://github.com/sudheer-050/tabula-rasa/blob/main/other-projects/cascade-patch-v2/REPRODUCIBILITY.md",
+          "version": "Repository instructions",
+          "reviewed": "2026-10-22",
+          "scope": "Requires the documented environment; not executed by this website."
+        }
+      ],
+      "releases": []
+    },
+    {
+      "id": "agentforce",
+      "slug": "agentforce",
+      "name": "Agentforce",
+      "category": "Experimental project",
+      "badge": "Unreviewed experiment",
+      "summary": "Agentforce experiments and implementation work.",
+      "description": "Existing public repository retained for editorial review.",
+      "image": "",
+      "featured": false,
+      "resume": false,
+      "publication": "draft",
+      "aliases": [],
+      "tech": [],
+      "why": "",
+      "features": [],
+      "workflow": [],
+      "architecture": "",
+      "trust": "Unreviewed experimental work; do not present as a finished product.",
+      "status": "Draft pending curation.",
+      "facts": [],
+      "sourceAvailability": "public",
+      "sourceUrl": "https://github.com/sudheer-050/Agentforce",
+      "guide": {
+        "uses": [],
+        "requirements": [],
+        "start": "",
+        "faq": []
+      },
+      "evidence": [],
+      "releases": []
     }
   ],
   "certifications": [
@@ -76,5 +1655,73 @@
     "github": "https://github.com/sudheer-050",
     "location": "Chicago, IL"
   },
-  "profileImage": "profile.png"
+  "profileImage": "https://sudheerkumargandiboyana.com/profile.png",
+  "theme": "professional",
+  "profile": {
+    "name": "Sudheer Kumar Gandiboyana",
+    "headline": "AI/ML Engineer and Analyst",
+    "summary": "DePaul University MS Business Analytics graduate (June 2026, GPA 3.925), building machine learning pipelines, AI tools and deployed data products. Open to ML, AI, data science and analytics engineering roles.",
+    "graduation": "June 2026",
+    "education": [
+      {
+        "title": "Master of Science, Business Analytics",
+        "date": "Sep 2024 — Jun 2026",
+        "organization": "DePaul University, Kellstadt Graduate School of Business — Chicago, IL · GPA 3.925",
+        "bullets": []
+      },
+      {
+        "title": "B.Tech, Chemical Engineering",
+        "date": "Aug 2016 — Oct 2020",
+        "organization": "Rajiv Gandhi University of Knowledge Technologies — Nuzvid, India",
+        "bullets": []
+      }
+    ],
+    "experience": [
+      {
+        "title": "Data Analytics Intern",
+        "date": "Mar — Jun 2024",
+        "organization": "Unified Mentor",
+        "bullets": [
+          "Analyzed 100K+ Amazon sales transactions in Power BI and R, driving a 10% increase in targeted customer segment sales.",
+          "Built predictive HR attrition segmentation models in Tableau, improving overall retention by 10%; cleaned 1M+ records across systems with Python and SQL."
+        ]
+      },
+      {
+        "title": "Independent Business Consultant",
+        "date": "Aug 2023 – Feb 2024",
+        "organization": "Volunteer · self-directed",
+        "bullets": [
+          "Advised two local electronics retailers on inventory, sales trends and business performance."
+        ]
+      },
+      {
+        "title": "Junior Engineer",
+        "date": "Feb 2021 — Jul 2023",
+        "organization": "Hetero Labs Limited (Unit-IX)",
+        "bullets": [
+          "Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.",
+          "Led adoption of new methodologies across 8 team members (+50% execution speed) and drove 100% safety-training compliance (-30% incidents)."
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "category": "Data & Analytics:",
+        "items": "Python, SQL, R, Power BI, Tableau, Statistical Analysis"
+      },
+      {
+        "category": "ML & Deep Learning:",
+        "items": "scikit-learn, TensorFlow, PyTorch, XGBoost, NLP, LLM Agents"
+      },
+      {
+        "category": "Engineering:",
+        "items": "FastAPI, Flask, Node.js, Docker, PostgreSQL, Git/GitHub Actions"
+      },
+      {
+        "category": "Business:",
+        "items": "KPI Design, Forecasting, Process Optimization, Stakeholder Reporting"
+      }
+    ]
+  },
+  "schemaVersion": 2
 }
