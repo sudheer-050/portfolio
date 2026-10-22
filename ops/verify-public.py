@@ -37,7 +37,7 @@ try:
         record('historical conflicts '+url,not re.search(r'\b293[ -](?:passing|automated|test)|\bGICS\b|MS Business Analytics candidate',body))
     for url in [H+'/project.html?project=missing-regression-check',H+'/projects/missing-regression-check/',P+'/missing-regression-check']:
         record('real 404 '+url,request(url)[0]==404)
-    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),('http://myhai.org/',H+'/'),('https://www.myhai.org/',H+'/')]:
+    for source,target in [(H+'/jobs.html',H+'/jobs/'),(H+'/project.html?project=hagent',H+'/projects/hagent/'),(P+'/ironman.html',P+'/'),('http://myhai.org/',H+'/'),('http://myhai.org/jobs/',H+'/jobs/'),('http://myhai.org/analyst/',H+'/analyst/'),('https://www.myhai.org/',H+'/')]:
         status,final,_=request(source)
         record('redirect '+source,status==200 and final.rstrip('/')==target.rstrip('/'),str(status)+' '+final)
     for p in projects:
