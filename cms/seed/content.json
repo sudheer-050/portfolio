@@ -1,13 +1,13 @@
 {
   "hero": {
     "badge": "Open to ML & AI engineering roles",
-    "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products — from the first experiment to a working deployment."
+    "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products \u2014 from the first experiment to a working deployment."
   },
   "about": {
     "intro": "I combine business analytics with hands-on engineering to turn complex data into working products.",
     "paragraphs": [
-      "I’m a DePaul University MS Business Analytics graduate with a background in process engineering and data analytics. My work spans classical machine learning, AI agents and the infrastructure needed to put them into use.",
-      "I'm looking for a team where I can contribute to ML and AI engineering, data science or analytics engineering — and keep learning through work that ships.",
+      "I\u2019m a DePaul University MS Business Analytics graduate with a background in process engineering and data analytics. My work spans classical machine learning, AI agents and the infrastructure needed to put them into use.",
+      "I'm looking for a team where I can contribute to ML and AI engineering, data science or analytics engineering \u2014 and keep learning through work that ships.",
       "My approach is practical: start with the problem, build the simplest useful solution, and make the implementation easy to inspect."
     ]
   },
@@ -15,7 +15,7 @@
     {
       "category": "Private desktop voice workspace",
       "image": "https://myhai.org/project-images/notewll-banner.svg",
-      "summary": "A Windows voice notetaker with a shortcut for typing into notes, browsers, editors and terminals, plus local voice-note and meeting recordings.",
+      "summary": "Local Windows voice typing that recognizes speech while you talk, with optional background grammar, personal notes and meeting recordings.",
       "tech": [
         "C#",
         "WinForms",
@@ -26,8 +26,8 @@
       "why": "Typing a message, capturing an idea and remembering a meeting should not require three disconnected tools. Notewll combines shortcut-driven writing with local notes and source-aware meeting transcripts, keeping the original conversation separate from editable personal notes.",
       "features": [
         [
-          "Speak into the active app",
-          "Use your chosen shortcut to speak into notes, browser text fields, editors and terminals. Release to insert the recognized text, with explicit formatting presets."
+          "Recognize while you speak",
+          "Continuous local recognition and optional background grammar reduce work after you release the shortcut. Silence ends without warning popups. Slow grammar falls back to fast formatting and filler cleanup."
         ],
         [
           "Three audio choices",
@@ -48,19 +48,27 @@
         [
           "Practical data controls",
           "Back up active notes, restore recently deleted records, choose retention, and inspect local storage."
+        ],
+        [
+          "Background local grammar",
+          "Optional enhanced setup runs grammar on this computer while you speak. The standard installer provides streaming recognition and basic cleanup without Python or a cloud account."
         ]
       ],
       "workflow": [
-        "Build the Windows installer from GitHub source, or check Releases for available installer assets.",
+        "Download Notewll 0.8.0 from GitHub Releases, or build the Windows installer from source.",
         "Run setup online once to obtain the pinned runtime and small English model, then open Notewll.",
         "Use Practice to test your microphone and recognition, then confirm typing into another app.",
-        "Hold your dictation shortcut, or start a personal note/meeting with the chosen audio source.",
+        "Hold the dictation shortcut and speak; recognition runs while you talk. Release to finish, or use the separate personal-note/meeting controls.",
         "Review the original conversation, add personal notes, play audio and export a PDF snapshot."
       ],
-      "architecture": "A native C# WinForms application captures Windows microphone and WASAPI output audio and runs a small English Vosk model locally. Dictation uses conservative cleanup and explicit styles; note recording saves timestamped text and source WAV tracks. A Windows bootstrapper verifies pinned component hashes. No Docker, Python installation or cloud account is required to use the app.",
+      "architecture": "A native C# WinForms app captures Windows microphone and WASAPI audio. Shortcut dictation feeds the local English Vosk recognizer while you speak, then finalizes the stream on release. Optional Ollama grammar works on partial sentences in the background, with a 600 ms release wait budget. Whisper remains available for enhanced notes, audio-file checks and recovery. The base installer needs no Python or cloud account; enhanced grammar requires the documented local setup.",
       "trust": "Speech runs locally after setup. Dictation audio stays in memory; recorded notes deliberately save text and audio locally. Computer-output capture includes all applications using the selected device: record only with appropriate consent. Conversation words are read-only inside the app, while metadata and personal notes remain editable. PDF copies can be changed externally and are not signed evidence.",
-      "status": "The reviewed source describes a 0.7.0 Windows x64 English-only preview. Published installer versions are listed separately below; source-preview and download versions can differ. The installer is unsigned. Real call capture, cross-app insertion, accessibility and speech accuracy require normal desktop acceptance.",
+      "status": "Version 0.8.0 is published as an unsigned Windows x64 English preview. Three six-second local audio replays produced formatted text 148-509 ms after simulated release; these are not physical shortcut-to-typing measurements or a guarantee for every PC. Skipping a second Whisper pass favors speed over recognition accuracy. Slow grammar uses basic cleanup. Microphone/call capture, cross-app typing and accuracy still need desktop acceptance.",
       "facts": [
+        [
+          "Version",
+          "0.8.0 Windows preview"
+        ],
         [
           "Availability",
           "Windows source / preview"
@@ -75,17 +83,17 @@
         ],
         [
           "Verification",
-          "85 automated checks passed; four live checks excluded"
+          "91 checks passed; four live checks excluded"
         ]
       ],
-      "tryUrl": "https://github.com/sudheer-050/notewll/releases/tag/v0.7.0",
+      "tryUrl": "https://github.com/sudheer-050/notewll/releases/tag/v0.8.0",
       "tryLabel": "Download Windows preview",
       "sourceUrl": "https://github.com/sudheer-050/notewll",
       "id": "dotflow",
       "slug": "dotflow",
       "name": "Notewll",
-      "badge": "Windows Preview",
-      "description": "Hold your chosen shortcut, speak, and release to type into the active text field in notes, browser forms, editors and terminals. Record voice notes or meetings, review the original audio and transcript, and keep your notes locally.",
+      "badge": "Windows Preview 0.8.0",
+      "description": "Hold your chosen shortcut and speak. Notewll recognizes locally while you talk, then finishes the live transcript on release. Optional grammar correction runs in the background; silence ends quietly. Record voice notes or meetings and keep your notes locally.",
       "featured": true,
       "featuredOrder": 3,
       "resume": false,
@@ -111,9 +119,10 @@
         "requirements": [
           "Windows x64 and a microphone for dictation.",
           "Online first setup for the pinned runtime and English Vosk model.",
-          "Appropriate recording permission when capturing other people or computer audio."
+          "Appropriate recording permission when capturing other people or computer audio.",
+          "Optional contextual grammar requires the enhanced local Python/Ollama setup and local models; the standard installer includes basic cleanup."
         ],
-        "start": "Download the unsigned Notewll 0.7.0 Windows preview installer from GitHub Releases. Complete the initial download, open Practice, and test your microphone before dictating into another app. Existing notes and shortcut preferences are preserved.",
+        "start": "Download the unsigned Notewll 0.8.0 Windows preview installer from GitHub Releases. Initial setup downloads the local speech files. Open Practice and test your microphone before dictating into another app. Existing notes and shortcut preferences are preserved. Enhanced background grammar is optional and needs the additional local setup described in the repository.",
         "faq": [
           [
             "Does speech leave my computer?",
@@ -126,11 +135,32 @@
           [
             "Is an exported PDF signed evidence?",
             "No. The original conversation is read-only inside the app, but exported PDFs can be edited outside it and are not cryptographically signed."
+          ],
+          [
+            "Does every sentence finish in under one second?",
+            "No universal guarantee. Three six-second local audio replays finished in 148-509 ms after simulated release. The app recognizes while you speak and caps the additional grammar wait at 600 ms, falling back to basic cleanup when needed. Actual hardware, desktop typing and recognition accuracy still need testing."
           ]
         ]
       },
       "sourceAvailability": "public",
       "releases": [
+        {
+          "version": "v0.8.0",
+          "preview": true,
+          "date": "2026-10-23T06:45:25Z",
+          "notes": "# Notewll 0.8.0 - faster local dictation\r\n\r\nWindows x64, English speech, unsigned preview. Recognition and grammar stay on your computer.\r\n\r\n- Shortcut dictation now recognizes speech every 250 ms while you speak, including when live insertion is disabled or held modifier keys delay typing.\r\n- Optional enhanced grammar warms at startup and corrects partial sentences in the background. Matching corrections and unchanged whole-word prefixes are reused as speech grows.\r\n- Release finalizes the live recognizer instead of running a second full Whisper transcription. Grammar has a 600 ms wait budget; slow or unavailable grammar falls back to basic local formatting and filler removal. Late corrections never rewrite a completed dictation.\r\n- Silence, quick shortcut taps and empty recognition results return quietly to idle without warning popups, inserted text or clipboard changes.\r\n- Enhanced setup includes local contextual grammar, saved vocabulary hints for Whisper-based note/file/recovery paths, and meeting voice grouping. The standard installer does not install Python/Ollama or grammar models; enhanced grammar requires the optional setup documented in SPEECH_QUALITY_UPDATE.md.\r\n- Playground preview no longer clears a computed result when an empty optional result is supplied.\r\n- Existing notes, recordings, shortcuts and preferences are retained. Installer, application metadata and About now report 0.8.0.\r\n\r\nMeasured latency: three six-second local voice recordings, replayed in real time, produced formatted text 509, 416 and 148 ms after simulated release. These are three warm replay measurements, not physical microphone-to-keyboard timings, p95 estimates, accuracy scores or a guarantee for every PC. Skipping the second Whisper pass can reduce recognition accuracy; fallback cleanup is not full model grammar editing.\r\n\r\nVerification: 91 application, installer, speech-worker and regression checks passed; four live microphone/keyboard checks were excluded. Direct empty-result/cancellation checks passed too. The full installer embeds the exact verified 0.8.0 application. A cleanup-preview failure found during packaging was fixed and both preview checks now pass. Real microphone capture returns MMSYSERR 1 in this managed session, and keyboard injection is unavailable. Physical shortcut timing, cross-app insertion and recognition accuracy still need desktop acceptance. The installer is unsigned and the certificate-verified automatic updater remains unconfigured; install this preview manually from GitHub Releases.\r\n\r\nSee verification/STREAMING_DICTATION.md for the measured scope and remaining checks.\r\n",
+          "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.8.0",
+          "assets": [
+            {
+              "name": "Notewll-Setup-0.8.0.exe",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.8.0/Notewll-Setup-0.8.0.exe"
+            },
+            {
+              "name": "SHA256SUMS.txt",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.8.0/SHA256SUMS.txt"
+            }
+          ]
+        },
         {
           "version": "v0.7.0",
           "preview": true,
@@ -152,7 +182,7 @@
           "version": "v0.6.1",
           "preview": true,
           "date": "2026-10-21T21:23:12Z",
-          "notes": "﻿# Notewll / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. This historical installer appears as Local Dictation. The project and current application are now named Notewll.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
+          "notes": "\ufeff# Notewll / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. This historical installer appears as Local Dictation. The project and current application are now named Notewll.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
           "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.6.1",
           "assets": [
             {
@@ -168,11 +198,11 @@
       ],
       "evidence": [
         {
-          "claim": "Source-preview validation notes",
-          "url": "https://github.com/sudheer-050/notewll",
-          "version": "Source preview reviewed October 22, 2026",
-          "reviewed": "2026-10-22",
-          "scope": "Repository-reported checks; not rerun by this website. Downloaded releases have their own versioned notes."
+          "claim": "0.8.0 release checks and latency scope",
+          "url": "https://github.com/sudheer-050/notewll/blob/main/verification/RELEASE_0.8.0.md",
+          "version": "0.8.0 Windows preview",
+          "reviewed": "2026-10-23",
+          "scope": "91 automated checks passed; four live checks excluded. Three prerecorded local audio replays measured 148-509 ms after simulated release. Not physical microphone-to-keyboard timing or a guarantee of full grammar correction within one second."
         }
       ]
     },
@@ -296,7 +326,7 @@
     {
       "category": "Conversational assistant",
       "image": "https://myhai.org/project-images/h-ai.png",
-      "summary": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "summary": "HAI\u2019s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
       "tech": [
         "JavaScript",
         "Gemini",
@@ -311,7 +341,7 @@
         ],
         [
           "Hands-free voice mode",
-          "Use the browser’s speech capabilities to talk with H and hear responses aloud."
+          "Use the browser\u2019s speech capabilities to talk with H and hear responses aloud."
         ],
         [
           "No account required",
@@ -319,7 +349,7 @@
         ],
         [
           "Personal glossary",
-          "Teach H unfamiliar terms and keep those glossary entries in the browser’s local storage."
+          "Teach H unfamiliar terms and keep those glossary entries in the browser\u2019s local storage."
         ],
         [
           "Conversation transcript",
@@ -337,8 +367,8 @@
         "Continue the thread while the page retains its conversation context.",
         "Review or download the transcript when finished."
       ],
-      "architecture": "H is a browser-based interface served by the HAI backend. It currently uses Google’s Gemini API as an interim model runtime while migration back to a locally hosted model is in progress. Voice input and playback use browser Web Speech capabilities, and user-taught glossary terms stay in local browser storage.",
-      "trust": "During the current interim configuration, message text is sent to Google’s Gemini API for processing. Browser speech handling can vary by browser and operating system. Glossary entries remain local to the browser, and no HAI account is required to start a conversation.",
+      "architecture": "H is a browser-based interface served by the HAI backend. It currently uses Google\u2019s Gemini API as an interim model runtime while migration back to a locally hosted model is in progress. Voice input and playback use browser Web Speech capabilities, and user-taught glossary terms stay in local browser storage.",
+      "trust": "During the current interim configuration, message text is sent to Google\u2019s Gemini API for processing. Browser speech handling can vary by browser and operating system. Glossary entries remain local to the browser, and no HAI account is required to start a conversation.",
       "status": "Live on myhai.org. Text and voice modes are available now; the model runtime is temporarily Gemini while the locally hosted runtime is being restored.",
       "facts": [
         [
@@ -363,7 +393,7 @@
       "slug": "h",
       "name": "H AI",
       "badge": "Conversational assistant",
-      "description": "HAI’s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
+      "description": "HAI\u2019s conversational assistant for text and hands-free voice chat, available instantly without creating an account.",
       "featured": false,
       "featuredOrder": 999,
       "resume": false,
@@ -952,11 +982,11 @@
       "features": [
         [
           "Cinematic presentation",
-          "Scroll-driven sequences, large project imagery, and deliberate motion create a portfolio rather than a résumé grid."
+          "Scroll-driven sequences, large project imagery, and deliberate motion create a portfolio rather than a r\u00e9sum\u00e9 grid."
         ],
         [
           "Multiple views",
-          "Switch between the main cinematic experience, an Iron Man HUD theme, and a print-oriented résumé."
+          "Switch between the main cinematic experience, an Iron Man HUD theme, and a print-oriented r\u00e9sum\u00e9."
         ],
         [
           "Custom CMS",
@@ -977,7 +1007,7 @@
       ],
       "workflow": [
         "Open the public portfolio and explore projects through the cinematic or alternate themes.",
-        "Use the résumé view when a compact printable format is preferable.",
+        "Use the r\u00e9sum\u00e9 view when a compact printable format is preferable.",
         "Sign in to the private admin area to update structured content.",
         "Publish changes by rebuilding only the portfolio service."
       ],
@@ -1324,7 +1354,7 @@
       "features": [
         [
           "Local inference",
-          "Run supported Llama models through Ollama on the user’s own machine."
+          "Run supported Llama models through Ollama on the user\u2019s own machine."
         ],
         [
           "Multiple users",
@@ -1350,7 +1380,7 @@
       "workflow": [
         "Install Python dependencies and a compatible Ollama model.",
         "Start the terminal assistant and select or create a user identity.",
-        "Chat locally while the application stores that user’s history.",
+        "Chat locally while the application stores that user\u2019s history.",
         "Monthly keyword summaries condense recurring topics.",
         "Relevant summaries and messages are recalled for future conversations."
       ],
@@ -1467,7 +1497,7 @@
       ],
       "architecture": "The coursework prototype centers on Python-based machine-learning logic and an application concept rather than a hardened production service. Its value is the matching experiment and evaluation process.",
       "trust": "Dating data is sensitive, and matching systems can amplify bias or create false confidence. A production version would require clear consent, data minimization, safety controls, fairness testing, and user control over recommendations.",
-      "status": "Completed as a DePaul “Machine Learning for Managers” team project. There is currently no public repository or live deployment, so no Try Now link is shown.",
+      "status": "Completed as a DePaul \u201cMachine Learning for Managers\u201d team project. There is currently no public repository or live deployment, so no Try Now link is shown.",
       "facts": [
         [
           "Availability",
@@ -1662,10 +1692,10 @@
     }
   ],
   "certifications": [
-    "Deep Learning Specialization — DeepLearning.AI (2026)",
-    "Machine Learning Specialization — Stanford Online (2026)",
-    "Career Essentials in Business Analysis — Microsoft & LinkedIn Learning (2024)",
-    "Career Essentials in Data Analysis — Microsoft & LinkedIn Learning (2024)"
+    "Deep Learning Specialization \u2014 DeepLearning.AI (2026)",
+    "Machine Learning Specialization \u2014 Stanford Online (2026)",
+    "Career Essentials in Business Analysis \u2014 Microsoft & LinkedIn Learning (2024)",
+    "Career Essentials in Data Analysis \u2014 Microsoft & LinkedIn Learning (2024)"
   ],
   "contact": {
     "email": "gsudheer56@gmail.com",
@@ -1684,21 +1714,21 @@
     "education": [
       {
         "title": "Master of Science, Business Analytics",
-        "date": "Sep 2024 — Jun 2026",
-        "organization": "DePaul University, Kellstadt Graduate School of Business — Chicago, IL · GPA 3.925",
+        "date": "Sep 2024 \u2014 Jun 2026",
+        "organization": "DePaul University, Kellstadt Graduate School of Business \u2014 Chicago, IL \u00b7 GPA 3.925",
         "bullets": []
       },
       {
         "title": "B.Tech, Chemical Engineering",
-        "date": "Aug 2016 — Oct 2020",
-        "organization": "Rajiv Gandhi University of Knowledge Technologies — Nuzvid, India",
+        "date": "Aug 2016 \u2014 Oct 2020",
+        "organization": "Rajiv Gandhi University of Knowledge Technologies \u2014 Nuzvid, India",
         "bullets": []
       }
     ],
     "experience": [
       {
         "title": "Data Analytics Intern",
-        "date": "Mar — Jun 2024",
+        "date": "Mar \u2014 Jun 2024",
         "organization": "Unified Mentor",
         "bullets": [
           "Analyzed 100K+ Amazon sales transactions in Power BI and R, driving a 10% increase in targeted customer segment sales.",
@@ -1707,15 +1737,15 @@
       },
       {
         "title": "Independent Business Consultant",
-        "date": "Aug 2023 – Feb 2024",
-        "organization": "Volunteer · self-directed",
+        "date": "Aug 2023 \u2013 Feb 2024",
+        "organization": "Volunteer \u00b7 self-directed",
         "bullets": [
           "Advised two local electronics retailers on inventory, sales trends and business performance."
         ]
       },
       {
         "title": "Junior Engineer",
-        "date": "Feb 2021 — Jul 2023",
+        "date": "Feb 2021 \u2014 Jul 2023",
         "organization": "Hetero Labs Limited (Unit-IX)",
         "bullets": [
           "Reduced filtration cycle time from 8 hours to 45 minutes via an Automatic Vertical Filter Press, improving productivity by 7%.",
