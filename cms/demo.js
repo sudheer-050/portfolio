@@ -83,11 +83,14 @@ function runtime(id){
 }
 function polishNote(value){
   let text=String(value).trim().replace(/\s+/g,' ').replace(/\bnew paragraph\b/gi,'\n\n').replace(/\bnew sentence\b/gi,'. ').replace(/\bcomma\b/gi,',').replace(/\bquestion mark\b/gi,'?').replace(/\bfull stop\b/gi,'.');
+  // Local browser illustration of repeated grammatical prefixes; never removes negation or crosses sentences.
+  let previous;
+  do { previous=text; text=text.replace(/\b((?:what|who|where|when|why|how)['\u2019](?:s|re|d)|what|which|can you|could you|i want to|i need to)([ \t]+(?:the|a|an|to|you|we|is|are|was|were))?(?:[ ,]+\1\2)+\b/gi,'$1$2'); } while(text!==previous);
   text=text.replace(/\s+([,.!?])/g,'$1').replace(/([,.!?])(?=[A-Za-z])/g,'$1 ').replace(/\bi\b/g,'I').replace(/\bim\b/gi,"I'm").replace(/\bi m\b/gi,"I'm").replace(/\bdont\b/gi,"don't").replace(/\bcant\b/gi,"can't");
   text=text.replace(/\b(hi|hello|hey)\s+(?=[A-Za-z])/gi,'$1, ');
   text=text.split(/(?<=[.!?])\s+|\n\n/).filter(Boolean).map(sentence=>{
     sentence=sentence.trim().replace(/^[a-z]/,c=>c.toUpperCase());
-    const question=/^(?:(?:hi|hello|hey),?\s+)?(?:how|what|when|where|why|who|can|could|would|should|is|are|did|do|does|will)\b/i.test(sentence);
+    const question=/^(?:(?:hi|hello|hey),?\s+)?(?:how|what|when|where|why|who|can|could|would|should|is|are|did|do(?!\s+not\b)|does|will)\b/i.test(sentence);
     if(question)sentence=sentence.replace(/[.!]$/,'?');
     return /[.!?]$/.test(sentence)?sentence:sentence+(question?'?':'.');
   }).join(' ');
