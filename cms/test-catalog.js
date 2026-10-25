@@ -17,7 +17,7 @@ check('navigation and guides stay on their own site',()=>{
   for(const [site,domain] of [['portfolio','https://sudheerkumargandiboyana.com'],['hai','https://myhai.org']]){
     assert(original.files[site+'/projects/index.html'].includes(`rel="canonical" href="${domain}/projects/"`));
     assert(original.files[site+'/projects/hagent/index.html'].includes(`href="${domain}/projects/">Explore all projects`));
-    assert(original.files[site+'/sitemap.xml'].includes(domain+'/projects/'));
+    assert(original.files[site+(site==='hai'?'/pages-sitemap.xml':'/sitemap.xml')].includes(domain+'/projects/'));
   }
   assert(original.files['portfolio/index.html'].includes('href="#projects">Project'));
   assert(original.files['hai/landing.html'].includes('href="/projects/">Projects'));
@@ -49,7 +49,7 @@ check('portfolio exhibits work and playground provides launch actions',()=>{
   assert(original.files['hai/landing.html'].includes("HAI | Sudheer's Playground"));
   for(const p of seed.projects.filter(p=>p.publication==='published')){
     const showcase=original.files['portfolio/projects/'+p.slug+'/index.html'];
-    assert(showcase.includes(`href="https://myhai.org/projects/${p.slug}/">Try on myhai.org`));
+    assert(showcase.includes(`href="https://${p.slug}.myhai.org/">Try on myhai.org`));
     assert(showcase.includes('This is the professional showcase.'));
     for(const r of p.releases)for(const asset of r.assets)assert(!showcase.includes(`href="${asset.url}"`));
     if(p.tryUrl){
@@ -97,3 +97,37 @@ if(process.platform!=='win32'){
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 }else console.log('Store lifecycle checks require Linux symlink semantics; run in the deployment container.');
 console.log(checks+' checks passed');
+
+check('Notewll canonical pages and sitemap use the current brand',()=>{
+  const p=seed.projects.find(p=>p.id==='dotflow');
+  assert.equal(p.slug,'notewll');
+  for(const [site,domain] of [['hai','https://myhai.org'],['portfolio','https://sudheerkumargandiboyana.com']]){
+    assert(original.files[site+'/projects/notewll/index.html'].includes('rel="canonical" href="'+(site==='hai'?'https://notewll.myhai.org/':domain+'/projects/notewll/')+'"'));
+    assert(original.files[site+'/sitemap.xml'].includes(site==='hai'?'https://notewll.myhai.org/sitemap.xml':domain+'/projects/notewll/'));
+    assert(!original.files[site+'/sitemap.xml'].includes('/projects/dotflow/'));
+  }
+});
+if(process.platform!=='win32'){
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'notewll-rename-'));
+  try{
+    const pub=createPublishing(path.join(root,'data'),path.join(root,'public'),templates);
+    const legacy=clone(seed),p=legacy.projects.find(p=>p.id==='dotflow');p.slug='dotflow';p.aliases.push('notewll');
+    pub.init(legacy);
+    const first=pub.revision();pub.publish(seed,first);
+    assert.equal(pub.current().projects.find(p=>p.id==='dotflow').slug,'notewll');
+    const invalid=clone(seed);invalid.projects.find(p=>p.id==='dotflow').slug='another-name';
+    assert.throws(()=>pub.publish(invalid,pub.revision()),/Keep published slugs stable/);
+    pub.restore(first,pub.revision());
+    assert.equal(pub.current().projects.find(p=>p.id==='dotflow').slug,'dotflow');
+    console.log('PASS: controlled Notewll slug migration and exact rollback');
+  }finally{fs.rmSync(root,{recursive:true,force:true});}
+}
+check('every application has a canonical subdomain and working portal navigation',()=>{
+  for(const p of seed.projects.filter(p=>p.publication==='published')){
+    const page=original.files['hai/projects/'+p.slug+'/index.html'];
+    assert(page.includes('rel="canonical" href="https://'+p.slug+'.myhai.org/"'));
+    assert(page.includes('href="https://myhai.org/"'));
+    assert(!/(href|src)="\/(?!\/)/.test(page));
+    assert(original.files['hai/sitemap.xml'].includes('https://'+p.slug+'.myhai.org/sitemap.xml'));
+  }
+});

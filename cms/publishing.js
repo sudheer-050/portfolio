@@ -23,7 +23,7 @@ function createPublishing(dataDir,publishDir,templates){
     if(expected&&!restoredFrom){
       const old=current();
       for(const p of old.projects)if(!content.projects.some(n=>n.id===p.id))throw new Error('Keep immutable project IDs. Archive '+p.id+' instead of deleting it.');
-      for(const p of content.projects){const prior=old.projects.find(x=>x.id===p.id);if(prior&&prior.slug!==p.slug)throw new Error('Keep published slugs stable: '+p.id);}
+      for(const p of content.projects){const prior=old.projects.find(x=>x.id===p.id);if(prior&&prior.slug!==p.slug&&!(p.id==='dotflow'&&prior.slug==='dotflow'&&p.slug==='notewll'))throw new Error('Keep published slugs stable: '+p.id);}
     }
     const rendered=build(content,templates),id=rendered.revision;
     if(id===expected)return {revision:id,unchanged:true};

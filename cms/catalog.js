@@ -74,9 +74,9 @@ function validate(c) {
   return c;
 }
 
-const guideUrl = (p,domain=H) => domain+'/projects/'+p.slug+'/';
+const guideUrl = (p,domain=H) => domain===H?'https://'+p.slug+'.myhai.org/':domain+'/projects/'+p.slug+'/';
 function actions(p,domain=H) {
-  if(domain===P)return `<a class="button primary" href="${H}/projects/${p.slug}/">Try on myhai.org</a>`+(p.sourceAvailability==='public'&&p.sourceUrl?`<a class="button" href="${esc(p.sourceUrl)}">View source</a>`:'');
+  if(domain===P)return `<a class="button primary" href="${guideUrl(p)}">Try on myhai.org</a>`+(p.sourceAvailability==='public'&&p.sourceUrl?`<a class="button" href="${esc(p.sourceUrl)}">View source</a>`:'');
   return (p.tryUrl?`<a class="button primary" href="${esc(p.tryUrl.startsWith('/')?H+p.tryUrl:p.tryUrl)}">${esc(p.tryLabel||'Open app')} ↗</a>`:'')+
     (p.sourceAvailability==='public'&&p.sourceUrl?`<a class="button" href="${esc(p.sourceUrl)}">View source ↗</a>`:`<span class="availability">${p.sourceAvailability==='private'?'Source is private':'No public source listed'}</span>`);
 }
@@ -108,7 +108,9 @@ function projectPage(p,c,revision,domain,templates) {
   const breadcrumb={'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:domain===P?'Portfolio':'HAI',item:domain+'/'},{'@type':'ListItem',position:2,name:'Projects',item:domain+'/projects/'},{'@type':'ListItem',position:3,name:p.name,item:guideUrl(p,domain)}]};
   const structured=[schema,breadcrumb];
   if(p.id==='dotflow'&&(g.faq||[]).length)structured.push({'@context':'https://schema.org','@type':'FAQPage',mainEntity:g.faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});
-  return themedPage(pageTitle+' | '+(domain===P?c.profile.name:'HAI Playground'),p.summary,guideUrl(p,domain),body,c,revision,templates,p.image||undefined).replace('</head>',`<script type="application/ld+json">${JSON.stringify(structured).replace(/</g,'\\u003c')}</script></head>`);
+  const html=themedPage(pageTitle+' | '+(domain===P?c.profile.name:'HAI Playground'),p.summary,guideUrl(p,domain),body,c,revision,templates,p.image||undefined).replace('</head>',`<script type="application/ld+json">${JSON.stringify(structured).replace(/</g,'\\u003c')}</script></head>`);
+  // Subdomain product pages keep portal navigation and assets on the main site.
+  return domain===H?html.replace(/(href|src)="\/(?!\/)([^"]*)"/g,(_,attr,value)=>attr+'="'+H+'/'+value+'"'):html;
 }
 function themedPage(title,summary,url,body,c,revision,templates,image) {
   const domain=url.startsWith(P)?P:H;
@@ -177,18 +179,18 @@ function hai(c,revision,templates) {
   source=replaceElement(source,'div','hidden','', '');
   source=replaceElement(source,'div','class','contact-list reveal',`<div class="contact-list reveal"><a class="contact-link" href="mailto:${esc(c.contact.email)}"><span>Email</span><strong>${esc(c.contact.email)}</strong></a><a class="contact-link" href="${esc(c.contact.linkedin)}"><span>LinkedIn</span><strong>${esc(c.profile.name)}</strong></a><a class="contact-link" href="${esc(c.contact.github)}"><span>GitHub</span><strong>Source and experiments</strong></a><div class="contact-link location"><span>Location</span><strong>${esc(c.contact.location)}</strong></div><a class="contact-link" href="${P}/admin"><span>Publishing</span><strong>Content studio ↗</strong></a></div>`);
   const ps=published(c);
-  source=replaceElement(source,'div','class','systems-rail',`<div class="systems-rail">${ps.map((p,i)=>`<a class="system-card" href="/projects/${p.slug}/"><span class="system-index">${String(i+1).padStart(2,'0')}</span><div class="system-copy"><span class="system-type">${esc(p.category)}</span><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><span class="system-link">View full information</span></div><div class="system-media">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy">`:''}</div></a>`).join('')}</div>`);
-  source=replaceElement(source,'div','class','project-grid',`<div class="project-grid">${ps.map(p=>`<div class="project-card" data-project="${p.id}">${p.image?`<img class="project-media" src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy">`:''}<h3>${esc(p.name)}</h3><p class="project-desc">${esc(p.summary)}</p><div class="project-tech">${pills(p)}</div><div class="project-actions"><a class="project-btn primary" href="/projects/${p.slug}/">View details</a></div></div>`).join('')}</div>`);
+  source=replaceElement(source,'div','class','systems-rail',`<div class="systems-rail">${ps.map((p,i)=>`<a class="system-card" href="${guideUrl(p)}"><span class="system-index">${String(i+1).padStart(2,'0')}</span><div class="system-copy"><span class="system-type">${esc(p.category)}</span><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><span class="system-link">View full information</span></div><div class="system-media">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy">`:''}</div></a>`).join('')}</div>`);
+  source=replaceElement(source,'div','class','project-grid',`<div class="project-grid">${ps.map(p=>`<div class="project-card" data-project="${p.id}">${p.image?`<img class="project-media" src="${esc(p.image)}" alt="${esc(p.name)} preview" loading="lazy">`:''}<h3>${esc(p.name)}</h3><p class="project-desc">${esc(p.summary)}</p><div class="project-tech">${pills(p)}</div><div class="project-actions"><a class="project-btn primary" href="${guideUrl(p)}">View details</a></div></div>`).join('')}</div>`);
   // Old panel entry points remain usable; their facts come from the same records.
   for(const [panel,id] of [['hai','hai'],['h','h'],['app-three','analyst'],['app-four','jobs']]){
     const p=ps.find(p=>p.id===id);
-    source=replaceElement(source,'div','id','panel-'+panel,`<div class="app-panel" id="panel-${panel}"><button type="button" class="panel-back-btn" onclick="showPanel('home')">← All apps</button>${p?`<h1>${esc(p.name)}</h1><p class="subtitle">${esc(p.summary)}</p><p>${esc(p.status)}</p><a class="btn-primary" href="/projects/${p.slug}/">Read full guide →</a>`:'<h1>Project archived</h1><a href="/projects/">Browse current projects</a>'}</div>`);
+    source=replaceElement(source,'div','id','panel-'+panel,`<div class="app-panel" id="panel-${panel}"><button type="button" class="panel-back-btn" onclick="showPanel('home')">← All apps</button>${p?`<h1>${esc(p.name)}</h1><p class="subtitle">${esc(p.summary)}</p><p>${esc(p.status)}</p><a class="btn-primary" href="${guideUrl(p)}">Read full guide →</a>`:'<h1>Project archived</h1><a href="/projects/">Browse current projects</a>'}</div>`);
   }
   // These five older summary cards duplicated independent project descriptions.
   source=source.replace(/<div class="app-summary-card" onclick="window\.location\.href='\/project\.html\?project=([^']+)'">[\s\S]*?<\/div>/g,(whole,id)=>{
-    const p=ps.find(p=>p.id===id);return p?`<a class="app-summary-card" href="/projects/${p.slug}/"><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p></a>`:'';
+    const p=ps.find(p=>p.id===id);return p?`<a class="app-summary-card" href="${guideUrl(p)}"><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p></a>`:'';
   });
-  source=source.replace(/\/project\.html\?project=([a-z0-9-]+)/g,(all,id)=>'/projects/'+(ps.find(p=>p.id===id)?.slug||id)+'/');
+  source=source.replace(/\/project\.html\?project=([a-z0-9-]+)/g,(all,id)=>{const p=ps.find(p=>p.id===id);return p?guideUrl(p):all;});
   source=source.replace('</head>',`<meta name="content-revision" content="${revision}"><style>.app-summary-card{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible{outline:3px solid #9ef4ff;outline-offset:5px}.system-copy p{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}.skip-link{position:absolute;left:-10000px}.skip-link:focus{left:20px;top:20px;z-index:9999;background:#111;padding:14px}</style></head>`);
   source=source.replace('<body>','<body><a class="skip-link" href="#apps">Skip to apps</a>');
   source=source.replace("const mobileNav = document.getElementById('mobileNav');",`const mobileNav = document.getElementById('mobileNav');
@@ -229,6 +231,9 @@ function build(c,templates) {
     result[folder+'/sitemap.xml']='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls.map(u=>{const project=published(c).find(p=>u==='/projects/'+p.slug+'/');const newest=(project?.releases||[]).slice().sort((a,b)=>b.date.localeCompare(a.date))[0];return `<url><loc>${domain}${u}</loc>${newest?'<lastmod>'+newest.date.slice(0,10)+'</lastmod>':''}</url>`}).join('')+'</urlset>';
     result[folder+'/robots.txt']=`User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /login\nDisallow: /api/\nSitemap: ${domain}/sitemap.xml\n`;
   }
+  // Each application owns its root URL and its own sitemap.
+  result['hai/pages-sitemap.xml']='<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>'+H+'/</loc></url><url><loc>'+H+'/projects/</loc></url></urlset>';
+  result['hai/sitemap.xml']='<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+[H+'/pages-sitemap.xml',...published(c).map(p=>guideUrl(p)+'sitemap.xml')].map(url=>'<sitemap><loc>'+url+'</loc></sitemap>').join('')+'</sitemapindex>';
   return {revision,files:result};
 }
 module.exports={validate,build,published,stableReleases,previewReleases,replaceElement};

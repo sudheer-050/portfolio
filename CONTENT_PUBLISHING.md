@@ -65,3 +65,21 @@ Shared information, independent designs (October 22, 2026): each project has one
 
 
 Site roles (October 22, 2026): sudheerkumargandiboyana.com is the professional exhibition, with experience, resume and case studies. All project try and download actions there lead to the corresponding project on myhai.org. myhai.org is the playground for live apps, downloads, websites and experiments. Source links remain available as engineering evidence. Both presentations use the same central project records.
+
+Notewll rebrand (October 25, 2026): the project retains immutable ID `dotflow`,
+but its public slug is `notewll`. Both domains permanently redirect the old
+`/projects/dotflow/` prefix, preserving query strings and subpaths. New links,
+canonical metadata and sitemaps use `/projects/notewll/`. The publisher permits
+only this explicit legacy-to-current slug migration; other slug changes remain
+blocked. Published history supports rollback without replacing unrelated content.
+
+Application subdomains (October 25, 2026): every published project now has a
+product page at https://<slug>.myhai.org/. Notewll uses notewll.myhai.org.
+The personal portfolio retains its separate case-study URLs. HAI's old project
+URLs permanently redirect to the subdomain; launch/download buttons retain the
+existing application destinations. Main-site navigation/assets remain on
+myhai.org. Each app has robots.txt and sitemap.xml, and the main sitemap indexes
+all app sitemaps. Only published catalog slugs are accepted as application hosts;
+unknown hosts and application-host API paths return 404. Explicit www/staging
+and existing exact DNS records retain priority over the application wildcard.
+The previous canonical-path description applies to portfolio case studies only.

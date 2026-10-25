@@ -163,7 +163,7 @@
       "tryLabel": "Download Windows preview - 0.10.0",
       "sourceUrl": "https://github.com/sudheer-050/notewll",
       "id": "dotflow",
-      "slug": "dotflow",
+      "slug": "notewll",
       "name": "Notewll",
       "badge": "NEW - 0.10.0 Windows preview",
       "description": "Hold your chosen shortcut and speak. Choose Raw text to keep recognized words unchanged or Modified text to remove fillers and repeated starts with basic formatting. Record voice notes or meetings and keep the original conversation on your Windows PC.",
@@ -171,9 +171,7 @@
       "featuredOrder": 0,
       "resume": false,
       "publication": "published",
-      "aliases": [
-        "notewll"
-      ],
+      "aliases": [],
       "guide": {
         "uses": [
           [
