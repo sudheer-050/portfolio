@@ -1,14 +1,16 @@
 {
   "hero": {
-    "badge": "Open to ML & AI engineering roles",
-    "sub": "I'm Sudheer, a Chicago-based engineer and DePaul MSBA graduate. I build machine learning pipelines, AI tools and data products \u2014 from the first experiment to a working deployment."
+    "badge": "Open to AI/ML Engineer, Data Analyst & Business Analyst roles",
+    "sub": "I'm Sudheer Kumar Gandiboyana, a Chicago-based AI/ML engineer and data/business analyst. I build usable AI systems, turn data into business decisions, and take projects from model and database to a deployed product."
   },
   "about": {
-    "intro": "I combine business analytics with hands-on engineering to turn complex data into working products.",
+    "intro": "I build AI that people can use and analytics that answer real business questions.",
     "paragraphs": [
-      "I\u2019m a DePaul University MS Business Analytics graduate with a background in process engineering and data analytics. My work spans classical machine learning, AI agents and the infrastructure needed to put them into use.",
-      "I'm looking for a team where I can contribute to ML and AI engineering, data science or analytics engineering \u2014 and keep learning through work that ships.",
-      "My approach is practical: start with the problem, build the simplest useful solution, and make the implementation easy to inspect."
+      "I'm a DePaul University MS Business Analytics graduate (June 2026, GPA 3.925), with a foundation in process engineering and data analytics. I combine machine learning, software engineering and business context to carry an idea from analysis to a working system.",
+      "My independent projects include Notewll for local voice typing and meeting notes, HGPT for AI conversations with durable project context, Hagent for multi-agent workflows, and BizPack for practical Python data analysis. Their product pages, source links and technical writeups make the work available for inspection.",
+      "I bring Python and SQL for analysis; NLP and machine learning for modeling; and FastAPI, Node.js, PostgreSQL and Docker for delivery. My process-engineering experience helps me connect technical choices to operational constraints, useful workflows and business decisions.",
+      "What I bring to a team is the ability to connect the business question, the data, the model and the software around it. I build, test, deploy and improve the result instead of leaving the work at a notebook or a presentation.",
+      "I'm open to full-time AI/ML engineering, Data Analyst and Business Analyst roles in Chicago or remote. Explore the projects below, review the implementation, and get in touch to discuss where I can contribute."
     ]
   },
   "projects": [
@@ -1871,8 +1873,8 @@
   "theme": "professional",
   "profile": {
     "name": "Sudheer Kumar Gandiboyana",
-    "headline": "AI/ML Engineer and Analyst",
-    "summary": "DePaul University MS Business Analytics graduate (June 2026, GPA 3.925), building machine learning pipelines, AI tools and deployed data products. Open to ML, AI, data science and analytics engineering roles.",
+    "headline": "AI/ML Engineer & Data/Business Analyst",
+    "summary": "Chicago-based AI/ML engineer and data/business analyst with a DePaul MS in Business Analytics (GPA 3.925). Builds deployed AI products, local speech tools, agent workflows and analytics software with Python, SQL and Docker.",
     "graduation": "June 2026",
     "education": [
       {

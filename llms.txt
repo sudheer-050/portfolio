@@ -1,6 +1,6 @@
 # Sudheer Kumar Gandiboyana
 
-> Professional portfolio of Sudheer Kumar Gandiboyana, a Chicago-based machine learning, artificial intelligence, data science, and analytics engineer and DePaul University MSBA graduate who is open to full-time roles.
+> Chicago-based AI/ML engineer and data/business analyst with a DePaul MS in Business Analytics (GPA 3.925). Builds deployed AI products, local speech tools, agent workflows and analytics software with Python, SQL and Docker.
 
 ## Primary pages
 
@@ -16,3 +16,11 @@
 ## Focus areas
 
 Machine learning engineering, AI engineering, natural language processing, data science, analytics engineering, Python, SQL, FastAPI, Docker, PostgreSQL, AI agents, and production data products.
+
+## Inspect the work
+
+- [Application directory](https://myhai.org/projects/): Product pages, demos, source availability, requirements and download or launch links.
+- [Notewll](https://notewll.myhai.org/): Local Windows voice typing and meeting notes.
+- [HGPT](https://hgpt.myhai.org/): AI workspace with durable project context.
+- [Hagent](https://hagent.myhai.org/): Multi-agent workflows and orchestration.
+- [BizPack](https://bizpack.myhai.org/): Python tools for business and data analysis.

@@ -148,7 +148,7 @@ function profileMetadata(source,c,kind){
   source=source.replace(/<title>[\s\S]*?<\/title>/,`<title>${esc(title)}</title>`);
   source=source.replace(/(<meta\b[^>]*(?:name|property)="(?:description|og:description|twitter:description)"[^>]*content=")[^"]*("[^>]*>)/g,(_,a,b)=>a+esc(c.profile.summary)+b);
   source=source.replace(/(<meta\b[^>]*(?:name|property)="(?:og:title|twitter:title)"[^>]*content=")[^"]*("[^>]*>)/g,(_,a,b)=>a+esc(title)+b);
-  const person={'@context':'https://schema.org','@type':'Person',name:c.profile.name,jobTitle:c.profile.headline,email:'mailto:'+c.contact.email,url:P+'/',sameAs:[c.contact.github,c.contact.linkedin],image:c.profileImage};
+  const person={'@context':'https://schema.org','@type':'Person','@id':P+'/#person',name:c.profile.name,jobTitle:c.profile.headline,description:c.profile.summary,knowsAbout:c.profile.skills.flatMap(s=>s.items.split(',').map(x=>x.trim())),alumniOf:c.profile.education.map(e=>({'@type':'EducationalOrganization',name:e.organization.split(' — ')[0]})),email:'mailto:'+c.contact.email,url:P+'/',sameAs:[c.contact.github,c.contact.linkedin],image:c.profileImage};
   return source.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/,`<script type="application/ld+json">${JSON.stringify(person).replace(/</g,'\\u003c')}</script>`);
 }
 function portfolio(c,revision,templates) {
