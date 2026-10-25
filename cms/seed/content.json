@@ -13,9 +13,9 @@
   },
   "projects": [
     {
-      "category": "Private desktop voice workspace",
-      "image": "https://myhai.org/project-images/notewll-banner.svg",
-      "summary": "Local Windows voice typing that recognizes speech while you talk, with optional background grammar, personal notes and meeting recordings.",
+      "category": "Local dictation and meeting notes for Windows",
+      "image": "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-launch-card.jpg",
+      "summary": "Raw or modified speech-to-text, voice notes and meeting transcripts for Windows. Keep your words and work on your own computer.",
       "tech": [
         "C#",
         "WinForms",
@@ -23,79 +23,152 @@
         "Vosk",
         "WASAPI"
       ],
-      "why": "Typing a message, capturing an idea and remembering a meeting should not require three disconnected tools. Notewll combines shortcut-driven writing with local notes and source-aware meeting transcripts, keeping the original conversation separate from editable personal notes.",
+      "why": "Capture a thought, write into a focused text field, or return to a recorded conversation. Keep raw recognized words alongside basic cleanup, with local notes and meeting transcripts in the same workspace.",
       "features": [
         [
-          "Recognize while you speak",
-          "Continuous local recognition and optional background grammar reduce work after you release the shortcut. Silence ends without warning popups. Slow grammar falls back to fast formatting and filler cleanup."
+          "Raw text",
+          "Keep recognized text unchanged, including fillers and repetitions. Dictionary replacements and writing-style formatting are bypassed."
         ],
         [
-          "Three audio choices",
-          "Capture your microphone, computer output or both. Pause/resume meetings and keep separate source tracks for playback."
+          "Modified text",
+          "Remove fillers and repeated starts with basic capitalization, punctuation and your selected writing preferences. No sentence-editing model is needed."
         ],
         [
-          "A quiet edge toolbar",
-          "An icon-only controller opens on hover, snaps to a screen edge and follows its orientation. Notes can start and stop without opening the main window."
+          "Find the moment, not just the file",
+          "Find & act connects optional local semantic retrieval to supporting transcript passages, source tracks and timestamps. It is evidence retrieval, not an open-ended chatbot. Model inference/resource acceptance for this preview remains pending."
         ],
         [
-          "Local notebook",
-          "Search transcripts, names and tags, edit inferred details, and label speaker blocks without rewriting the original words."
+          "Highlights with a source",
+          "Lightweight extractive ranking selects original timestamped statements. Double-click a passage to open its source."
         ],
         [
-          "Read-only conversation, PDF sharing",
-          "Review timestamps, play saved source audio and preview a PDF snapshot. Exported copies are not tamper-proof and spoken names are not redacted."
+          "Action items you review",
+          "Suggested tasks show their original statement, editable owner/date fields and a confirmation checkbox. They become tasks after review."
         ],
         [
-          "Practical data controls",
-          "Back up active notes, restore recently deleted records, choose retention, and inspect local storage."
+          "Bookmark it while it happens",
+          "Mark Important, Question or Follow up during recording with Ctrl+Alt+1/2/3, then return to the moment after recording. Physical global-shortcut acceptance is still separate."
         ],
         [
-          "Background local grammar",
-          "Optional enhanced setup runs grammar on this computer while you speak. The standard installer provides streaming recognition and basic cleanup without Python or a cloud account."
+          "Projects, people and tags",
+          "Group notes, dictation history and meetings with project labels and tags. Search with project:, person: and tag: filters."
+        ],
+        [
+          "Correction learning you control",
+          "Review saved spellings/snippets, see where each rule applies and remove a rule to undo future use. Original conversation words are preserved."
+        ],
+        [
+          "Hands-free development preview",
+          "Enroll your voice, select allowed apps and start explicitly. The app pauses on lock or microphone changes; Escape stops listening. Matching can make mistakes and physical desktop acceptance remains pending."
+        ],
+        [
+          "Preview, redact, share",
+          "Choose exactly what the PDF contains, exclude personal annotations and redact selected preview text. The original recording is unchanged; audio is neither included nor redacted."
+        ],
+        [
+          "A recovery plan for your notes",
+          "Opt into daily local snapshots while the app runs. Encrypted snapshots authenticate their contents and restore previews skip existing IDs. Encryption is tied to the Windows account/PC; ZIP supports migration."
+        ],
+        [
+          "Optional features, visible footprint",
+          "Install/remove managed optional runtimes without removing notes. Downloaded packages, installed disk space and measured worker RAM are shown separately when available; unknown measurements stay labeled unknown."
+        ],
+        [
+          "One file. Ready for offline English speech.",
+          "The installer includes the Windows app, native speech runtime, English model and uninstaller. Standard installation needs no internet connection, Python, Docker, terminal commands or cloud account."
+        ],
+        [
+          "Speak into your workflow",
+          "Hold your chosen shortcut to dictate into the focused text field. Local recognition runs on your computer; personal notes and meeting recordings live in the same workspace."
+        ],
+        [
+          "Your voice. Your orbit.",
+          "Drag the floating ball, release it and watch gravity, collisions and rolling friction bring it to rest. Click it to reveal an animated half-circle of readable controls."
+        ],
+        [
+          "Make the ball yours",
+          "Choose 19 appearances, from sports balls and solar-system worlds to plain Color and Gradient. Pick any color from a live color range and see both ball and expanded tray before applying."
+        ],
+        [
+          "Choose your gravity",
+          "Nine independent gravity environments change falling acceleration and airtime. Selecting an environment plays a bounce sample; replay it whenever you want."
+        ],
+        [
+          "Pick your scale",
+          "Separate percentage sliders control closed-ball and expanded-menu sizes. The menu can grow from 100% to 200%, scaling its icon tiles and icons together."
+        ],
+        [
+          "Put your own image in orbit",
+          "Browse local folders for a PNG, JPEG, BMP or GIF still image. Notewll keeps a local copy, places it inside the ball and rotates it with the surface."
+        ],
+        [
+          "Notes, meetings and readable sharing",
+          "Record microphone audio, computer output or both; review source recordings and timestamps, add editable personal notes, and share a PDF snapshot."
+        ],
+        [
+          "Clear controls, quiet desktop",
+          "Black icons sit on white round tiles at 50% opacity. The click-to-open menu collapses when you leave it. Reduced motion, hiding and snoozing remain available."
         ]
       ],
       "workflow": [
-        "Download Notewll 0.8.0 from GitHub Releases, or build the Windows installer from source.",
-        "Run setup online once to obtain the pinned runtime and small English model, then open Notewll.",
-        "Use Practice to test your microphone and recognition, then confirm typing into another app.",
-        "Hold the dictation shortcut and speak; recognition runs while you talk. Release to finish, or use the separate personal-note/meeting controls.",
-        "Review the original conversation, add personal notes, play audio and export a PDF snapshot."
+        "Download the 0.10.0 Windows preview installer and accompanying SHA256 checksums. Finish active recordings before updating.",
+        "Install and open Notewll. Standard English recognition is included; check your microphone in Practice and test the shortcut in your editor.",
+        "Choose Preferences > Writing > Text mode, select Raw text or Modified text and save your preferences.",
+        "Write by voice, capture a thought, or record a meeting. Mark important moments and keep original statements separate from your personal annotations.",
+        "Use Find & act, review suggested tasks, filter by project/tag/person and return to source audio. Semantic search needs its optional setup.",
+        "Preview/redact a PDF, schedule local snapshots, and customize the floating ball, gravity, colors, sizes and local image."
       ],
-      "architecture": "A native C# WinForms app captures Windows microphone and WASAPI audio. Shortcut dictation feeds the local English Vosk recognizer while you speak, then finalizes the stream on release. Optional Ollama grammar works on partial sentences in the background, with a 600 ms release wait budget. Whisper remains available for enhanced notes, audio-file checks and recovery. The base installer needs no Python or cloud account; enhanced grammar requires the documented local setup.",
-      "trust": "Speech runs locally after setup. Dictation audio stays in memory; recorded notes deliberately save text and audio locally. Computer-output capture includes all applications using the selected device: record only with appropriate consent. Conversation words are read-only inside the app, while metadata and personal notes remain editable. PDF copies can be changed externally and are not signed evidence.",
-      "status": "Version 0.8.0 is published as an unsigned Windows x64 English preview. Three six-second local audio replays produced formatted text 148-509 ms after simulated release; these are not physical shortcut-to-typing measurements or a guarantee for every PC. Skipping a second Whisper pass favors speed over recognition accuracy. Slow grammar uses basic cleanup. Microphone/call capture, cross-app typing and accuracy still need desktop acceptance.",
+      "architecture": "Native C# WinForms on .NET Framework 4.8 captures Windows microphone and WASAPI output audio. Standard offline English speech uses bundled Vosk. Raw text bypasses cleanup; Modified text applies deterministic cleanup and writing preferences. Accurate recognition, semantic search and voice matching have separate optional local setup paths.",
+      "trust": "The Windows app processes speech and notes locally. Standard installation and recognition work offline. Meeting audio and original transcripts stay separate from editable personal notes. Optional recognition, semantic search and voice matching have their own setup and acceptance limits. Exported PDFs can be edited externally. Review recognized words before sharing.",
+      "status": "0.10.0 unsigned Windows x64 English preview. 164 automated checks passed, 2 skipped and 2 physical microphone checks excluded. Eight warmed text-only local-model requests measured 144-511 ms in a small diagnostic batch; this excludes microphone capture, ASR and desktop typing. Physical hands-free/recording/keyboard acceptance, human-reference speech accuracy and semantic-model inference/resource validation remain separate. No perfect-correction, universal-latency or ranking/traffic guarantee is claimed.",
       "facts": [
         [
           "Version",
-          "0.8.0 Windows preview"
+          "0.10.0 unsigned Windows x64 preview"
         ],
         [
-          "Availability",
-          "Windows source / preview"
+          "Headline",
+          "Speak naturally. Keep the words that matter."
         ],
         [
-          "Speech",
-          "English, offline after setup"
+          "Core",
+          "Offline English speech to text, voice notes and meeting transcripts"
         ],
         [
-          "Account",
-          "Not required"
+          "Basic cleanup",
+          "Repeated prefixes and contracted question words; no language model required"
+        ],
+        [
+          "Review",
+          "Source-linked passages, highlights, bookmarks and confirmation-based action items"
+        ],
+        [
+          "Backup",
+          "Opt-in encrypted local snapshots and restore previews; ZIP for migration"
+        ],
+        [
+          "Personalization",
+          "Project/tag filters, confirmed corrections and the customizable physics ball"
         ],
         [
           "Verification",
-          "91 checks passed; four live checks excluded"
+          "164 automated checks passed; physical desktop acceptance remains separate"
+        ],
+        [
+          "Text modes",
+          "Raw text and Modified text"
         ]
       ],
-      "tryUrl": "https://github.com/sudheer-050/notewll/releases/tag/v0.8.0",
-      "tryLabel": "Download Windows preview",
+      "tryUrl": "https://github.com/sudheer-050/notewll/releases/download/v0.10.0/Notewll-Setup-0.10.0.exe",
+      "tryLabel": "Download Windows preview - 0.10.0",
       "sourceUrl": "https://github.com/sudheer-050/notewll",
       "id": "dotflow",
       "slug": "dotflow",
       "name": "Notewll",
-      "badge": "Windows Preview 0.8.0",
-      "description": "Hold your chosen shortcut and speak. Notewll recognizes locally while you talk, then finishes the live transcript on release. Optional grammar correction runs in the background; silence ends quietly. Record voice notes or meetings and keep your notes locally.",
+      "badge": "NEW - 0.10.0 Windows preview",
+      "description": "Hold your chosen shortcut and speak. Choose Raw text to keep recognized words unchanged or Modified text to remove fillers and repeated starts with basic formatting. Record voice notes or meetings and keep the original conversation on your Windows PC.",
       "featured": true,
-      "featuredOrder": 3,
+      "featuredOrder": 0,
       "resume": false,
       "publication": "published",
       "aliases": [
@@ -104,51 +177,143 @@
       "guide": {
         "uses": [
           [
-            "Write across applications",
-            "Use the shortcut to speak into the active text field in a note, a browser, an editor or a terminal."
+            "Speech to text for Windows",
+            "Dictate a draft in a focused text field, let supported repeated starts clean up, then review before sending."
           ],
           [
-            "Capture a meeting",
-            "Choose microphone, computer output, or both, then review source audio and timestamped text."
+            "A local note-taking workspace",
+            "Combine personal voice notes and meeting transcripts with original statements, audio and your own annotations."
           ],
           [
-            "Keep a personal notebook",
-            "Add editable notes alongside the original conversation and export a PDF snapshot."
+            "From conversation to follow-through",
+            "Find supporting passages, jump to timestamps, confirm suggested tasks and keep local recovery snapshots."
+          ],
+          [
+            "Your voice, your orbit",
+            "Keep a playful floating ball with physics, skins, gravity choices, custom colors and local images."
           ]
         ],
         "requirements": [
-          "Windows x64 and a microphone for dictation.",
-          "Online first setup for the pinned runtime and English Vosk model.",
-          "Appropriate recording permission when capturing other people or computer audio.",
-          "Optional contextual grammar requires the enhanced local Python/Ollama setup and local models; the standard installer includes basic cleanup."
+          "Windows 10/11 x64, .NET Framework 4.8 and permission for the chosen audio devices.",
+          "Standard English recognition is included and needs no account, Python, Docker or cloud API key.",
+          "Semantic retrieval and voice matching need their optional local runtimes; their preview acceptance limits are documented.",
+          "Permission from appropriate participants when recording meetings or computer audio."
         ],
-        "start": "Download the unsigned Notewll 0.8.0 Windows preview installer from GitHub Releases. Initial setup downloads the local speech files. Open Practice and test your microphone before dictating into another app. Existing notes and shortcut preferences are preserved. Enhanced background grammar is optional and needs the additional local setup described in the repository.",
+        "start": "Download Notewll-Setup-0.10.0.exe, finish active recordings, then open the installer. Standard English speech is bundled and installation preserves notes/preferences. Open Preferences > Writing > Text mode and choose Raw text or Modified text. Check your microphone and test dictation in a focused editor. Optional accurate speech, semantic search and voice matching have separate setup paths. This is an unsigned Windows preview.",
         "faq": [
           [
-            "Does speech leave my computer?",
-            "Recognition runs locally after setup. Dictation audio remains in memory; deliberately recorded notes save text and source audio locally."
+            "What is the difference between Raw text and Modified text?",
+            "Raw text keeps recognized words unchanged, including fillers and repetitions. Modified text removes fillers and repeated starts with basic formatting. Both modes run locally without a sentence-editing model."
           ],
           [
-            "Which languages and platforms are supported?",
-            "The current source preview targets Windows x64 and English speech. Check the release notes for the exact version you download."
+            "Does it work offline?",
+            "The included standard English speech engine and installation work offline. Optional feature setup needs downloads; local inference can run on installed model files. The browser demo is separate and may use online browser speech services."
           ],
           [
-            "Is an exported PDF signed evidence?",
-            "No. The original conversation is read-only inside the app, but exported PDFs can be edited outside it and are not cryptographically signed."
+            "Can I search meetings and jump to source audio?",
+            "Find & act implements passage retrieval and timestamp/source playback. Semantic search needs optional installation and its model-inference/resource acceptance remains pending in this preview."
           ],
           [
-            "Does every sentence finish in under one second?",
-            "No universal guarantee. Three six-second local audio replays finished in 148-509 ms after simulated release. The app recognizes while you speak and caps the additional grammar wait at 600 ms, falling back to basic cleanup when needed. Actual hardware, desktop typing and recognition accuracy still need testing."
+            "Are action items created automatically?",
+            "Candidate tasks remain suggestions until you review owner/date/text and confirm them. They link to supporting statements."
+          ],
+          [
+            "Are my private annotations included in exports?",
+            "You choose Conversation only, Personal notes only or Full record, preview the text, and redact selections before saving a PDF. Audio is not included or redacted."
+          ],
+          [
+            "Is hands-free safe to leave running everywhere?",
+            "Choose an explicit allowed-app list and start it manually. Voice matching is experimental and can make mistakes. Escape pauses it, and lock/device changes pause listening. Desktop acceptance remains pending."
+          ],
+          [
+            "What happens to notes when I update?",
+            "The installer preserves local notes, recordings and preferences. Encrypted snapshots require the same Windows account/PC; keep ZIP backups for migration."
+          ],
+          [
+            "Is the installer signed?",
+            "This is an unsigned Windows preview. Versioned installer files and SHA256 checksums are published together on GitHub Releases."
+          ]
+        ],
+        "gallery": [
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-workspace.png",
+            "Notewll 0.10.0 workspace - actual Windows UI with demonstration data"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-text-modes.png",
+            "Writing preferences with Raw text and Modified text"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-find-and-act.png",
+            "Find & act passages, highlights, tasks and bookmarks - demonstration data"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-meeting-notes.png",
+            "Timestamped meeting review and personal notes - demonstration data"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-private-sharing.png",
+            "PDF scope preview - demonstration data"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-correction-learning.png",
+            "Reviewable words and snippets - demonstration data"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-floating-earth.png",
+            "Customizable Earth floating-ball preview"
+          ],
+          [
+            "https://sudheerkumargandiboyana.com/uploads/notewll-0.10.0-floating-moon.png",
+            "Customizable Moon floating-ball preview"
           ]
         ]
       },
       "sourceAvailability": "public",
       "releases": [
         {
+          "version": "v0.10.0",
+          "preview": true,
+          "date": "2026-10-24T22:11:25.864333Z",
+          "notes": "# Notewll 0.10.0 \u2014 Speak naturally. Keep the words that matter.\n\nLocal dictation, voice notes and meeting transcripts for Windows.\n\n## The headline: two text modes\n\nChoose Raw text to keep recognized words unchanged, or Modified text to remove fillers and repeated starts with basic formatting. Original text remains available for review.\n\n## Everything new in this preview\n\n- Raw text and Modified text are the only text modes. Raw text bypasses cleanup and writing rules; Modified text applies basic cleanup.\n\n- General repeated-prefix and abandoned-start cleanup, straight/curly apostrophe matching and two text modes.\n- Find & act across conversations, optional local semantic retrieval with source playback, extractive highlights and reviewable action items.\n- Timestamped live bookmarks: Ctrl+Alt+1/2/3 for Important, Question and Follow up.\n- Projects, tags and person filters; clear correction-rule scopes and undo through rule removal.\n- Experimental enrolled-voice hands-free mode with an app allowlist, visible state, lock/device-change pause and Escape to stop.\n- Exact-text PDF preview redaction. Personal notes can be excluded; source audio is not redacted or included.\n- Opt-in encrypted daily snapshots, authentication/tamper checks, restore previews and existing-ID protection.\n- Managed optional-feature storage information and install/remove actions. Unknown download/RAM measurements stay labeled unknown.\n- Current screenshots and an illustrative cleanup animation; the existing customizable physics ball remains.\n\n## Downloads\n\n- **Notewll-Setup-0.10.0.exe**: full Windows x64 installer with standard offline English speech included. Run it to install or update, preserving notes/preferences.\n- **Notewll-Setup.exe**: the same installer under a convenient filename.\n- **Notewll-Small-Update.zip**: compact update files and instructions for an existing installation. Not a full installer.\n- **SHA256SUMS-0.10.0.txt**: checksums for those assets.\n\n\n## Evidence and preview limits\n\nThe text-mode update passed 164 automated checks, with 2 skipped checks and 2 excluded live microphone checks. Original text, saved settings and installer packaging were checked. Physical microphone capture and typing into target applications still require desktop acceptance. This is an unsigned Windows preview.\n\n[Product, demo and screenshots](https://myhai.org/projects/dotflow/) \u00b7 [User guide](https://github.com/sudheer-050/notewll/blob/main/USER_GUIDE.md) \u00b7 [Source](https://github.com/sudheer-050/notewll)\n\n",
+          "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.10.0",
+          "assets": [
+            {
+              "name": "Notewll-Setup-0.10.0.exe",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.10.0/Notewll-Setup-0.10.0.exe"
+            },
+            {
+              "name": "Notewll-Small-Update.zip",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.10.0/Notewll-Small-Update.zip"
+            },
+            {
+              "name": "SHA256SUMS-0.10.0.txt",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.10.0/SHA256SUMS-0.10.0.txt"
+            }
+          ]
+        },
+        {
+          "version": "v0.9.0",
+          "preview": true,
+          "date": "2026-10-24T03:04:52Z",
+          "notes": "Your voice. Your orbit. One-file offline English setup, customizable physics ball, local images, live appearance and gravity previews.",
+          "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.9.0",
+          "assets": [
+            {
+              "name": "Notewll-Setup-0.9.0.exe",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.9.0/Notewll-Setup-0.9.0.exe"
+            },
+            {
+              "name": "SHA256SUMS-0.9.0.txt",
+              "url": "https://github.com/sudheer-050/notewll/releases/download/v0.9.0/SHA256SUMS-0.9.0.txt"
+            }
+          ]
+        },
+        {
           "version": "v0.8.0",
           "preview": true,
           "date": "2026-10-23T06:45:25Z",
-          "notes": "# Notewll 0.8.0 - faster local dictation\r\n\r\nWindows x64, English speech, unsigned preview. Recognition and grammar stay on your computer.\r\n\r\n- Shortcut dictation now recognizes speech every 250 ms while you speak, including when live insertion is disabled or held modifier keys delay typing.\r\n- Optional enhanced grammar warms at startup and corrects partial sentences in the background. Matching corrections and unchanged whole-word prefixes are reused as speech grows.\r\n- Release finalizes the live recognizer instead of running a second full Whisper transcription. Grammar has a 600 ms wait budget; slow or unavailable grammar falls back to basic local formatting and filler removal. Late corrections never rewrite a completed dictation.\r\n- Silence, quick shortcut taps and empty recognition results return quietly to idle without warning popups, inserted text or clipboard changes.\r\n- Enhanced setup includes local contextual grammar, saved vocabulary hints for Whisper-based note/file/recovery paths, and meeting voice grouping. The standard installer does not install Python/Ollama or grammar models; enhanced grammar requires the optional setup documented in SPEECH_QUALITY_UPDATE.md.\r\n- Playground preview no longer clears a computed result when an empty optional result is supplied.\r\n- Existing notes, recordings, shortcuts and preferences are retained. Installer, application metadata and About now report 0.8.0.\r\n\r\nMeasured latency: three six-second local voice recordings, replayed in real time, produced formatted text 509, 416 and 148 ms after simulated release. These are three warm replay measurements, not physical microphone-to-keyboard timings, p95 estimates, accuracy scores or a guarantee for every PC. Skipping the second Whisper pass can reduce recognition accuracy; fallback cleanup is not full model grammar editing.\r\n\r\nVerification: 91 application, installer, speech-worker and regression checks passed; four live microphone/keyboard checks were excluded. Direct empty-result/cancellation checks passed too. The full installer embeds the exact verified 0.8.0 application. A cleanup-preview failure found during packaging was fixed and both preview checks now pass. Real microphone capture returns MMSYSERR 1 in this managed session, and keyboard injection is unavailable. Physical shortcut timing, cross-app insertion and recognition accuracy still need desktop acceptance. The installer is unsigned and the certificate-verified automatic updater remains unconfigured; install this preview manually from GitHub Releases.\r\n\r\nSee verification/STREAMING_DICTATION.md for the measured scope and remaining checks.\r\n",
+          "notes": "# Notewll 0.8.0 - faster local dictation\n\n\n- Shortcut dictation now recognizes speech every 250 ms while you speak, including when live insertion is disabled or held modifier keys delay typing.\n- Silence, quick shortcut taps and empty recognition results return quietly to idle without warning popups, inserted text or clipboard changes.\n- Playground preview no longer clears a computed result when an empty optional result is supplied.\n- Existing notes, recordings, shortcuts and preferences are retained. Installer, application metadata and About now report 0.8.0.\n\n\nVerification: 91 application, installer, speech-worker and regression checks passed; four live microphone/keyboard checks were excluded. Direct empty-result/cancellation checks passed too. The full installer embeds the exact verified 0.8.0 application. A cleanup-preview failure found during packaging was fixed and both preview checks now pass. Real microphone capture returns MMSYSERR 1 in this managed session, and keyboard injection is unavailable. Physical shortcut timing, cross-app insertion and recognition accuracy still need desktop acceptance. The installer is unsigned and the certificate-verified automatic updater remains unconfigured; install this preview manually from GitHub Releases.\n\nSee verification/STREAMING_DICTATION.md for the measured scope and remaining checks.",
           "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.8.0",
           "assets": [
             {
@@ -165,7 +330,7 @@
           "version": "v0.7.0",
           "preview": true,
           "date": "2026-10-22T20:17:34Z",
-          "notes": "# Notewll 0.7.0\n\nWindows x64, English-only, offline speech after initial setup download.\n\n- PDF-only conversation export with readable scope previews and explicit participant-label wording. Original words remain read-only; external PDF copies are not tamper-proof.\n- Responsive export, playback, storage and backup interfaces; separate retention and deleted-record recovery.\n- Saved-record review separated from new recording controls; actual saved audio sources only, device/activity feedback and grouped actions.\n- Apply/Cancel for device changes; permanent toolbar hiding and snooze respected across note actions.\n- Compact Home, contextual recovery, consistent Notewll branding, improved themed tabs/dropdowns, searchable word/snippet forms and explicit correction saving.\n- Standard, Chat, Email and conservative Code styles; user-controlled Practice and guided first-use checks.\n\nVerification: 85 automated checks passed, four live checks excluded. Isolated UI checks preserve original words and preferences. See FIX_REPORT_0.7.0.md for all 38 review findings and remaining acceptance work.\n\nThe installer is unsigned because no code-signing certificate was provided. Published as an unsigned preview. Installation and live desktop acceptance have not been verified in this managed session. Real microphone/call capture, browser/terminal injection, mixed-DPI pointer behavior, Narrator and consented speech-accuracy comparison require a normal desktop session. The managed session denies those operations. No macOS/mobile/cloud sync release is included.\n\n\nOctober 22, 2026 update: renamed the application to Notewll across the UI, setup, shortcuts, exports and documentation. Dictation uses direct typing without reading the target field or an automatic paste retry. Existing LocalDictation data and installation identifiers are retained for upgrades. Shortcut preferences are preserved. The Windows preview installer is unsigned; real cross-app insertion still needs desktop acceptance.\n",
+          "notes": "# Notewll 0.7.0\n\nWindows x64, English-only, offline speech after initial setup download.\n\n- PDF-only conversation export with readable scope previews and explicit participant-label wording. Original words remain read-only; external PDF copies are not tamper-proof.\n- Responsive export, playback, storage and backup interfaces; separate retention and deleted-record recovery.\n- Saved-record review separated from new recording controls; actual saved audio sources only, device/activity feedback and grouped actions.\n- Apply/Cancel for device changes; permanent toolbar hiding and snooze respected across note actions.\n- Compact Home, contextual recovery, consistent Notewll branding, improved themed tabs/dropdowns, searchable word/snippet forms and explicit correction saving.\n- Standard, Chat, Email and conservative Code styles; user-controlled Practice and guided first-use checks.\n\nVerification: 85 automated checks passed, four live checks excluded. Isolated UI checks preserve original words and preferences. See FIX_REPORT_0.7.0.md for all 38 review findings and remaining acceptance work.\n\nThe installer is unsigned because no code-signing certificate was provided. Published as an unsigned preview. Installation and live desktop acceptance have not been verified in this managed session. Real microphone/call capture, browser/terminal injection, mixed-DPI pointer behavior, Narrator and consented speech-accuracy comparison require a normal desktop session. The managed session denies those operations. No macOS/mobile/cloud sync release is included.\n\n\nOctober 22, 2026 update: renamed the application to Notewll across the UI, setup, shortcuts, exports and documentation. Dictation uses direct typing without reading the target field or an automatic paste retry. Existing LocalDictation data and installation identifiers are retained for upgrades. Shortcut preferences are preserved. The Windows preview installer is unsigned; real cross-app insertion still needs desktop acceptance.",
           "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.7.0",
           "assets": [
             {
@@ -182,7 +347,7 @@
           "version": "v0.6.1",
           "preview": true,
           "date": "2026-10-21T21:23:12Z",
-          "notes": "\ufeff# Notewll / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. This historical installer appears as Local Dictation. The project and current application are now named Notewll.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\r\n\r\n",
+          "notes": "\ufeff# Notewll / Local Dictation 0.6.1 release notes\n\nWindows x64 preview. This historical installer appears as Local Dictation. The project and current application are now named Notewll.\n\n- Safer native speech-engine shutdown, in-memory dictation retry and clipboard restoration.\n- Compact Home actions, recent work, persistent session issues, grouped preferences and first-run guidance.\n- Light/Dark/System themes, live system-theme refresh, high-contrast button/list colors, reduced motion and optional voice animation.\n- Edge-docked hover toolbar, one-time drag hint and keyboard action menu.\n- Continuous per-source meeting recognition, separate meters, pause/resume and explicit device-change recovery.\n- Content search, sort by date/title/duration, tags, editable speaker labels that preserve original words, and timestamp playback.\n- Local source-quote overview, possible decisions/follow-ups and keyword answers with timestamps. No new AI model, cloud service or invented speaker attribution.\n- Previewed export scopes, remembered format, searchable/tagged Unicode PDF, Word/Excel convenience protections and CSV.\n- Recently deleted recovery, opt-in retention, size breakdown and atomic note backup. Imports validate all metadata before moving records and never overwrite existing IDs.\n- Opt-in startup update checks and manual hash/publisher verification. Unsigned installers are rejected by the updater.\n\nFirst installation needs internet for the native runtime and small English model; speech afterwards is offline. No Docker, Python installation or cloud account is needed. The setup executable is a bootstrapper, not the whole installed runtime.\n\nThis installer is unsigned: no Windows code-signing certificate is configured. It is published as a preview, not a signed automatic update. Document editing restrictions are removable and are not tamper-proof evidence.\n\nVerification: 79 application checks passed, four live checks deselected. Real installed Vosk passed 16-stream concurrent shutdown and continuous both-source silence tests. Synthetic silence, hum, clicks and quiet noise produced no words, with and without the quiet gate. Windows media playback seek/speed/pause/close passed on a fixture.\n\nRemaining acceptance limits: this managed session denies microphone/call capture and keyboard injection, and blocks Windows synthetic speech generation. Human speech accuracy, real calls, terminal/browser insertion, audible playback, mixed-DPI monitors and Narrator still need a normal desktop session. No direct Wispr accuracy comparison was performed. Source-quote review is lexical, not a semantic AI summary or generative Q&A. PDF structure tags are present, without a PDF/UA certification claim. Windows English-only remains the platform scope; no mobile/macOS/cloud sync build is included.\n",
           "url": "https://github.com/sudheer-050/notewll/releases/tag/v0.6.1",
           "assets": [
             {
@@ -198,11 +363,11 @@
       ],
       "evidence": [
         {
-          "claim": "0.8.0 release checks and latency scope",
-          "url": "https://github.com/sudheer-050/notewll/blob/main/verification/RELEASE_0.8.0.md",
-          "version": "0.8.0 Windows preview",
-          "reviewed": "2026-10-23",
-          "scope": "91 automated checks passed; four live checks excluded. Three prerecorded local audio replays measured 148-509 ms after simulated release. Not physical microphone-to-keyboard timing or a guarantee of full grammar correction within one second."
+          "claim": "0.9.0 installer, physics and customization checks",
+          "url": "https://github.com/sudheer-050/notewll/blob/v0.9.0/verification/RELEASE_0.9.0.md",
+          "version": "0.9.0 Windows preview",
+          "reviewed": "2026-10-24",
+          "scope": "119 automated checks passed; four live hardware/desktop checks excluded. Clean isolated bundle extraction loaded the included offline speech engine. Ball checks cover all 171 appearance/gravity combinations and local-image rotation. Full interactive installation and physical desktop capture/insertion remain separate acceptance checks."
         }
       ]
     },
