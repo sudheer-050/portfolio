@@ -84,8 +84,8 @@ def metadata():
         if any((current.get(k) or '')!=v for k,v in values.items()):gh('repos/'+repo,'PATCH',values)
 def legacy():
     write_file('sudheer-050/sudheer-050.github.io','index.html',redirect('https://sudheerkumargandiboyana.com/resume.html','Current résumé'))
-    write_file('sudheer-050/sudheer-050.github.io','hagent/index.html',redirect('https://myhai.org/projects/hagent/','Hagent guide and downloads'))
-    write_file('sudheer-050/hagent','docs/index.html',redirect('https://myhai.org/projects/hagent/','Hagent guide and downloads'),'pages/landing')
+    write_file('sudheer-050/sudheer-050.github.io','hagent/index.html',redirect('https://hagent.myhai.org/','Hagent guide and downloads'))
+    write_file('sudheer-050/hagent','docs/index.html',redirect('https://hagent.myhai.org/','Hagent guide and downloads'),'pages/landing')
 task('profile',profile)
 task('repository_metadata',metadata)
 task('legacy_pages',legacy)
